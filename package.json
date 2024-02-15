@@ -1,0 +1,21 @@
+{
+	"name": "slide-blocks",
+	"version": "0.1.0",
+	"description": "This block allows you to control slide plugins and customize the slider.",
+	"author": "Web Creator ITmaroon",
+	"license": "GPL-2.0-or-later",
+	"homepage": "https://itmaroon.net",
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^27.2.0"
+	}
+}

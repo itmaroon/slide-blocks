@@ -1,0 +1,19 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-itmar-slide-mv {
+	.swiper {
+		width: 100%;
+		height: 100%;
+
+	}
+
+	.swiper-slide {
+		height: 100%;
+		background-color: var(--wp--preset--color--content-back);
+	}
+}
