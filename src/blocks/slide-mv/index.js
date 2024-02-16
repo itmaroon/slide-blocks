@@ -19,7 +19,7 @@ const BlockEdit = (props) => {
 
 registerBlockType(metadata.name, {
 
-	description: __("This is a block that switches the main view by sliding.", 'itmar_mv_blocks'),
+	description: __("This is a block that switches the main view by sliding.", 'slide-blocks'),
 	icon: <Slide />,
 	edit: BlockEdit,
 	save,

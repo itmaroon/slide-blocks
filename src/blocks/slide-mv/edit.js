@@ -351,10 +351,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	return (
 		<>
 			<InspectorControls group="settings">
-				<PanelBody title={__("Slide Settings", 'itmar_mv_blocks')} initialOpen={true} className="form_design_ctrl">
-					<PanelBody title={__("Global Setting", 'itmar_mv_blocks')} initialOpen={false}>
+				<PanelBody title={__("Slide Settings", 'slide-blocks')} initialOpen={true} className="form_design_ctrl">
+					<PanelBody title={__("Global Setting", 'slide-blocks')} initialOpen={false}>
 						<ToggleControl
-							label={__('Loop', 'itmar_mv_blocks')}
+							label={__('Loop', 'slide-blocks')}
 							checked={slideInfo.loop}
 
 							onChange={(newVal) => {
@@ -364,7 +364,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 						<RangeControl
 							value={slideInfo.autoplay}
-							label={__("Autoplay", 'itmar_mv_blocks')}
+							label={__("Autoplay", 'slide-blocks')}
 							max={10000}
 							min={0}
 							step={500}
@@ -372,20 +372,20 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								setAttributes({ slideInfo: { ...slideInfo, autoplay: newVal } })
 							}}
 							withInputField={true}
-							help={__("It will automatically slide at the interval you entered. If set to 0, it will not slide automatically.", 'itmar_mv_blocks')}
+							help={__("It will automatically slide at the interval you entered. If set to 0, it will not slide automatically.", 'slide-blocks')}
 						/>
 
 						<div className='itmar_title_type'>
 							<RadioControl
-								label={__("Effect Type", 'itmar_mv_blocks')}
+								label={__("Effect Type", 'slide-blocks')}
 								selected={slideInfo.effect}
 								options={[
-									{ label: __("None", 'itmar_mv_blocks'), value: 'none' },
-									{ label: __("Coverflow 1", 'itmar_mv_blocks'), value: 'coverflow' },
-									{ label: __("Coverflow 2", 'itmar_mv_blocks'), value: 'coverflow_2' },
-									{ label: __("Cube", 'itmar_mv_blocks'), value: 'cube' },
-									{ label: __("Flip", 'itmar_mv_blocks'), value: 'flip' },
-									{ label: __("Cards", 'itmar_mv_blocks'), value: 'cards' },
+									{ label: __("None", 'slide-blocks'), value: 'none' },
+									{ label: __("Coverflow 1", 'slide-blocks'), value: 'coverflow' },
+									{ label: __("Coverflow 2", 'slide-blocks'), value: 'coverflow_2' },
+									{ label: __("Cube", 'slide-blocks'), value: 'cube' },
+									{ label: __("Flip", 'slide-blocks'), value: 'flip' },
+									{ label: __("Cards", 'slide-blocks'), value: 'cards' },
 
 								]}
 								onChange={(newVal) => {
@@ -397,8 +397,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							<>
 								<RangeControl
 									label={!isMobile ?
-										__("SlidesPerView(desk top)", 'itmar_mv_blocks')
-										: __("SlidesPerView(mobile)", 'itmar_mv_blocks')}
+										__("SlidesPerView(desk top)", 'slide-blocks')
+										: __("SlidesPerView(mobile)", 'slide-blocks')}
 									value={!isMobile ? slideInfo.defaultPerView : slideInfo.mobilePerView}
 
 									max={20}
@@ -412,8 +412,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								/>
 								<RangeControl
 									label={!isMobile ?
-										__("Slide Space Between(desk top)", 'itmar_mv_blocks')
-										: __("Slide Space Between(mobile)", 'itmar_mv_blocks')}
+										__("Slide Space Between(desk top)", 'slide-blocks')
+										: __("Slide Space Between(mobile)", 'slide-blocks')}
 									value={!isMobile ? slideInfo.defaultBetween : slideInfo.mobileBetween}
 
 									max={200}
@@ -430,7 +430,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						}
 						{slideInfo.effect === 'cube' &&
 							<ToggleControl
-								label={__('Zoom Up', 'itmar_mv_blocks')}
+								label={__('Zoom Up', 'slide-blocks')}
 								checked={slideInfo.cubeZoom}
 
 								onChange={(newVal) => {
@@ -440,9 +440,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						}
 					</PanelBody>
 
-					<PanelBody title={__("Navigation Setting", 'itmar_mv_blocks')} initialOpen={false}>
+					<PanelBody title={__("Navigation Setting", 'slide-blocks')} initialOpen={false}>
 						<ToggleControl
-							label={__('Display', 'itmar_mv_blocks')}
+							label={__('Display', 'slide-blocks')}
 							checked={slideInfo.navigation.disp}
 							onChange={(newVal) => {
 								setAttributes({ slideInfo: { ...slideInfo, navigation: { ...slideInfo.navigation, disp: newVal } } })
@@ -452,11 +452,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							<>
 								<div className='itmar_title_type'>
 									<RadioControl
-										label={__("Display Design", 'itmar_mv_blocks')}
+										label={__("Display Design", 'slide-blocks')}
 										selected={slideInfo.navigation.design}
 										options={[
-											{ label: __("Default", 'itmar_mv_blocks'), value: 'default' },
-											{ label: __("Circle", 'itmar_mv_blocks'), value: 'circle' },
+											{ label: __("Default", 'slide-blocks'), value: 'default' },
+											{ label: __("Circle", 'slide-blocks'), value: 'circle' },
 										]}
 										onChange={(newVal) => {
 											setAttributes({ slideInfo: { ...slideInfo, navigation: { ...slideInfo.navigation, design: newVal } } })
@@ -466,8 +466,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 								<RangeControl
 									label={!isMobile ?
-										__("Horizen position(desk top)", 'itmar_mv_blocks')
-										: __("Horizen position(mobile)", 'itmar_mv_blocks')}
+										__("Horizen position(desk top)", 'slide-blocks')
+										: __("Horizen position(mobile)", 'slide-blocks')}
 									value={!isMobile ? slideInfo.navigation.defaultHorizonPos : slideInfo.navigation.mobileHorizenPos}
 									max={10}
 									min={-10}
@@ -480,8 +480,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								/>
 								<RangeControl
 									label={!isMobile ?
-										__("Vertical position(desk top)", 'itmar_mv_blocks')
-										: __("Vertical position(mobile)", 'itmar_mv_blocks')}
+										__("Vertical position(desk top)", 'slide-blocks')
+										: __("Vertical position(mobile)", 'slide-blocks')}
 									value={!isMobile ? slideInfo.navigation.defaultVertPos : slideInfo.navigation.mobileVertPos}
 									max={95}
 									min={5}
@@ -493,7 +493,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									withInputField={true}
 								/>
 								<ToggleControl
-									label={__('Hover Appear', 'itmar_mv_blocks')}
+									label={__('Hover Appear', 'slide-blocks')}
 									checked={slideInfo.navigation.hoverAppear}
 									onChange={(newVal) => {
 										setAttributes({ slideInfo: { ...slideInfo, navigation: { ...slideInfo.navigation, hoverAppear: newVal } } })
@@ -504,12 +504,12 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						{(slideInfo.navigation.disp && slideInfo.navigation.design != 'default') &&
 							<>
 								<PanelColorGradientSettings
-									title={__("Background Color Setting", 'itmar_mv_blocks')}
+									title={__("Background Color Setting", 'slide-blocks')}
 									settings={[
 										{
 											colorValue: slideInfo.navigation.bgColor,
 											gradientValue: slideInfo.navigation.bgGradient,
-											label: __("Choose Background color", 'itmar_mv_blocks'),
+											label: __("Choose Background color", 'slide-blocks'),
 
 											onColorChange: (newValue) => {
 												setNavigationBgColor(newValue);
@@ -521,7 +521,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									]}
 								/>
 								<ToggleControl
-									label={__('Is Shadow', 'itmar_mv_blocks')}
+									label={__('Is Shadow', 'slide-blocks')}
 									checked={slideInfo.navigation.is_shadow}
 									onChange={(newVal) => {
 										setAttributes({ slideInfo: { ...slideInfo, navigation: { ...slideInfo.navigation, is_shadow: newVal } } })
@@ -540,9 +540,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						}
 					</PanelBody>
 
-					<PanelBody title={__("Pagenation Setting", 'itmar_mv_blocks')} initialOpen={false}>
+					<PanelBody title={__("Pagenation Setting", 'slide-blocks')} initialOpen={false}>
 						<ToggleControl
-							label={__('Display', 'itmar_mv_blocks')}
+							label={__('Display', 'slide-blocks')}
 							checked={slideInfo.pagination.disp}
 							onChange={(newVal) => {
 								setAttributes({ slideInfo: { ...slideInfo, pagination: { ...slideInfo.pagination, disp: newVal } } })
@@ -551,11 +551,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						{slideInfo.pagination.disp &&
 							<div className='itmar_title_type'>
 								<RadioControl
-									label={__("Design type", 'itmar_mv_blocks')}
+									label={__("Design type", 'slide-blocks')}
 									selected={slideInfo.pagination.design}
 									options={[
-										{ label: __("Default", 'itmar_mv_blocks'), value: 'default' },
-										{ label: __("Bar", 'itmar_mv_blocks'), value: 'bar' },
+										{ label: __("Default", 'slide-blocks'), value: 'default' },
+										{ label: __("Bar", 'slide-blocks'), value: 'bar' },
 									]}
 									onChange={(newVal) => {
 										setAttributes({ slideInfo: { ...slideInfo, pagination: { ...slideInfo.pagination, design: newVal } } })
@@ -565,9 +565,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 						}
 					</PanelBody>
-					<PanelBody title={__("ScrollBar Setting", 'itmar_mv_blocks')} initialOpen={false}>
+					<PanelBody title={__("ScrollBar Setting", 'slide-blocks')} initialOpen={false}>
 						<ToggleControl
-							label={__('Display', 'itmar_mv_blocks')}
+							label={__('Display', 'slide-blocks')}
 							checked={slideInfo.scrollbar.disp}
 							onChange={(newVal) => {
 								setAttributes({ slideInfo: { ...slideInfo, scrollbar: { ...slideInfo.scrollbar, disp: newVal } } })
@@ -579,11 +579,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			</InspectorControls>
 
 			<InspectorControls group="styles">
-				<PanelBody title={__("Content Style", 'itmar_mv_blocks')} initialOpen={true} className="form_design_ctrl">
+				<PanelBody title={__("Content Style", 'slide-blocks')} initialOpen={true} className="form_design_ctrl">
 					<RangeControl
 						label={!isMobile ?
-							__("Width settings(desk top)", 'itmar_mv_blocks')
-							: __("Width settings(mobile)", 'itmar_mv_blocks')}
+							__("Width settings(desk top)", 'slide-blocks')
+							: __("Width settings(mobile)", 'slide-blocks')}
 						value={!isMobile ? default_val.width : mobile_val.width}
 
 						max={100}
@@ -597,8 +597,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					/>
 					<RangeControl
 						label={!isMobile ?
-							__("Height settings(desk top)", 'itmar_mv_blocks')
-							: __("Height settings(mobile)", 'itmar_mv_blocks')}
+							__("Height settings(desk top)", 'slide-blocks')
+							: __("Height settings(mobile)", 'slide-blocks')}
 						value={!isMobile ? default_val.height : mobile_val.height}
 
 						max={100}
@@ -612,8 +612,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					/>
 					<BoxControl
 						label={!isMobile ?
-							__("Padding settings(desk top)", 'itmar_mv_blocks')
-							: __("Padding settings(mobile)", 'itmar_mv_blocks')}
+							__("Padding settings(desk top)", 'slide-blocks')
+							: __("Padding settings(mobile)", 'slide-blocks')}
 						values={!isMobile ? default_val.padding_content : mobile_val.padding_content}
 						onChange={value => setAttributes(!isMobile ?
 							{ default_val: { ...default_val, padding_content: value } }
@@ -625,7 +625,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					/>
 
 					<ToggleControl
-						label={__('Is Shadow', 'itmar_mv_blocks')}
+						label={__('Is Shadow', 'slide-blocks')}
 						checked={is_shadow}
 						onChange={(newVal) => {
 							setAttributes({ is_shadow: newVal })
@@ -643,12 +643,12 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				</PanelBody>
 				<PanelBody
 					title={!isMobile ?
-						__("Position moveable(desk top)", 'itmar_mv_blocks')
-						: __("Position moveable(mobile)", 'itmar_mv_blocks')}
+						__("Position moveable(desk top)", 'slide-blocks')
+						: __("Position moveable(mobile)", 'slide-blocks')}
 					initialOpen={true}
 				>
 					<ToggleControl
-						label={__('make it moveable', 'itmar_mv_blocks')}
+						label={__('make it moveable', 'slide-blocks')}
 						checked={!isMobile ? default_val.is_moveable : mobile_val.is_moveable}
 						onChange={(value) => {
 							setAttributes(!isMobile ?
@@ -671,7 +671,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 			<BlockControls>
 				<ToolbarDropdownMenu
-					label={__('Lateral Position', 'itmar_mv_blocks')}
+					label={__('Lateral Position', 'slide-blocks')}
 					icon={(!isMobile ? default_val.lat_pos : mobile_val.lat_pos) ?
 						alignIconMap[!isMobile ? default_val.lat_pos : mobile_val.lat_pos]
 						: alignIconMap['center']}

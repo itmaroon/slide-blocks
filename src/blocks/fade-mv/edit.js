@@ -154,8 +154,8 @@ export default function Edit(props) {
 					attributes={!isMobile ?
 						attributes.default_val : attributes.mobile_val}
 					label={!isMobile ?
-						__("Selected Images(desk top)", 'itmar_mv_blocks')
-						: __("Selected Images(mobile)", 'itmar_mv_blocks')}
+						__("Selected Images(desk top)", 'slide-blocks')
+						: __("Selected Images(mobile)", 'slide-blocks')}
 					onSelectChange={(media) => {
 						// media から map で id プロパティの配列を生成
 						const media_ID = media.map((image) => image.id);
@@ -174,11 +174,11 @@ export default function Edit(props) {
 						}
 					}}
 				/>
-				<PanelBody title={__("Slide Settings", 'itmar_mv_blocks')} initialOpen={true} className="form_design_ctrl">
+				<PanelBody title={__("Slide Settings", 'slide-blocks')} initialOpen={true} className="form_design_ctrl">
 
 					<div className='itmar_link_type'>
 						<RadioControl
-							label={__("Transition", 'itmar_mv_blocks')}
+							label={__("Transition", 'slide-blocks')}
 							selected={slide_settings.transition}
 							options={[
 								{ label: 'fade', value: 'fade' },
@@ -198,7 +198,7 @@ export default function Edit(props) {
 						/>
 						<RangeControl
 							value={slide_settings.transition_duration}
-							label={__("Transition Duration", 'itmar_mv_blocks')}
+							label={__("Transition Duration", 'slide-blocks')}
 							max={5000}
 							min={1000}
 							step={500}
@@ -211,7 +211,7 @@ export default function Edit(props) {
 					<div className='itmar_link_type'>
 						<RadioControl
 							selected={slide_settings.animation}
-							label={__("Animation", 'itmar_mv_blocks')}
+							label={__("Animation", 'slide-blocks')}
 							options={[
 								{ label: 'kenburns', value: 'kenburns' },
 								{ label: 'kenburnsUp', value: 'kenburnsUp' },
@@ -229,7 +229,7 @@ export default function Edit(props) {
 						/>
 						<RangeControl
 							value={slide_settings.animation_duration}
-							label={__("Animation Duration", 'itmar_mv_blocks')}
+							label={__("Animation Duration", 'slide-blocks')}
 							max={50000}
 							min={10000}
 							step={1000}
@@ -241,7 +241,7 @@ export default function Edit(props) {
 					</div>
 
 					<ToggleControl
-						label={__('Is Timer Display', 'itmar_mv_blocks')}
+						label={__('Is Timer Display', 'slide-blocks')}
 						checked={slide_settings.is_timer}
 						onChange={(newVal) => {
 							setAttributes({ slide_settings: { ...slide_settings, is_timer: newVal } })
@@ -250,11 +250,11 @@ export default function Edit(props) {
 				</PanelBody>
 			</InspectorControls>
 			<InspectorControls group="styles">
-				<PanelBody title={__("Content Style", 'itmar_mv_blocks')} initialOpen={true} className="form_design_ctrl">
+				<PanelBody title={__("Content Style", 'slide-blocks')} initialOpen={true} className="form_design_ctrl">
 					<RangeControl
 						label={!isMobile ?
-							__("Width settings(desk top)", 'itmar_mv_blocks')
-							: __("Width settings(mobile)", 'itmar_mv_blocks')}
+							__("Width settings(desk top)", 'slide-blocks')
+							: __("Width settings(mobile)", 'slide-blocks')}
 						value={!isMobile ? default_val.width : mobile_val.width}
 
 						max={100}
@@ -268,8 +268,8 @@ export default function Edit(props) {
 					/>
 					<RangeControl
 						label={!isMobile ?
-							__("Height settings(desk top)", 'itmar_mv_blocks')
-							: __("Height settings(mobile)", 'itmar_mv_blocks')}
+							__("Height settings(desk top)", 'slide-blocks')
+							: __("Height settings(mobile)", 'slide-blocks')}
 						value={!isMobile ? default_val.height : mobile_val.height}
 
 						max={100}
@@ -283,8 +283,8 @@ export default function Edit(props) {
 					/>
 					<BoxControl
 						label={!isMobile ?
-							__("Padding settings(desk top)", 'itmar_mv_blocks')
-							: __("Padding settings(mobile)", 'itmar_mv_blocks')}
+							__("Padding settings(desk top)", 'slide-blocks')
+							: __("Padding settings(mobile)", 'slide-blocks')}
 						values={!isMobile ? default_val.padding_content : mobile_val.padding_content}
 						onChange={value => setAttributes(!isMobile ?
 							{ default_val: { ...default_val, padding_content: value } }
@@ -296,7 +296,7 @@ export default function Edit(props) {
 					/>
 
 					<ToggleControl
-						label={__('Is Shadow', 'itmar_mv_blocks')}
+						label={__('Is Shadow', 'slide-blocks')}
 						checked={is_shadow}
 						onChange={(newVal) => {
 							setAttributes({ is_shadow: newVal })
@@ -314,12 +314,12 @@ export default function Edit(props) {
 				</PanelBody>
 				<PanelBody
 					title={!isMobile ?
-						__("Position moveable(desk top)", 'itmar_mv_blocks')
-						: __("Position moveable(mobile)", 'itmar_mv_blocks')}
+						__("Position moveable(desk top)", 'slide-blocks')
+						: __("Position moveable(mobile)", 'slide-blocks')}
 					initialOpen={true}
 				>
 					<ToggleControl
-						label={__('make it moveable', 'itmar_mv_blocks')}
+						label={__('make it moveable', 'slide-blocks')}
 						checked={!isMobile ? default_val.is_moveable : mobile_val.is_moveable}
 						onChange={(value) => {
 							setAttributes(!isMobile ?
@@ -342,7 +342,7 @@ export default function Edit(props) {
 
 			<BlockControls>
 				<ToolbarDropdownMenu
-					label={__('Lateral Position', 'itmar_mv_blocks')}
+					label={__('Lateral Position', 'slide-blocks')}
 					icon={(!isMobile ? default_val.lat_pos : mobile_val.lat_pos) ?
 						alignIconMap[!isMobile ? default_val.lat_pos : mobile_val.lat_pos]
 						: alignIconMap['center']}

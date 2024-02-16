@@ -51,7 +51,7 @@ export function MultiImageSelect(props) {
             onClick={open}
             className="button button-large"
           >
-            {__("Image Upload", 'itmar_mv_blocks')}
+            {__("Image Upload", 'slide-blocks')}
           </Button>
         </div>
       );
@@ -81,7 +81,7 @@ export function MultiImageSelect(props) {
             variant="secondary"
             isDestructive
             className="removeImage">
-            {__("Delete All", 'itmar_mv_blocks')}
+            {__("Delete All", 'slide-blocks')}
           </Button>
         </MediaUploadCheck>
       }

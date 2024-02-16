@@ -12,7 +12,7 @@ import { ReactComponent as Fade } from './fade.svg';
 
 registerBlockType(metadata.name, {
 
-	description: __("This is a block that changes the main view while fading in and out.", 'itmar_mv_blocks'),
+	description: __("This is a block that changes the main view while fading in and out.", 'slide-blocks'),
 	icon: <Fade />,
 	edit: Edit,
 	save,
