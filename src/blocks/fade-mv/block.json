@@ -104,7 +104,7 @@
 			}
 		}
 	},
-	"textdomain": "itmar_mv_blocks",
+	"textdomain": "slide-blocks",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css"

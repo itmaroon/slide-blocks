@@ -140,7 +140,7 @@ export default function Edit(props) {
 				$sliderElement.vegas({
 					cover: false,
 					slides: [
-						{ src: `${itmar_block_option.plugin_url}/assets/no-image.png` },
+						{ src: `${slide_blocks.plugin_url}/assets/no-image.png` },
 					]
 				});
 			}
@@ -259,7 +259,7 @@ export default function Edit(props) {
 
 						max={100}
 						min={30}
-						step={10}
+						step={5}
 						onChange={value => setAttributes(!isMobile ?
 							{ default_val: { ...default_val, width: value } }
 							: { mobile_val: { ...mobile_val, width: value } }
@@ -274,7 +274,7 @@ export default function Edit(props) {
 
 						max={100}
 						min={30}
-						step={10}
+						step={5}
 						onChange={value => setAttributes(!isMobile ?
 							{ default_val: { ...default_val, height: value } }
 							: { mobile_val: { ...mobile_val, height: value } }

@@ -54,7 +54,7 @@ function itmar_slide_add_enqueue() {
 		//独自jsのエンキュー
 		$script_path = plugin_dir_path(__FILE__) . 'assets/slideBlocks.js';
 		wp_enqueue_script(
-			'itmar-script-handle',
+			'itmar-slide-handle',
 			plugins_url('/assets/slideBlocks.js', __FILE__),
 			array('jquery','wp-i18n'),
 			filemtime($script_path),

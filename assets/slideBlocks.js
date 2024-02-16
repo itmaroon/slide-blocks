@@ -51,7 +51,7 @@ jQuery(function ($) {
         $sliderElement.vegas({
           cover: false,
           slides: [
-            { src: `${itmar_block_option.plugin_url}/assets/no-image.png` },
+            { src: `${slide_blocks.plugin_url}/assets/no-image.png` },
           ]
         });
       }

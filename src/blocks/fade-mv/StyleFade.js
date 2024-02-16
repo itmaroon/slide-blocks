@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { width_prm, max_width_prm, align_prm, space_prm, convertToScss } from '../cssPropertes';
+import { align_prm, space_prm, convertToScss } from '../cssPropertes';
 
 export const StyleComp = ({ attributes, children }) => {
   return (
@@ -37,6 +37,7 @@ ${({ attributes }) => {
     const commonStyle = css`
       position: relative;
       margin-block-start:0;
+      overflow: hidden;
       > div{
         width: ${default_val.width}vw;
         height: ${default_val.height}vh;
