@@ -221,14 +221,63 @@ ${({ attributes }) => {
         ${slideInfo.navigation.hoverAppear ? navAppear : null}
         .swiper{
           ${slideInfo.cubeZoom ? zoom_in : null}
+          
         }
       }
     `;
 
+    // エフェクトごとのスタイルをここで定義します
+    const cover2Style = css`
+    > div{
+      .swiper{
+        .swiper-wrapper{
+          position: absolute;
+          top:20%;
+        }
+        
+        .swiper-slide{
+          width: 30%; 
+          margin-right: 10px; 
+          height: 200px; 
+          position: relative;
+          box-shadow: 0 2px 10px 0px #e9e4e4;
+          transition: all 1s ease 0s;
+          filter:blur(5px);
+          .group_contents {
+            width: 100%;
+            position:absoute;
+          }
+          &.swiper-slide-active{
+            overflow:visible;
+            height: fit-content;
+            filter:blur(0);
+            .wp-block-itmar-design-group {
+              position: absolute;
+              left: 50%;
+              transform: translateX(-50%);
+            }
+          }
+        }
+      }
+    }
+    `
+    const cubeStyle = css`
+    > div{
+      ${slideInfo.isSlideFit ? 'display: flex;align-items: center;' : ''}
+    }
+    `
+    //スタイルの選択
+    const effectMap = {
+      'coverflow_2': cover2Style,
+      'cube': cubeStyle,
+    };
+
+    const effectStyle = effectMap[slideInfo.effect] || null;
+
     // 共通のスタイルを組み合わせて返します
     return css`
       ${commonStyle}
-      
+      ${effectStyle}
     `;
   }
   }

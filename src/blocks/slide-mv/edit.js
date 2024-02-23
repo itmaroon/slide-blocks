@@ -14,13 +14,9 @@ import {
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
-	PanelRow,
 	ToggleControl,
 	RangeControl,
 	RadioControl,
-	TextareaControl,
-	Notice,
-	TextControl,
 	ToolbarDropdownMenu,
 	__experimentalBoxControl as BoxControl
 } from '@wordpress/components';
@@ -95,6 +91,51 @@ const findAllBlocksOfType = (blocks, blockType) => {
 	});
 	return foundBlocks;
 };
+
+const change_swiper_scale = (swiper_elm) => {
+	const activeSlide = swiper_elm.el.getElementsByClassName('swiper-slide')[swiper_elm.activeIndex];
+	let active_elm = activeSlide.firstElementChild;
+	// アクティブなスライドの大きさを取得
+	let slideWidth = active_elm.offsetWidth;
+	let slideHeight = active_elm.offsetHeight;
+	//アスペクト比で幅を峻別
+	let aspect = slideHeight / slideWidth;
+	if (aspect > 1) {
+		swiper_elm.el.style.width = '50%';
+	} else {
+		swiper_elm.el.style.width = '80%';
+	}
+	let slide_width = swiper_elm.el.offsetWidth;
+	let img_height = Math.round(slide_width * aspect) + 'px';
+	swiper_elm.el.style.height = img_height;
+}
+
+const change_active_scale = (swiper_elm) => {
+	// アクティブなスライドの大きさを変える
+	let frameElements = swiper_elm.el.querySelectorAll('.swiper-slide .group_contents');
+	let activeIndex = swiper_elm.activeIndex; // アクティブスライドのindex
+
+	frameElements.forEach((element, index) => {
+		let parent = element.parentNode; // .group_contentsの親要素を取得
+		if (index === activeIndex) {
+
+			let contentWidth = element.offsetWidth;
+			let contentHeight = element.offsetHeight;
+			// 縦長と横長でスタイルを変更
+			let aspect = contentHeight / contentWidth;
+			let dispWidth = aspect < 1 ? '240%' : '150%';
+			let dispTop = aspect < 1 ? '-3rem' : '-8rem';
+			// アニメーションをJavaScriptで実装するのは複雑になりうるため、ここでは単純にスタイルを設定
+			parent.style.width = dispWidth;
+			parent.style.top = dispTop;
+			parent.style.transition = 'width 0.3s ease, top 0.3s ease'; // スムーズな変更のためのトランジション
+		} else {
+			parent.style.width = '100%';
+			parent.style.top = '';
+			parent.style.transition = 'width 0.3s ease, top 0.3s ease'; // こちらも同様にスムーズな変更のため
+		}
+	});
+}
 
 export default function Edit({ attributes, setAttributes, clientId }) {
 	const {
@@ -178,9 +219,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		imageBlocks.forEach(imageBlock => {
 			updateBlockAttributes(imageBlock.clientId, { ...imageBlock.attributes, className: 'itmar_ex_block' });
 		});
-	}, [innerBlocks.length, clientId]);
+	}, [innerBlocks.length, imageBlocks, clientId]);
 
 	//Swiperエフェクトのオプションをマッピング
+
 	const effectOption = {
 		none: {
 			centeredSlides: true,
@@ -189,6 +231,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		},
 		coverflow: {
 			centeredSlides: true,
+			//slidesPerView: 'auto',
 			slidesPerView: isMobile ? slideInfo.mobilePerView : slideInfo.defaultPerView,
 			spaceBetween: isMobile ? slideInfo.mobileBetween : slideInfo.defaultBetween,
 			effect: "coverflow",
@@ -202,25 +245,44 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			},
 		},
 		coverflow_2: {
+			speed: 500,
+			//autoplay:true,
 			centeredSlides: true,
-			slidesPerView: isMobile ? slideInfo.mobilePerView : slideInfo.defaultPerView,
-			spaceBetween: isMobile ? slideInfo.mobileBetween : slideInfo.defaultBetween,
-			effect: "coverflow",
+			slidesPerView: 'auto',
+			slideToClickedSlide: true,
+			effect: 'coverflow',
 			coverflowEffect: {
 				rotate: 0,
-				slideShadows: true,
-				stretch: isMobile ? 150 : 100,
+				slideShadows: false,
+				stretch: 100,
 			},
+			on: {
+				init: function () {
+					change_active_scale(this);
+				},
+				slideChange: function () {
+					change_active_scale(this);
+				}
+			}
+
 		},
 		cube: {
+			speed: 800,
 			effect: "cube",
 			cubeEffect: {
 				slideShadows: true,             // スライド表面の影の有無
 				shadow: true,                   // スライド下の影の有無
-				shadowOffset: 20,              // スライド下の影の位置（px）
+				shadowOffset: 40,              // スライド下の影の位置（px）
 				shadowScale: 0.94,             //スライド下の影のサイズ比率（0~1）
 			},
 			on: {
+				init: function () {
+					if (slideInfo.isSlideFit) {
+						//アクティブなスライドの大きさを変える
+						change_swiper_scale(this);
+					}
+				},
+				// トランジション開始時
 				slideChangeTransitionStart: function () {
 					this.el.classList.remove('scale-in');
 					this.el.classList.add('scale-out');
@@ -229,6 +291,14 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				slideChangeTransitionEnd: function () {
 					this.el.classList.remove('scale-out');
 					this.el.classList.add('scale-in');
+				},
+
+				slideChange: function () {
+					if (slideInfo.isSlideFit) {
+						//アクティブなスライドの大きさを変える
+						change_swiper_scale(this)
+					}
+
 				}
 			}
 		},
@@ -237,6 +307,20 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			flipEffect: {
 				limitRotation: true,
 				slideShadows: true
+			},
+			on: {
+				init: function () {
+					if (slideInfo.isSlideFit) {
+						//アクティブなスライドの大きさを変える
+						change_swiper_scale(this);
+					}
+				},
+				slideChange: function () {
+					if (slideInfo.isSlideFit) {
+						//アクティブなスライドの大きさを変える
+						change_swiper_scale(this)
+					}
+				}
 			}
 		},
 		cards: {
@@ -246,8 +330,22 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				perSlideRotate: 2,
 				rotate: true,
 				slideShadows: true
+			},
+			on: {
+				init: function () {
+					if (slideInfo.isSlideFit) {
+						//アクティブなスライドの大きさを変える
+						change_swiper_scale(this);
+					}
+				},
+				slideChange: function () {
+					if (slideInfo.isSlideFit) {
+						//アクティブなスライドの大きさを変える
+						change_swiper_scale(this)
+					}
+				}
 			}
-		},
+		}
 	}
 
 
@@ -264,8 +362,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		//スワイパーのオプションを生成
 		let swiperOptions = {
 			simulateTouch: false,
-			loop: slideInfo.loop
-
+			loop: slideInfo.loop,
+			centerInsufficientSlides: true
 		};
 		//ナビゲーションのセット
 		if (slideInfo.navigation.disp) {
@@ -435,6 +533,16 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 								onChange={(newVal) => {
 									setAttributes({ slideInfo: { ...slideInfo, cubeZoom: newVal } })
+								}}
+							/>
+						}
+						{(slideInfo.effect === 'cube' || slideInfo.effect === 'flip' || slideInfo.effect === 'cards') &&
+							<ToggleControl
+								label={__('Fit Content Size', 'slide-blocks')}
+								checked={slideInfo.isSlideFit}
+
+								onChange={(newVal) => {
+									setAttributes({ slideInfo: { ...slideInfo, isSlideFit: newVal } })
 								}}
 							/>
 						}

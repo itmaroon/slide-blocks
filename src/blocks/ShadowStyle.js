@@ -255,15 +255,15 @@ const ShadowStyle = ({ shadowStyle, onChange }) => {
 
   return (
     <>
-      <PanelBody title={__("Shadow Type", 'itmar_block_collections')} initialOpen={true}>
+      <PanelBody title={__("Shadow Type", 'block-collections')} initialOpen={true}>
         <div className="itmar_shadow_type">
           <RadioControl
             selected={shadowType}
             options={[
-              { label: __("Nomal", 'itmar_block_collections'), value: 'nomal' },
-              { label: __("Neumorphism", 'itmar_block_collections'), value: 'newmor' },
-              { label: __("Claymorphism", 'itmar_block_collections'), value: 'claymor' },
-              { label: __("Grassmophism", 'itmar_block_collections'), value: 'glassmor' },
+              { label: __("Nomal", 'block-collections'), value: 'nomal' },
+              { label: __("Neumorphism", 'block-collections'), value: 'newmor' },
+              { label: __("Claymorphism", 'block-collections'), value: 'claymor' },
+              { label: __("Grassmophism", 'block-collections'), value: 'glassmor' },
             ]}
             onChange={(changeOption) => setShadowState({ ...shadowState, shadowType: changeOption })}
           />
@@ -271,7 +271,7 @@ const ShadowStyle = ({ shadowStyle, onChange }) => {
         {(shadowType !== 'claymor') &&
           <div className="embos">
             <RadioControl
-              label={__("unevenness", 'itmar_block_collections')}
+              label={__("unevenness", 'block-collections')}
               selected={embos}
               options={[
                 { value: 'swell' },
@@ -285,10 +285,10 @@ const ShadowStyle = ({ shadowStyle, onChange }) => {
       </PanelBody>
 
       {shadowType === 'nomal' &&
-        <PanelBody title={__("Nomal settings", 'itmar_block_collections')} initialOpen={false}>
+        <PanelBody title={__("Nomal settings", 'block-collections')} initialOpen={false}>
           <RangeControl
             value={spread}
-            label={__("Spread", 'itmar_block_collections')}
+            label={__("Spread", 'block-collections')}
             max={50}
             min={0}
             onChange={(val) => setShadowState({ ...shadowState, spread: val })}
@@ -296,7 +296,7 @@ const ShadowStyle = ({ shadowStyle, onChange }) => {
           />
           <RangeControl
             value={lateral}
-            label={__("Lateral direction", 'itmar_block_collections')}
+            label={__("Lateral direction", 'block-collections')}
             max={50}
             min={0}
             onChange={(val) => setShadowState({ ...shadowState, lateral: val })}
@@ -304,7 +304,7 @@ const ShadowStyle = ({ shadowStyle, onChange }) => {
           />
           <RangeControl
             value={longitude}
-            label={__("Longitudinal direction", 'itmar_block_collections')}
+            label={__("Longitudinal direction", 'block-collections')}
             max={50}
             min={0}
             onChange={(val) => setShadowState({ ...shadowState, longitude: val })}
@@ -312,18 +312,18 @@ const ShadowStyle = ({ shadowStyle, onChange }) => {
           />
           <RangeControl
             value={nomalBlur}
-            label={__("Blur", 'itmar_block_collections')}
+            label={__("Blur", 'block-collections')}
             max={20}
             min={0}
             onChange={(val) => setShadowState({ ...shadowState, nomalBlur: val })}
             withInputField={false}
           />
           <PanelColorGradientSettings
-            title={__("Shadow Color Setting", 'itmar_block_collections')}
+            title={__("Shadow Color Setting", 'block-collections')}
             settings={[
               {
                 colorValue: shadowColor,
-                label: __("Choose Shadow color", 'itmar_block_collections'),
+                label: __("Choose Shadow color", 'block-collections'),
                 onColorChange: (newValue) => setShadowState({ ...shadowState, shadowColor: newValue }),
               },
             ]}
@@ -333,10 +333,10 @@ const ShadowStyle = ({ shadowStyle, onChange }) => {
       }
 
       {shadowType === 'newmor' &&
-        <PanelBody title={__("Neumorphism settings", 'itmar_block_collections')} initialOpen={false}>
+        <PanelBody title={__("Neumorphism settings", 'block-collections')} initialOpen={false}>
           <RangeControl
             value={distance}
-            label={__("Distance", 'itmar_block_collections')}
+            label={__("Distance", 'block-collections')}
             max={50}
             min={0}
             onChange={(val) => setShadowState({ ...shadowState, distance: val })}
@@ -344,7 +344,7 @@ const ShadowStyle = ({ shadowStyle, onChange }) => {
           />
           <RangeControl
             value={intensity}
-            label={__("Intensity", 'itmar_block_collections')}
+            label={__("Intensity", 'block-collections')}
             max={100}
             min={0}
             onChange={(val) => setShadowState({ ...shadowState, intensity: val })}
@@ -352,7 +352,7 @@ const ShadowStyle = ({ shadowStyle, onChange }) => {
           />
           <RangeControl
             value={blur}
-            label={__("Blur", 'itmar_block_collections')}
+            label={__("Blur", 'block-collections')}
             max={20}
             min={0}
             onChange={(val) => setShadowState({ ...shadowState, blur: val })}
@@ -379,10 +379,10 @@ const ShadowStyle = ({ shadowStyle, onChange }) => {
       }
       {shadowType === 'claymor' &&
 
-        <PanelBody title={__("Claymorphism settings", 'itmar_block_collections')} initialOpen={false}>
+        <PanelBody title={__("Claymorphism settings", 'block-collections')} initialOpen={false}>
           <RangeControl
             value={opacity}
-            label={__("Opacity", 'itmar_block_collections')}
+            label={__("Opacity", 'block-collections')}
             max={1}
             min={0}
             step={.1}
@@ -428,10 +428,10 @@ const ShadowStyle = ({ shadowStyle, onChange }) => {
       }
 
       {shadowType === 'glassmor' &&
-        <PanelBody title={__("Grassmophism settings", 'itmar_block_collections')} initialOpen={false}>
+        <PanelBody title={__("Grassmophism settings", 'block-collections')} initialOpen={false}>
           <RangeControl
             value={glassblur}
-            label={__("Glass blur", 'itmar_block_collections')}
+            label={__("Glass blur", 'block-collections')}
             max={20}
             min={0}
             onChange={(val) => setShadowState({ ...shadowState, glassblur: val })}
@@ -439,7 +439,7 @@ const ShadowStyle = ({ shadowStyle, onChange }) => {
           />
           <RangeControl
             value={glassopa}
-            label={__("Glass Opacity", 'itmar_block_collections')}
+            label={__("Glass Opacity", 'block-collections')}
             max={1}
             min={0}
             step={.1}
@@ -448,7 +448,7 @@ const ShadowStyle = ({ shadowStyle, onChange }) => {
           />
           <fieldset>
             <ToggleControl
-              label={__("Show outline", 'itmar_block_collections')}
+              label={__("Show outline", 'block-collections')}
               checked={hasOutline}
               onChange={() => setShadowState({ ...shadowState, hasOutline: !hasOutline })}
             />

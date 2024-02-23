@@ -23,8 +23,8 @@ export const useDraggingMove = (isMovable, blockRef, position, onPositionChange)
       return; // 移動許可がある場合のみ、後続のロジックを実行
     }
     //positionの変化に合わせて現在位置を変更
-    const pos_value_x = position.x.match(/(-?\d+)([a-zA-Z]+)/);
-    const pos_value_y = position.y.match(/(-?\d+)([a-zA-Z]+)/);
+    const pos_value_x = position.x.match(/(-?\d+)([%a-zA-Z]+)/);
+    const pos_value_y = position.y.match(/(-?\d+)([%a-zA-Z]+)/);
     elmposition.current = { x: parseInt(pos_value_x[1]), y: parseInt(pos_value_y[1]) }
 
     //イベントハンドラ
@@ -104,7 +104,7 @@ export default function DraggableBox(props) {
   return (
     <>
       <PanelBody
-        title={__("Position Setting", 'itmar_block_collections')}
+        title={__("Position Setting", 'block-collections')}
         initialOpen={true}
       >
         <PanelRow
@@ -113,13 +113,13 @@ export default function DraggableBox(props) {
           <UnitControl
             dragDirection="e"
             onChange={(value) => chagePosition(value, 'x')}
-            label={__("Lateral direction", 'itmar_block_collections')}
+            label={__("Vertical", 'block-collections')}
             value={position?.x || 0}
           />
           <UnitControl
             dragDirection="e"
             onChange={(value) => chagePosition(value, 'y')}
-            label={__("Longitudinal direction", 'itmar_block_collections')}
+            label={__("Horizen", 'block-collections')}
             value={position?.y || 0}
           />
         </PanelRow>
@@ -130,7 +130,7 @@ export default function DraggableBox(props) {
             variant="secondary"
             onClick={() => resetPos()}
           >
-            {__("Reset", 'itmar_block_collections')}
+            {__("Reset", 'block-collections')}
           </Button>
         </PanelRow>
       </PanelBody>

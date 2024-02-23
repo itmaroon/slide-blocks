@@ -15,5 +15,6 @@
 	.swiper-slide {
 		height: 100%;
 		background-color: var(--wp--preset--color--content-back);
+		overflow: hidden;
 	}
 }

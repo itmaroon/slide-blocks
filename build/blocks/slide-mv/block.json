@@ -30,6 +30,7 @@
         "mobileBetween": 0,
         "effect": "none",
         "cubeZoom": true,
+        "isSlideFit": false,
         "navigation": {
           "disp": true,
           "defaultVertPos": 50,
