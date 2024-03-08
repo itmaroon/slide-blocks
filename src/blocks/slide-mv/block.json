@@ -19,6 +19,10 @@
 		}
 	},
 	"attributes": {
+		"swiper_id": {
+			"type": "string",
+			"default": "main_slide"
+		},
 		"slideInfo": {
 			"type": "object",
 			"default": {
@@ -29,8 +33,11 @@
 				"defaultBetween": 16,
 				"mobileBetween": 0,
 				"effect": "none",
+				"isActiveCenter": true,
 				"cubeZoom": true,
-				"isSlideFit": false,
+				"singleDirection": "horizontal",
+				"slideSpeed": 1000,
+				"fadeMotion": "none",
 				"navigation": {
 					"disp": true,
 					"defaultVertPos": 50,
@@ -145,6 +152,10 @@
 		"is_shadow": {
 			"type": "boolean",
 			"default": false
+		},
+		"parallax_obj": {
+			"type": "object",
+			"default": null
 		}
 	},
 	"textdomain": "slide-blocks",

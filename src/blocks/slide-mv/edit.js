@@ -9,8 +9,7 @@ import {
 	useInnerBlocksProps,
 	InspectorControls,
 	BlockControls,
-	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
-	__experimentalBorderRadiusControl as BorderRadiusControl
+	__experimentalPanelColorGradientSettings as PanelColorGradientSettings
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -18,12 +17,13 @@ import {
 	RangeControl,
 	RadioControl,
 	ToolbarDropdownMenu,
+	TextControl,
 	__experimentalBoxControl as BoxControl
 } from '@wordpress/components';
 
 import './editor.scss';
 import Swiper from 'swiper';
-import { Navigation, Pagination, Scrollbar, EffectCards, EffectCoverflow, EffectCreative, EffectCube, EffectFade, EffectFlip } from 'swiper/modules';
+import { Navigation, Pagination, Scrollbar, EffectCards, EffectCoverflow, EffectCreative, EffectCube, EffectFade, EffectFlip, Parallax } from 'swiper/modules';
 import 'swiper/swiper-bundle.css';
 import { useState, useRef, useEffect } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
@@ -70,11 +70,13 @@ const alignIconMap = {
 
 //モジュールのマッピング
 const effectModule = {
+	fade_single_view: EffectFade,
 	coverflow: EffectCoverflow,
 	coverflow_2: EffectCoverflow,
 	cube: EffectCube,
 	flip: EffectFlip,
-	cards: EffectCards
+	cards: EffectCards,
+	parallax: Parallax
 }
 
 // 再帰的にブロックを探索して特定のブロックタイプを見つける関数
@@ -92,58 +94,17 @@ const findAllBlocksOfType = (blocks, blockType) => {
 	return foundBlocks;
 };
 
-const change_swiper_scale = (swiper_elm) => {
-	const activeSlide = swiper_elm.el.getElementsByClassName('swiper-slide')[swiper_elm.activeIndex];
-	let active_elm = activeSlide.firstElementChild;
-	// アクティブなスライドの大きさを取得
-	let slideWidth = active_elm.offsetWidth;
-	let slideHeight = active_elm.offsetHeight;
-	//アスペクト比で幅を峻別
-	let aspect = slideHeight / slideWidth;
-	if (aspect > 1) {
-		swiper_elm.el.style.width = '50%';
-	} else {
-		swiper_elm.el.style.width = '80%';
-	}
-	let slide_width = swiper_elm.el.offsetWidth;
-	let img_height = Math.round(slide_width * aspect) + 'px';
-	swiper_elm.el.style.height = img_height;
-}
 
-const change_active_scale = (swiper_elm) => {
-	// アクティブなスライドの大きさを変える
-	let frameElements = swiper_elm.el.querySelectorAll('.swiper-slide .group_contents');
-	let activeIndex = swiper_elm.activeIndex; // アクティブスライドのindex
-
-	frameElements.forEach((element, index) => {
-		let parent = element.parentNode; // .group_contentsの親要素を取得
-		if (index === activeIndex) {
-
-			let contentWidth = element.offsetWidth;
-			let contentHeight = element.offsetHeight;
-			// 縦長と横長でスタイルを変更
-			let aspect = contentHeight / contentWidth;
-			let dispWidth = aspect < 1 ? '240%' : '150%';
-			let dispTop = aspect < 1 ? '-3rem' : '-8rem';
-			// アニメーションをJavaScriptで実装するのは複雑になりうるため、ここでは単純にスタイルを設定
-			parent.style.width = dispWidth;
-			parent.style.top = dispTop;
-			parent.style.transition = 'width 0.3s ease, top 0.3s ease'; // スムーズな変更のためのトランジション
-		} else {
-			parent.style.width = '100%';
-			parent.style.top = '';
-			parent.style.transition = 'width 0.3s ease, top 0.3s ease'; // こちらも同様にスムーズな変更のため
-		}
-	});
-}
 
 export default function Edit({ attributes, setAttributes, clientId }) {
 	const {
+		swiper_id,
 		default_val,
 		mobile_val,
 		is_shadow,
 		slideInfo,
-		shadow_element,
+		parallax_obj,
+		shadow_element
 	} = attributes;
 
 	//モバイルの判定
@@ -196,7 +157,37 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		}
 	);
 
-	//このブロックのitmar/design-groupのis_swiper属性はtrueにする
+	//slideInfo更新によるParallax情報の更新
+
+	useEffect(() => {
+		if (slideInfo.effect === 'slide_single_view' && parallax_obj != null) {
+			setAttributes(
+				{
+					parallax_obj:
+					{
+						type: slideInfo.singleDirection === 'horizontal' ? 'x' : 'y',
+						scale: parallax_obj.scale
+					}
+				}
+			)
+		} else if (slideInfo.effect === 'fade_single_view' && slideInfo.fadeMotion === 'zoomUp') {
+			setAttributes(
+				{
+					parallax_obj:
+					{
+						type: 'scale',
+						scale: parallax_obj?.scale
+					}
+				}
+			)
+		} else {
+			setAttributes({ parallax_obj: null })
+		}
+
+	}, [slideInfo]);
+
+
+	//スライドにしているitmar/design-groupに必要な情報を記録する
 	const innerBlocks = useSelect(select => {
 		return select('core/block-editor').getBlocks(clientId);
 	}, [clientId]);
@@ -206,11 +197,14 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	useEffect(() => {
 		innerBlocks.forEach(innerBlock => {
 			if (innerBlock.name === 'itmar/design-group') {
-				const newAttributes = { is_swiper: true };
-				updateBlockAttributes(innerBlock.clientId, { ...innerBlock.attributes, ...newAttributes });
+				//このブロックのitmar/design-groupのis_swiper属性はtrueにする
+				const swiper_flg = { is_swiper: true };
+				//Parallaxの情報をitmar/design-groupに記録する
+				const parallax_prm = parallax_obj != null ? { parallax_obj: parallax_obj } : { parallax_obj: null };
+				updateBlockAttributes(innerBlock.clientId, { ...innerBlock.attributes, ...swiper_flg, ...parallax_prm });
 			}
 		});
-	}, [innerBlocks.length, clientId]);
+	}, [innerBlocks.length, parallax_obj, clientId]);
 
 	//コアイメージを拡張するためcore/imageにitmar_ex_blockクラスをつける
 	const imageBlocks = findAllBlocksOfType(innerBlocks, 'core/image');
@@ -222,17 +216,37 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	}, [innerBlocks.length, imageBlocks, clientId]);
 
 	//Swiperエフェクトのオプションをマッピング
-
+	const parallax_option = parallax_obj != null ? { parallax: true } : {};//parallax_optionを定義
 	const effectOption = {
 		none: {
-			centeredSlides: true,
+			centeredSlides: slideInfo.isActiveCenter,
 			slidesPerView: isMobile ? slideInfo.mobilePerView : slideInfo.defaultPerView,
 			spaceBetween: isMobile ? slideInfo.mobileBetween : slideInfo.defaultBetween,
+
+		},
+		slide_single_view: {
+			...{
+				direction: slideInfo.singleDirection,
+				loopAdditionalSlides: 1,
+				speed: slideInfo.slideSpeed,
+				allowTouchMove: false,
+			},
+			...parallax_option
+		},
+		fade_single_view: {
+			...{
+				speed: slideInfo.slideSpeed,
+				effect: "fade",
+				fadeEffect: {
+					crossFade: true
+				},
+			},
+			...parallax_option
 		},
 		coverflow: {
 			centeredSlides: true,
 			//slidesPerView: 'auto',
-			slidesPerView: isMobile ? slideInfo.mobilePerView : slideInfo.defaultPerView,
+			slidesPerView: 3,
 			spaceBetween: isMobile ? slideInfo.mobileBetween : slideInfo.defaultBetween,
 			effect: "coverflow",
 			coverflowEffect: {
@@ -255,14 +269,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				rotate: 0,
 				slideShadows: false,
 				stretch: 100,
-			},
-			on: {
-				init: function () {
-					change_active_scale(this);
-				},
-				slideChange: function () {
-					change_active_scale(this);
-				}
 			}
 
 		},
@@ -276,12 +282,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				shadowScale: 0.94,             //スライド下の影のサイズ比率（0~1）
 			},
 			on: {
-				init: function () {
-					if (slideInfo.isSlideFit) {
-						//アクティブなスライドの大きさを変える
-						change_swiper_scale(this);
-					}
-				},
 				// トランジション開始時
 				slideChangeTransitionStart: function () {
 					this.el.classList.remove('scale-in');
@@ -291,14 +291,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				slideChangeTransitionEnd: function () {
 					this.el.classList.remove('scale-out');
 					this.el.classList.add('scale-in');
-				},
-
-				slideChange: function () {
-					if (slideInfo.isSlideFit) {
-						//アクティブなスライドの大きさを変える
-						change_swiper_scale(this)
-					}
-
 				}
 			}
 		},
@@ -307,20 +299,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			flipEffect: {
 				limitRotation: true,
 				slideShadows: true
-			},
-			on: {
-				init: function () {
-					if (slideInfo.isSlideFit) {
-						//アクティブなスライドの大きさを変える
-						change_swiper_scale(this);
-					}
-				},
-				slideChange: function () {
-					if (slideInfo.isSlideFit) {
-						//アクティブなスライドの大きさを変える
-						change_swiper_scale(this)
-					}
-				}
 			}
 		},
 		cards: {
@@ -330,20 +308,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				perSlideRotate: 2,
 				rotate: true,
 				slideShadows: true
-			},
-			on: {
-				init: function () {
-					if (slideInfo.isSlideFit) {
-						//アクティブなスライドの大きさを変える
-						change_swiper_scale(this);
-					}
-				},
-				slideChange: function () {
-					if (slideInfo.isSlideFit) {
-						//アクティブなスライドの大きさを変える
-						change_swiper_scale(this)
-					}
-				}
 			}
 		}
 	}
@@ -362,8 +326,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		//スワイパーのオプションを生成
 		let swiperOptions = {
 			simulateTouch: false,
-			loop: slideInfo.loop,
-			centerInsufficientSlides: true
+			loop: slideInfo.loop
 		};
 		//ナビゲーションのセット
 		if (slideInfo.navigation.disp) {
@@ -391,6 +354,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				el: scrollbar,
 			};
 		}
+
 		//エフェクトのセット
 		if (slideInfo.effect) {
 			if (effectModule[slideInfo.effect]) {
@@ -400,6 +364,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		}
 
 		//モジュールを追加
+		moduleArray = [...moduleArray, effectModule['parallax']];
 		swiperOptions.modules = moduleArray;
 		//インスタンス初期化の実行
 		swiperInstance.current = new Swiper(swiperRef.current, swiperOptions);
@@ -408,7 +373,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	//スワイパーオブジェクト構築の実行
 	useEffect(() => {
 		if (swiperRef.current) {
-
 			// 既存のSwiperインスタンスがあれば破棄
 			if (swiperInstance.current) {
 				// Swiper インスタンスを破棄する前に、動的に生成された DOM 要素を削除
@@ -417,11 +381,29 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 				swiperInstance.current.destroy(false, true);
 			}
-
+			//エフェクトでセットされた要素等を削除
+			const slides = swiperRef.current.querySelectorAll('.swiper-slide');
+			slides.forEach(slide => {
+				//Parallax等でついていたスタイルを削除
+				const firstDiv = slide.querySelector('div'); // 直下のdiv要素を取得
+				if (firstDiv) {
+					firstDiv.removeAttribute('style'); // 直下のdiv要素のstyle属性を削除
+				}
+				//キューブやカードのシャドーを削除
+				const shadowDivs = slide.querySelectorAll('div[class^="swiper-slide-shadow"]');
+				shadowDivs.forEach(div => {
+					div.remove(); // 各div要素を削除
+				});
+			});
+			const cubeShadow = swiperRef.current.querySelectorAll('div[class^="swiper-cube-shadow"]');
+			cubeShadow.forEach(div => {
+				div.remove(); // キューブのシャドーを削除
+			});
+			//構築
 			createSwiperObj();
 		}
 
-	}, [innerBlocks.length, slideInfo, isMobile]);
+	}, [innerBlocks.length, slideInfo, parallax_obj, isMobile]);
 
 
 	//ナビゲーションの色情報の更新関数
@@ -451,6 +433,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			<InspectorControls group="settings">
 				<PanelBody title={__("Slide Settings", 'slide-blocks')} initialOpen={true} className="form_design_ctrl">
 					<PanelBody title={__("Global Setting", 'slide-blocks')} initialOpen={false}>
+						<TextControl
+							label={__('Slide ID', 'slide-blocks')}
+							value={swiper_id}
+							onChange={(value) => setAttributes({ swiper_id: value })}
+						/>
 						<ToggleControl
 							label={__('Loop', 'slide-blocks')}
 							checked={slideInfo.loop}
@@ -479,6 +466,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								selected={slideInfo.effect}
 								options={[
 									{ label: __("None", 'slide-blocks'), value: 'none' },
+									{ label: __("Slide Single", 'slide-blocks'), value: 'slide_single_view' },
+									{ label: __("Fade Single", 'slide-blocks'), value: 'fade_single_view' },
 									{ label: __("Coverflow 1", 'slide-blocks'), value: 'coverflow' },
 									{ label: __("Coverflow 2", 'slide-blocks'), value: 'coverflow_2' },
 									{ label: __("Cube", 'slide-blocks'), value: 'cube' },
@@ -491,37 +480,138 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								}}
 							/>
 						</div>
+						{(slideInfo.effect === 'none' || slideInfo.effect === 'coverflow_2') &&
+
+							<RangeControl
+								label={!isMobile ?
+									__("SlidesPerView(desk top)", 'slide-blocks')
+									: __("SlidesPerView(mobile)", 'slide-blocks')}
+								value={!isMobile ? slideInfo.defaultPerView : slideInfo.mobilePerView}
+
+								max={20}
+								min={1}
+								step={0.1}
+								onChange={(newVal) => setAttributes(!isMobile ?
+									{ slideInfo: { ...slideInfo, defaultPerView: newVal } }
+									: { slideInfo: { ...slideInfo, mobilePerView: newVal } }
+								)}
+								withInputField={true}
+							/>
+
+						}
 						{(slideInfo.effect === 'none' || slideInfo.effect === 'coverflow' || slideInfo.effect === 'coverflow_2') &&
+							<RangeControl
+								label={!isMobile ?
+									__("Slide Space Between(desk top)", 'slide-blocks')
+									: __("Slide Space Between(mobile)", 'slide-blocks')}
+								value={!isMobile ? slideInfo.defaultBetween : slideInfo.mobileBetween}
+
+								max={200}
+								min={0}
+								step={5}
+								onChange={(newVal) => setAttributes(!isMobile ?
+									{ slideInfo: { ...slideInfo, defaultBetween: newVal } }
+									: { slideInfo: { ...slideInfo, mobileBetween: newVal } }
+								)}
+
+								withInputField={true}
+							/>
+						}
+						{slideInfo.effect === 'none' &&
+							<ToggleControl
+								label={__('Active Slide Center', 'slide-blocks')}
+								checked={slideInfo.isActiveCenter}
+								onChange={(newVal) => {
+									setAttributes({ slideInfo: { ...slideInfo, isActiveCenter: newVal } })
+								}}
+							/>
+						}
+						{(slideInfo.effect === 'slide_single_view') &&
+							<>
+								<div className='itmar_title_type'>
+									<RadioControl
+										label={__("Slide Direction", 'slide-blocks')}
+										selected={slideInfo.singleDirection}
+										options={[
+											{ label: __("Horizontal", 'slide-blocks'), value: 'horizontal' },
+											{ label: __("Vertical", 'slide-blocks'), value: 'vertical' }
+
+										]}
+										onChange={(newVal) => {
+											setAttributes({ slideInfo: { ...slideInfo, singleDirection: newVal } })
+										}}
+									/>
+								</div>
+								<ToggleControl
+									label={__('Parallax Slide', 'slide-blocks')}
+									checked={parallax_obj != null}
+									onChange={(newVal) => {
+										if (newVal) {
+											setAttributes({ parallax_obj: { type: slideInfo.singleDirection === 'horizontal' ? 'x' : 'y', scale: 50 } });
+										} else {
+											setAttributes({ parallax_obj: null });
+										}
+
+									}}
+								/>
+							</>
+						}
+						{(slideInfo.effect === 'slide_single_view' && parallax_obj != null) &&
 							<>
 								<RangeControl
-									label={!isMobile ?
-										__("SlidesPerView(desk top)", 'slide-blocks')
-										: __("SlidesPerView(mobile)", 'slide-blocks')}
-									value={!isMobile ? slideInfo.defaultPerView : slideInfo.mobilePerView}
-
-									max={20}
-									min={1}
-									step={0.1}
-									onChange={(newVal) => setAttributes(!isMobile ?
-										{ slideInfo: { ...slideInfo, defaultPerView: newVal } }
-										: { slideInfo: { ...slideInfo, mobilePerView: newVal } }
+									label={__("Parallax Area(%)", 'slide-blocks')}
+									value={parallax_obj?.scale ? parallax_obj.scale : 0}
+									max={100}
+									min={0}
+									step={10}
+									onChange={(newVal) => setAttributes({ parallax_obj: { type: slideInfo.singleDirection === 'horizontal' ? 'x' : 'y', scale: newVal } }
 									)}
 									withInputField={true}
 								/>
+							</>
+						}
+						{(slideInfo.effect === 'fade_single_view') &&
+							<>
+								<div className='itmar_title_type'>
+									<RadioControl
+										label={__("Fade Motion", 'slide-blocks')}
+										selected={slideInfo.fadeMotion}
+										options={[
+											{ label: __("None", 'slide-blocks'), value: 'none' },
+											{ label: __("Zoom Up", 'slide-blocks'), value: 'zoomUp' }
+
+										]}
+										onChange={(newVal) => {
+											setAttributes({ slideInfo: { ...slideInfo, fadeMotion: newVal } })
+										}}
+									/>
+								</div>
+							</>
+						}
+						{(slideInfo.effect === 'fade_single_view' && slideInfo.fadeMotion === 'zoomUp') &&
+							<>
 								<RangeControl
-									label={!isMobile ?
-										__("Slide Space Between(desk top)", 'slide-blocks')
-										: __("Slide Space Between(mobile)", 'slide-blocks')}
-									value={!isMobile ? slideInfo.defaultBetween : slideInfo.mobileBetween}
-
-									max={200}
-									min={0}
-									step={5}
-									onChange={(newVal) => setAttributes(!isMobile ?
-										{ slideInfo: { ...slideInfo, defaultBetween: newVal } }
-										: { slideInfo: { ...slideInfo, mobileBetween: newVal } }
+									label={__("Zoom Scale", 'slide-blocks')}
+									value={parallax_obj?.scale ? parallax_obj.scale : 1}
+									max={3}
+									min={1}
+									step={0.1}
+									onChange={(newVal) => setAttributes({ parallax_obj: { type: 'scale', scale: newVal } }
 									)}
-
+									withInputField={true}
+								/>
+							</>
+						}
+						{(slideInfo.effect === 'slide_single_view' || slideInfo.effect === 'fade_single_view') &&
+							<>
+								<RangeControl
+									label={__("Speed", 'slide-blocks')}
+									value={slideInfo.slideSpeed}
+									max={3000}
+									min={0}
+									step={100}
+									onChange={(newVal) => setAttributes({ slideInfo: { ...slideInfo, slideSpeed: newVal } }
+									)}
 									withInputField={true}
 								/>
 							</>
@@ -536,16 +626,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								}}
 							/>
 						}
-						{(slideInfo.effect === 'cube' || slideInfo.effect === 'flip' || slideInfo.effect === 'cards') &&
-							<ToggleControl
-								label={__('Fit Content Size', 'slide-blocks')}
-								checked={slideInfo.isSlideFit}
 
-								onChange={(newVal) => {
-									setAttributes({ slideInfo: { ...slideInfo, isSlideFit: newVal } })
-								}}
-							/>
-						}
 					</PanelBody>
 
 					<PanelBody title={__("Navigation Setting", 'slide-blocks')} initialOpen={false}>
@@ -690,34 +771,36 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				<PanelBody title={__("Content Style", 'slide-blocks')} initialOpen={true} className="form_design_ctrl">
 					<RangeControl
 						label={!isMobile ?
-							__("Width settings(desk top)", 'slide-blocks')
-							: __("Width settings(mobile)", 'slide-blocks')}
+							__("Width settings(vw)(desk top)", 'slide-blocks')
+							: __("Width settings(vw)(mobile)", 'slide-blocks')}
 						value={!isMobile ? default_val.width : mobile_val.width}
 
 						max={100}
 						min={30}
-						step={10}
+						step={1}
 						onChange={value => setAttributes(!isMobile ?
 							{ default_val: { ...default_val, width: value } }
 							: { mobile_val: { ...mobile_val, width: value } }
 						)}
 						withInputField={true}
 					/>
+
 					<RangeControl
 						label={!isMobile ?
-							__("Height settings(desk top)", 'slide-blocks')
-							: __("Height settings(mobile)", 'slide-blocks')}
+							__("Height settings(vh)(desk top)", 'slide-blocks')
+							: __("Height settings(vh)(mobile)", 'slide-blocks')}
 						value={!isMobile ? default_val.height : mobile_val.height}
 
 						max={100}
 						min={10}
-						step={10}
+						step={1}
 						onChange={value => setAttributes(!isMobile ?
 							{ default_val: { ...default_val, height: value } }
 							: { mobile_val: { ...mobile_val, height: value } }
 						)}
 						withInputField={true}
 					/>
+
 					<BoxControl
 						label={!isMobile ?
 							__("Padding settings(desk top)", 'slide-blocks')
@@ -796,6 +879,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 			<StyleComp
 				attributes={attributes}
+				isFront={false}
 			>
 				<div {...blockProps}>
 					<div className='swiper' ref={swiperRef}>

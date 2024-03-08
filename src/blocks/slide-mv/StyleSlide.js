@@ -3,10 +3,11 @@ import { width_prm, max_width_prm, align_prm, space_prm, convertToScss } from '.
 import { Arrow } from '../../pseudo';
 import { ShadowElm } from '../ShadowStyle';
 
-export const StyleComp = ({ attributes, children }) => {
+export const StyleComp = ({ attributes, isFront, children }) => {
   return (
     <StyledDiv
       attributes={{ ...attributes }}
+      isFront={isFront}
     >
       {children}
     </StyledDiv>
@@ -14,7 +15,7 @@ export const StyleComp = ({ attributes, children }) => {
 };
 
 const StyledDiv = styled.div`
-${({ attributes }) => {
+${({ attributes, isFront }) => {
     const {
       default_val,
       mobile_val,
@@ -226,6 +227,7 @@ ${({ attributes }) => {
       }
     `;
 
+
     // エフェクトごとのスタイルをここで定義します
     const cover2Style = css`
     > div{
@@ -245,35 +247,33 @@ ${({ attributes }) => {
           filter:blur(5px);
           .group_contents {
             width: 100%;
-            position:absoute;
+            position:absolute;
           }
           &.swiper-slide-active{
             overflow:visible;
             height: fit-content;
             filter:blur(0);
             .wp-block-itmar-design-group {
+              width: 140%;
+              height: ${default_val.height}vh;
               position: absolute;
               left: 50%;
               transform: translateX(-50%);
+              @media (max-width: 767px) {
+                height: ${mobile_val.height}vh;
+              }
             }
           }
         }
       }
     }
     `
-    const cubeStyle = css`
-    > div{
-      ${slideInfo.isSlideFit ? 'display: flex;align-items: center;' : ''}
-    }
-    `
     //スタイルの選択
     const effectMap = {
-      'coverflow_2': cover2Style,
-      'cube': cubeStyle,
+      'coverflow_2': cover2Style
     };
-
-    const effectStyle = effectMap[slideInfo.effect] || null;
-
+    const effect_key = slideInfo.effect === 'fade_single_view' ? `${slideInfo.effect}_${slideInfo.fadeMotion}` : slideInfo.effect;
+    const effectStyle = effectMap[effect_key] || null;
     // 共通のスタイルを組み合わせて返します
     return css`
       ${commonStyle}

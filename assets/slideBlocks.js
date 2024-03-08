@@ -83,16 +83,19 @@ jQuery(function ($) {
 
   //スワイパーの初期化
   //swiperスライダーの要素
-  let $swiperElement = $('#mv-swiper');
+  let $swiperElement = $('.swiper');
   if ($swiperElement.length) {
     let swiper_info = $swiperElement.data('swiper-info');
-
+    let parallax_obj = $swiperElement.data('parallax-option');
+    const parallax_option = parallax_obj != null ? { parallax: true } : {};//parallax_optionを定義
+    console.log(parallax_option)
     //オートプレイのオブジェクトを生成
     const autoplayOption = swiper_info.autoplay != 0 ? { delay: swiper_info.autoplay } : false;
 
     //Swiperエフェクトのオプションをマッピング
     const effectOption = {
       none: {
+        centeredSlides: swiper_info.isActiveCenter,
         slidesPerView: swiper_info.mobilePerView,
         spaceBetween: swiper_info.mobileBetween,
         breakpoints: {
@@ -103,9 +106,28 @@ jQuery(function ($) {
           }
         }
       },
+      slide_single_view: {
+        ...{
+          direction: swiper_info.singleDirection,
+          loopAdditionalSlides: 1,
+          speed: swiper_info.slideSpeed,
+          allowTouchMove: false,
+        },
+        ...parallax_option
+      },
+      fade_single_view: {
+        ...{
+          speed: swiper_info.slideSpeed,
+          effect: "fade",
+          fadeEffect: {
+            crossFade: true
+          },
+        },
+        ...parallax_option
+      },
       coverflow: {
         centeredSlides: true,
-        slidesPerView: swiper_info.mobilePerView,
+        slidesPerView: 3,
         spaceBetween: swiper_info.mobileBetween,
 
         effect: "coverflow",
@@ -120,7 +142,6 @@ jQuery(function ($) {
         breakpoints: {
           // 768px以上の場合
           768: {
-            slidesPerView: swiper_info.defaultPerView,
             spaceBetween: swiper_info.defaultBetween,
             coverflowEffect: {
               stretch: 0, // (スライド間のスペース)
@@ -137,14 +158,6 @@ jQuery(function ($) {
           rotate: 0,
           slideShadows: false,
           stretch: 100,
-        },
-        on: {
-          init: function () {
-            change_active_scale(this);
-          },
-          slideChange: function () {
-            change_active_scale(this);
-          }
         },
         breakpoints: {
           // 768px以上の場合
@@ -165,11 +178,6 @@ jQuery(function ($) {
           shadowScale: 0.94,             //スライド下の影のサイズ比率（0~1）
         },
         on: {
-          init: function () {
-            if (swiper_info.isSlideFit) {
-              change_swiper_scale(this);
-            }
-          },
           slideChangeTransitionStart: function () {
             this.el.classList.remove('scale-in');
             this.el.classList.add('scale-out');
@@ -177,13 +185,6 @@ jQuery(function ($) {
           slideChangeTransitionEnd: function () {
             this.el.classList.remove('scale-out');
             this.el.classList.add('scale-in');
-          },
-
-          // スライド変化時
-          slideChange: function () {
-            if (swiper_info.isSlideFit) {
-              change_swiper_scale(this);
-            }
           }
         }
       },
@@ -238,49 +239,5 @@ jQuery(function ($) {
 
     //初期化実行
     new Swiper(".swiper", swiperOptions);
-  }
-
-
-
-  function change_swiper_scale(swiper_elm) {
-    //アクティブなスライドの大きさを変える
-    let active_slide = $(swiper_elm.el).find('.swiper-slide').eq(swiper_elm.activeIndex);
-    let active_elm = active_slide.children().first();
-    // アクティブなスライドの幅を取得
-    let slideWidth = active_elm.width();
-    // アクティブなスライドの高さを取得
-    let slideHeight = active_elm.height();
-    let aspect = slideHeight / slideWidth;
-    if (aspect > 1) {
-      $(swiper_elm.el).css({ 'width': '50%' });
-
-    } else {
-      $(swiper_elm.el).css({ 'width': '80%' });
-    }
-    let slide_width = $(swiper_elm.el).innerWidth();
-    let img_height = Math.round(slide_width * aspect) + 'px';
-    $(swiper_elm.el).css({ 'height': img_height })
-
-  }
-
-  function change_active_scale(swiper_elm) {
-    //アクティブなスライドの大きさを変える
-    let frame_arr = $(swiper_elm.el).find('.swiper-slide .group_contents');
-    let active_index = swiper_elm.activeIndex;//アクティブスライドのindex
-    frame_arr.each(function (index) {
-      if (index == active_index) {
-        let content_width = $(this).width();
-        let content_height = $(this).height();
-        //縦長と横長でスタイルを変更
-        let aspect = content_height / content_width;
-        let disp_width = aspect < 1 ? '240%' : '150%';
-        let disp_top = aspect < 1 ? '-3rem' : '-8rem';
-        $(this).parent().animate({ 'width': disp_width, 'top': disp_top });
-      } else {
-
-        $(this).parent().animate({ 'width': '100%', 'top': '' });
-
-      }
-    })
   }
 });
