@@ -1,25 +1,18 @@
-
-import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
-import { ServerStyleSheet } from 'styled-components';
-import { renderToString } from 'react-dom/server';
-import { StyleComp } from './StyleSlide';
+import { useBlockProps, InnerBlocks } from "@wordpress/block-editor";
+import { ServerStyleSheet } from "styled-components";
+import { renderToString } from "react-dom/server";
+import { StyleComp } from "./StyleSlide";
 
 export default function save({ attributes }) {
-	const {
-		slideInfo,
-		parallax_obj
-	} = attributes;
+	const { swiper_id, slideInfo, parallax_obj } = attributes;
 
 	const blockProps = useBlockProps.save();
 
 	//styled-componentsのHTML化
 	const sheet = new ServerStyleSheet();
-	const html = renderToString(sheet.collectStyles(
-		<StyleComp
-			attributes={attributes}
-			isFront={true}
-		/>
-	));
+	const html = renderToString(
+		sheet.collectStyles(<StyleComp attributes={attributes} isFront={true} />),
+	);
 	const styleTags = sheet.getStyleTags();
 	// 正規表現で styled-components のクラス名を取得
 	const classMatch = html.match(/class="([^"]+)"/);
@@ -28,7 +21,7 @@ export default function save({ attributes }) {
 	return (
 		<>
 			<div className={className}>
-				<div {...blockProps} >
+				<div {...blockProps}>
 					{/* <!-- スライダーのメインのコンテナー --> */}
 					<div
 						class="swiper"
@@ -41,15 +34,18 @@ export default function save({ attributes }) {
 						</div>
 					</div>
 					{/* <!-- ナビゲーションボタンの表示 --> */}
-					<div class="swiper-button-prev"></div>
-					<div class="swiper-button-next"></div>
+					<div class={`swiper-button-prev ${swiper_id}-prev`}></div>
+					<div class={`swiper-button-next ${swiper_id}-next`}></div>
 					{/* <!-- ページネーションの表示 --> */}
-					<div class="swiper-pagination"></div>
+					<div class={`swiper-pagination ${swiper_id}-pagination`}></div>
 					{/* <!-- スクロールバーの表示 --> */}
-					<div class="swiper-scrollbar"></div>
+					<div class={`swiper-scrollbar ${swiper_id}-scrollbar`}></div>
 				</div>
 			</div>
-			<div className='itmar_style_div' dangerouslySetInnerHTML={{ __html: styleTags }} />
+			<div
+				className="itmar_style_div"
+				dangerouslySetInnerHTML={{ __html: styleTags }}
+			/>
 		</>
-	)
+	);
 }
