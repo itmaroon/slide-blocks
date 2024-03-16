@@ -17,6 +17,7 @@ import {
 	RadioControl,
 	ToolbarDropdownMenu,
 	TextControl,
+	ComboboxControl,
 	__experimentalBoxControl as BoxControl,
 } from "@wordpress/components";
 
@@ -109,6 +110,8 @@ const findAllBlocksOfType = (blocks, blockType) => {
 export default function Edit({ attributes, setAttributes, clientId }) {
 	const {
 		swiper_id,
+		relate_id,
+		is_thumbnail,
 		default_val,
 		mobile_val,
 		is_shadow,
@@ -237,8 +240,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		});
 	}, [innerBlocks.length, imageBlocks, clientId]);
 
-	//同じIDのブロックが存在していたらエラーメッセージを出す
-
+	//エディタ内のすべてのslide-mvを取得
 	const editorBlocks = useSelect((select) => {
 		return select("core/block-editor").getBlocks();
 	}, []); //エディタ内のブロックを取得
@@ -249,25 +251,31 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	})); //カスタムストアを取得
 	const { createNotice } = useDispatch("core/notices");
 	const { addNotice, resetNotices } = useDispatch("itmar-custom/notices");
+	//自分以外のid格納用の配列
+	const [relateIDs, setRelateIDs] = useState([]);
 
 	useEffect(() => {
 		const blocks = findAllBlocksOfType(editorBlocks, "itmar/slide-mv");
-		// swiper_idの値をキーとして、その値を持つブロック数をカウントするオブジェクトを作成
-		const swiperIdCounts = blocks.reduce((acc, block) => {
-			const { swiper_id } = block.attributes;
-			if (swiper_id) {
-				acc[swiper_id] = (acc[swiper_id] || 0) + 1;
-			}
-			return acc;
-		}, {});
 
-		const duplicates = Object.keys(swiperIdCounts).filter(
-			(id) => swiperIdCounts[id] > 1,
+		// 他のすべてのブロックのswiper_idを格納する配列を生成
+		const otherSwiperIds = blocks
+			.filter((block) => block.clientId !== clientId) // 現在のブロックを除外
+			.map((block) => {
+				// swiper_idを持つオブジェクトを生成
+				const id = block.attributes.swiper_id;
+				return { value: id, label: id };
+			})
+			.filter((id) => id != null); // undefinedまたはnullのidを除外
+		setRelateIDs(otherSwiperIds);
+
+		// swiper_idの重複を検出するロジック（オブジェクトの配列を扱う方法に変更）
+		const hasDuplicates = otherSwiperIds.some(
+			(item) => item.value === swiper_id,
 		);
 
-		//重複したIDがあったかどうかの判定
-		if (duplicates.length > 0) {
+		if (hasDuplicates) {
 			const noticeId = "duplicate_swiper_id";
+			//同じIDのブロックが存在し,エラーメッセージが表示されていなければ、エラーメッセージを出す
 			if (!hasNoticeBeenDisplayed(noticeId)) {
 				createNotice(
 					"error",
@@ -401,6 +409,13 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			simulateTouch: false,
 			loop: slideInfo.loop,
 		};
+		if (is_thumbnail) {
+			swiperOptions = {
+				...swiperOptions,
+				watchSlidesProgress: true,
+				watchSlidesVisibility: true,
+			};
+		}
 		//ナビゲーションのセット
 		if (slideInfo.navigation.disp) {
 			moduleArray = [...moduleArray, Navigation];
@@ -443,6 +458,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		swiperOptions.modules = moduleArray;
 		//インスタンス初期化の実行
 		swiperInstance.current = new Swiper(swiperRef.current, swiperOptions);
+		//関連するslide-mvがあれば関連付け
+		//swiperInstance.current.controller.control = swiper;
 	};
 
 	//スワイパーオブジェクト構築の実行
@@ -530,6 +547,21 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							label={__("Slide ID", "slide-blocks")}
 							value={swiper_id}
 							onChange={(value) => setAttributes({ swiper_id: value })}
+						/>
+						<ComboboxControl
+							label={__("ID of the associated slider", "slide-blocks")}
+							options={relateIDs}
+							value={relate_id}
+							onChange={(newValue) => {
+								setAttributes({ relate_id: newValue });
+							}}
+						/>
+						<ToggleControl
+							label={__("Make it a thumbnail slider", "slide-blocks")}
+							checked={is_thumbnail}
+							onChange={(newVal) => {
+								setAttributes({ is_thumbnail: newVal });
+							}}
 						/>
 						<ToggleControl
 							label={__("Loop", "slide-blocks")}

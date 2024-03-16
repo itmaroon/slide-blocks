@@ -4,7 +4,8 @@ import { renderToString } from "react-dom/server";
 import { StyleComp } from "./StyleSlide";
 
 export default function save({ attributes }) {
-	const { swiper_id, slideInfo, parallax_obj } = attributes;
+	const { swiper_id, relate_id, is_thumbnail, slideInfo, parallax_obj } =
+		attributes;
 
 	const blockProps = useBlockProps.save();
 
@@ -25,6 +26,9 @@ export default function save({ attributes }) {
 					{/* <!-- スライダーのメインのコンテナー --> */}
 					<div
 						class="swiper"
+						data-swiper-id={swiper_id}
+						data-relate-id={relate_id}
+						data-thumb-flg={is_thumbnail}
 						data-swiper-info={JSON.stringify(slideInfo)}
 						data-parallax-option={JSON.stringify(parallax_obj)}
 					>

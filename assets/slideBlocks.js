@@ -79,10 +79,15 @@ jQuery(function ($) {
 	//スワイパーの初期化
 	//swiperスライダーの要素
 	let $swiperElements = $(".swiper");
+	let swiperInstances = [];
 	$swiperElements.each(function (index, swiperElement) {
 		let $swiperElement = $(swiperElement);
+		let swiper_id = $swiperElement.data("swiper-id");
+		let relate_id = $swiperElement.data("relate-id");
+		let is_thumbnail = $swiperElement.data("thumb-flg");
 		let swiper_info = $swiperElement.data("swiper-info");
 		let parallax_obj = $swiperElement.data("parallax-option");
+
 		const parallax_option = parallax_obj != null ? { parallax: true } : {}; //parallax_optionを定義
 		//オートプレイのオブジェクトを生成
 		const autoplayOption =
@@ -207,23 +212,40 @@ jQuery(function ($) {
 			loop: swiper_info.loop,
 			autoplay: autoplayOption,
 		};
+		//サムネイルスライダーに指定されているとき
+		if (is_thumbnail) {
+			swiperOptions = {
+				...swiperOptions,
+				watchSlidesProgress: true,
+				watchSlidesVisibility: true,
+			};
+		}
+		//関連スライダーが設定されているとき
+		// if (relate_id) {
+		// 	swiperOptions = {
+		// 		...swiperOptions,
+		// 		on: {
+		// 			slideChangeTransitionEnd: swiperInstance[relate_id],
+		// 		},
+		// 	};
+		// }
 		//ナビゲーションのセット
 		if (swiper_info.navigation.disp) {
 			swiperOptions.navigation = {
-				nextEl: ".swiper-button-next",
-				prevEl: ".swiper-button-prev",
+				nextEl: `.${swiper_id}-next`,
+				prevEl: `.${swiper_id}-prev`,
 			};
 		}
 		//ページネーションのセット
 		if (swiper_info.pagination.disp) {
 			swiperOptions.pagination = {
-				el: ".swiper-pagination",
+				el: `.${swiper_id}-pagination`,
 			};
 		}
 		//スクロールバーのセット
 		if (swiper_info.scrollbar.disp) {
 			swiperOptions.scrollbar = {
-				el: ".swiper-scrollbar",
+				el: `.${swiper_id}-scrollbar`,
 			};
 		}
 
@@ -233,6 +255,26 @@ jQuery(function ($) {
 		}
 
 		//初期化実行
-		let swiperObj = new Swiper(swiperElement, swiperOptions);
+		const instance = new Swiper(swiperElement, swiperOptions);
+		//結果保存
+		const swiperObj = {
+			instance: instance,
+			swiper_id: swiper_id,
+			relate_id: relate_id,
+		};
+		swiperInstances.push(swiperObj);
+	});
+	//スライドの関連付け処理
+	let slideNum;
+	swiperInstances.forEach((swiperInstance) => {
+		if (swiperInstance.relate_id) {
+			const relate_swiper = swiperInstances.find(
+				(swiper) => swiper.swiper_id === swiperInstance.relate_id,
+			);
+			swiperInstance.instance.on("slideChangeTransitionStart", (slider) => {
+				slideNum = slider.realIndex;
+				relate_swiper.instance.slideToLoop(slideNum, undefined, false);
+			});
+		}
 	});
 });

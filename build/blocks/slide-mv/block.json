@@ -23,6 +23,14 @@
       "type": "string",
       "default": "main_slide"
     },
+    "relate_id": {
+      "type": "string",
+      "default": null
+    },
+    "is_thumbnail": {
+      "type": "boolean",
+      "default": false
+    },
     "slideInfo": {
       "type": "object",
       "default": {
