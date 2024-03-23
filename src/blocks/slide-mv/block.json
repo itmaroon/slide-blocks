@@ -35,6 +35,7 @@
 			"type": "object",
 			"default": {
 				"loop": true,
+				"is_autoplay": false,
 				"autoplay": 2000,
 				"defaultPerView": 3,
 				"mobilePerView": 1,
@@ -46,6 +47,13 @@
 				"singleDirection": "horizontal",
 				"slideSpeed": 1000,
 				"fadeMotion": "none",
+				"activeSlideEffect":{
+					"blur":0,
+					"opacity":1,
+					"zoom":1.2,
+					"blend": "hard-light",
+					"border":null
+				},
 				"navigation": {
 					"disp": true,
 					"defaultVertPos": 50,

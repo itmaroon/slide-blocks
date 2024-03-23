@@ -80,6 +80,7 @@ jQuery(function ($) {
 	//swiperスライダーの要素
 	let $swiperElements = $(".swiper");
 	let swiperInstances = [];
+
 	$swiperElements.each(function (index, swiperElement) {
 		let $swiperElement = $(swiperElement);
 		let swiper_id = $swiperElement.data("swiper-id");
@@ -90,13 +91,25 @@ jQuery(function ($) {
 
 		const parallax_option = parallax_obj != null ? { parallax: true } : {}; //parallax_optionを定義
 		//オートプレイのオブジェクトを生成
-		const autoplayOption =
-			swiper_info.autoplay != 0 ? { delay: swiper_info.autoplay } : false;
+		const autoplayOption = swiper_info.is_autoplay
+			? {
+					freeMode: {
+						enabled: true,
+						momentum: false,
+					},
+					autoplay: {
+						delay: swiper_info.autoplay,
+						stopOnLastSlide: false, // 最後のスライドに到達したら自動再生を停止しない
+						disableOnInteraction: false, // ユーザーの操作後も自動再生を停止しない
+					},
+			  }
+			: {};
 
 		//Swiperエフェクトのオプションをマッピング
 		const effectOption = {
 			none: {
 				centeredSlides: swiper_info.isActiveCenter,
+				speed: swiper_info.slideSpeed,
 				slidesPerView: swiper_info.mobilePerView,
 				spaceBetween: swiper_info.mobileBetween,
 				breakpoints: {
@@ -210,7 +223,7 @@ jQuery(function ($) {
 		//スワイパーのオプションを生成
 		let swiperOptions = {
 			loop: swiper_info.loop,
-			autoplay: autoplayOption,
+			...autoplayOption,
 		};
 		//サムネイルスライダーに指定されているとき
 		if (is_thumbnail) {
@@ -218,17 +231,11 @@ jQuery(function ($) {
 				...swiperOptions,
 				watchSlidesProgress: true,
 				watchSlidesVisibility: true,
+				freeMode: true,
+				slideToClickedSlide: true,
 			};
 		}
-		//関連スライダーが設定されているとき
-		// if (relate_id) {
-		// 	swiperOptions = {
-		// 		...swiperOptions,
-		// 		on: {
-		// 			slideChangeTransitionEnd: swiperInstance[relate_id],
-		// 		},
-		// 	};
-		// }
+
 		//ナビゲーションのセット
 		if (swiper_info.navigation.disp) {
 			swiperOptions.navigation = {
@@ -261,20 +268,43 @@ jQuery(function ($) {
 			instance: instance,
 			swiper_id: swiper_id,
 			relate_id: relate_id,
+			is_thumbnail: is_thumbnail,
 		};
 		swiperInstances.push(swiperObj);
 	});
 	//スライドの関連付け処理
-	let slideNum;
 	swiperInstances.forEach((swiperInstance) => {
+		//関連スライダーのidが設定されている場合のみ処理する
 		if (swiperInstance.relate_id) {
+			//関連スライダーを検索
 			const relate_swiper = swiperInstances.find(
 				(swiper) => swiper.swiper_id === swiperInstance.relate_id,
 			);
-			swiperInstance.instance.on("slideChangeTransitionStart", (slider) => {
-				slideNum = slider.realIndex;
-				relate_swiper.instance.slideToLoop(slideNum, undefined, false);
-			});
+
+			if (relate_swiper) {
+				//関連スライダーがサムネイルスライダーに指定されている場合
+				if (relate_swiper.is_thumbnail) {
+					swiperInstance.instance.thumbs.swiper = relate_swiper.instance;
+					swiperInstance.instance.thumbs.init();
+					swiperInstance.instance.thumbs.update(true);
+				} else if (!swiperInstance.is_thumbnail) {
+					//swiperInstance.instance.controller.control = relate_swiper.instance;
+					swiperInstance.instance.on("slideChangeTransitionStart", (slider) => {
+						relate_swiper.instance.slideToLoop(
+							slider.realIndex,
+							undefined,
+							false,
+						);
+					});
+					relate_swiper.instance.on("slideChangeTransitionStart", (slider) => {
+						swiperInstance.instance.slideToLoop(
+							slider.realIndex,
+							undefined,
+							false,
+						);
+					});
+				}
+			}
 		}
 	});
 });

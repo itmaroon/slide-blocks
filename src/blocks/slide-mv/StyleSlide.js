@@ -1,10 +1,9 @@
 import styled, { css } from "styled-components";
 import {
-	width_prm,
-	max_width_prm,
 	align_prm,
 	space_prm,
 	convertToScss,
+	borderProperty,
 } from "../cssPropertes";
 import { Arrow } from "../../pseudo";
 import { ShadowElm } from "../ShadowStyle";
@@ -19,8 +18,14 @@ export const StyleComp = ({ attributes, isFront, children }) => {
 
 const StyledDiv = styled.div`
 	${({ attributes, isFront }) => {
-		const { default_val, mobile_val, shadow_result, slideInfo, is_shadow } =
-			attributes;
+		const {
+			is_thumbnail,
+			default_val,
+			mobile_val,
+			shadow_result,
+			slideInfo,
+			is_shadow,
+		} = attributes;
 
 		//スペースの設定
 		const default_content_padding_prm = space_prm(default_val.padding_content);
@@ -299,6 +304,46 @@ const StyledDiv = styled.div`
 				}
 			}
 		`;
+		//ボーダー用の疑似要素
+		const borderPseudo = css`
+			&::after {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				${borderProperty(slideInfo.activeSlideEffect?.border)};
+			}
+		`;
+		//サムネイルのスタイル
+		const thumb = css`
+			> div {
+				.swiper-slide {
+					&.swiper-slide-thumb-active {
+						${borderPseudo}
+						.group_contents {
+							transition: all 0.3s ease 0s;
+							filter: blur(${slideInfo.activeSlideEffect?.blur}px);
+							opacity: ${slideInfo.activeSlideEffect?.opacity};
+							transform: scale(${slideInfo.activeSlideEffect?.zoom});
+						}
+						. img {
+							mix-blend-mode: ${slideInfo.activeSlideEffect?.blend};
+						}
+					}
+				}
+			}
+		`;
+
+		//動き続けるautoplayのスクロールトランジションの修正
+		const smoothTransition = css`
+			> div {
+				.swiper-wrapper {
+					transition-timing-function: linear;
+				}
+			}
+		`;
 		//スタイルの選択
 		const effectMap = {
 			coverflow_2: cover2Style,
@@ -308,10 +353,17 @@ const StyledDiv = styled.div`
 				? `${slideInfo.effect}_${slideInfo.fadeMotion}`
 				: slideInfo.effect;
 		const effectStyle = effectMap[effect_key] || null;
+		const thumbStyle = is_thumbnail ? thumb : null;
+		const smoothStyle =
+			slideInfo.is_autoplay && slideInfo.autoplay === 0
+				? smoothTransition
+				: null;
 		// 共通のスタイルを組み合わせて返します
 		return css`
 			${commonStyle}
 			${effectStyle}
+			${thumbStyle}
+			${smoothStyle}
 		`;
 	}}
 `;

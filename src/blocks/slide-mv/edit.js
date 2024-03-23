@@ -19,6 +19,7 @@ import {
 	TextControl,
 	ComboboxControl,
 	__experimentalBoxControl as BoxControl,
+	__experimentalBorderBoxControl as BorderBoxControl,
 } from "@wordpress/components";
 
 import "./editor.scss";
@@ -34,11 +35,12 @@ import {
 	EffectFade,
 	EffectFlip,
 	Parallax,
+	Thumbs,
 } from "swiper/modules";
 import "swiper/swiper-bundle.css";
 import { useState, useRef, useEffect } from "@wordpress/element";
 import { useSelect, useDispatch } from "@wordpress/data";
-import "../noticeStore";
+import "../customStore";
 import DraggableBox, { useDraggingMove } from "../DraggableBox";
 import { justifyCenter, justifyLeft, justifyRight } from "@wordpress/icons";
 
@@ -87,6 +89,7 @@ const effectModule = {
 	flip: EffectFlip,
 	cards: EffectCards,
 	parallax: Parallax,
+	thumbs: Thumbs,
 };
 
 // 再帰的にブロックを探索して特定のブロックタイプを見つける関数
@@ -192,6 +195,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				parallax_obj: {
 					type: "scale",
 					scale: parallax_obj?.scale,
+					unit: "",
 				},
 			});
 		} else {
@@ -246,11 +250,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	}, []); //エディタ内のブロックを取得
 
 	const { hasNoticeBeenDisplayed } = useSelect((select) => ({
-		hasNoticeBeenDisplayed: select("itmar-custom/notices")
-			.hasNoticeBeenDisplayed,
+		hasNoticeBeenDisplayed: select("itmar-custom/store").hasNoticeBeenDisplayed,
 	})); //カスタムストアを取得
 	const { createNotice } = useDispatch("core/notices");
-	const { addNotice, resetNotices } = useDispatch("itmar-custom/notices");
+	const { addNotice, resetNotices } = useDispatch("itmar-custom/store");
 	//自分以外のid格納用の配列
 	const [relateIDs, setRelateIDs] = useState([]);
 
@@ -298,6 +301,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	const effectOption = {
 		none: {
 			centeredSlides: slideInfo.isActiveCenter,
+			speed: slideInfo.slideSpeed,
 			slidesPerView: isMobile
 				? slideInfo.mobilePerView
 				: slideInfo.defaultPerView,
@@ -397,6 +401,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	//swiperオブジェクトを参照して初期化
 	const swiperRef = useRef(null);
 	const swiperInstance = useRef(null); // Swiperインスタンスを保持するためのref
+	const { addSwiperInstance, removeSwiperInstance } =
+		useDispatch("itmar-custom/store"); //Swiperインスタンスの格納用カスタムストア
+	const [storeObj, setStoreObj] = useState(null); //カスタムストア格納用環境変数
+
 	//スワイパーオブジェクトの生成関数
 	const createSwiperObj = () => {
 		const parentElement = swiperRef.current.parentElement;
@@ -409,6 +417,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			simulateTouch: false,
 			loop: slideInfo.loop,
 		};
+		//サムネイルスライダーに指定されているとき
 		if (is_thumbnail) {
 			swiperOptions = {
 				...swiperOptions,
@@ -454,12 +463,26 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		}
 
 		//モジュールを追加
-		moduleArray = [...moduleArray, effectModule["parallax"]];
+		moduleArray = [
+			...moduleArray,
+			effectModule["parallax"],
+			effectModule["thumbs"],
+		];
 		swiperOptions.modules = moduleArray;
+
 		//インスタンス初期化の実行
-		swiperInstance.current = new Swiper(swiperRef.current, swiperOptions);
-		//関連するslide-mvがあれば関連付け
-		//swiperInstance.current.controller.control = swiper;
+		const instance = new Swiper(swiperRef.current, swiperOptions);
+		swiperInstance.current = instance;
+		//格納用オブジェクトの生成
+		const swiperObj = {
+			instance: instance,
+			swiper_id: swiper_id,
+			relate_id: relate_id,
+			is_thumbnail: is_thumbnail,
+		};
+
+		//格納用の環境変数に保存
+		setStoreObj(swiperObj);
 	};
 
 	//スワイパーオブジェクト構築の実行
@@ -501,7 +524,51 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			//構築
 			createSwiperObj();
 		}
-	}, [innerBlocks.length, slideInfo, parallax_obj, isMobile]);
+	}, [
+		innerBlocks.length,
+		slideInfo,
+		parallax_obj,
+		isMobile,
+		swiper_id,
+		relate_id,
+		is_thumbnail,
+	]);
+	//カスタムストアを取得してイベントハンドラを設定
+	useSelect(
+		(select) => {
+			// const allObj = select("itmar-custom/store").getSwiperInstances();
+			// console.log(allObj);
+			const relateObj =
+				select("itmar-custom/store").getSwiperInstanceById(relate_id);
+			if (storeObj && relateObj) {
+				if (relateObj.is_thumbnail) {
+					storeObj.instance.thumbs.swiper = relateObj.instance;
+					storeObj.instance.thumbs.init();
+					storeObj.instance.thumbs.update(true);
+				} else if (!storeObj.is_thumbnail) {
+					storeObj.instance.on("slideChangeTransitionStart", (slider) => {
+						relateObj.instance.slideToLoop(slider.realIndex, undefined, false);
+					});
+					relateObj.instance.on("slideChangeTransitionStart", (slider) => {
+						storeObj.instance.slideToLoop(slider.realIndex, undefined, false);
+					});
+				}
+			}
+		},
+		[storeObj],
+	);
+
+	//swiperインスタンスをカスタムストアに格納
+	useEffect(() => {
+		if (storeObj) {
+			addSwiperInstance(storeObj);
+			// コンポーネントのクリーンアップ時にインスタンスを削除
+			return () => {
+				removeSwiperInstance(storeObj.swiper_id); // ここでIDを使用
+				//swiperInstance.current.instance.destroy();
+			};
+		}
+	}, [storeObj]);
 
 	//ナビゲーションの色情報の更新関数
 	const [navigationBgColor, setNavigationBgColor] = useState(
@@ -563,6 +630,107 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								setAttributes({ is_thumbnail: newVal });
 							}}
 						/>
+						{is_thumbnail && (
+							<PanelBody
+								title={__("Active Effect", "slide-blocks")}
+								initialOpen={true}
+							>
+								<RangeControl
+									value={slideInfo.activeSlideEffect?.blur}
+									label={__("Blur(px)", "slide-blocks")}
+									max={10}
+									min={0}
+									step={1}
+									onChange={(newVal) => {
+										setAttributes({
+											slideInfo: {
+												...slideInfo,
+												activeSlideEffect: {
+													...(slideInfo.activeSlideEffect ?? {}),
+													blur: newVal,
+												},
+											},
+										});
+									}}
+									withInputField={true}
+								/>
+								<RangeControl
+									value={slideInfo.activeSlideEffect?.opacity}
+									label={__("Opacity", "slide-blocks")}
+									max={1}
+									min={0}
+									step={0.1}
+									onChange={(newVal) => {
+										setAttributes({
+											slideInfo: {
+												...slideInfo,
+												activeSlideEffect: {
+													...(slideInfo.activeSlideEffect ?? {}),
+													opacity: newVal,
+												},
+											},
+										});
+									}}
+									withInputField={true}
+								/>
+								<RangeControl
+									value={slideInfo.activeSlideEffect?.zoom}
+									label={__("Zoom", "slide-blocks")}
+									max={3}
+									min={1}
+									step={0.1}
+									onChange={(newVal) => {
+										setAttributes({
+											slideInfo: {
+												...slideInfo,
+												activeSlideEffect: {
+													...(slideInfo.activeSlideEffect ?? {}),
+													zoom: newVal,
+												},
+											},
+										});
+									}}
+									withInputField={true}
+								/>
+								<ComboboxControl
+									label={__("Image Blend Mode", "slide-blocks")}
+									options={[
+										{ value: "nomal", label: "Nomal" },
+										{ value: "hard-light", label: "Hard Light" },
+										{ value: "difference", label: "Difference" },
+									]}
+									value={slideInfo.activeSlideEffect?.blend}
+									onChange={(newVal) => {
+										setAttributes({
+											slideInfo: {
+												...slideInfo,
+												activeSlideEffect: {
+													...(slideInfo.activeSlideEffect ?? {}),
+													blend: newVal,
+												},
+											},
+										});
+									}}
+								/>
+								<BorderBoxControl
+									label={__("Borders", "slide-blocks")}
+									onChange={(newVal) => {
+										setAttributes({
+											slideInfo: {
+												...slideInfo,
+												activeSlideEffect: {
+													...(slideInfo.activeSlideEffect ?? {}),
+													border: newVal,
+												},
+											},
+										});
+									}}
+									value={slideInfo.activeSlideEffect?.border}
+									allowReset={true} // リセットの可否
+									resetValues={border_resetValues} // リセット時の値
+								/>
+							</PanelBody>
+						)}
 						<ToggleControl
 							label={__("Loop", "slide-blocks")}
 							checked={slideInfo.loop}
@@ -571,23 +739,34 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							}}
 						/>
 
-						<RangeControl
-							value={slideInfo.autoplay}
-							label={__("Autoplay", "slide-blocks")}
-							max={10000}
-							min={0}
-							step={500}
+						<ToggleControl
+							label={__("Is AutoPlay", "slide-blocks")}
+							checked={slideInfo.is_autoplay}
 							onChange={(newVal) => {
 								setAttributes({
-									slideInfo: { ...slideInfo, autoplay: newVal },
+									slideInfo: { ...slideInfo, is_autoplay: newVal },
 								});
 							}}
-							withInputField={true}
-							help={__(
-								"It will automatically slide at the interval you entered. If set to 0, it will not slide automatically.",
-								"slide-blocks",
-							)}
 						/>
+						{slideInfo.is_autoplay && (
+							<RangeControl
+								value={slideInfo.autoplay}
+								label={__("Autoplay", "slide-blocks")}
+								max={10000}
+								min={0}
+								step={500}
+								onChange={(newVal) => {
+									setAttributes({
+										slideInfo: { ...slideInfo, autoplay: newVal },
+									});
+								}}
+								withInputField={true}
+								help={__(
+									"It will automatically slide at the interval you entered. If set to 0, it will not slide automatically.",
+									"slide-blocks",
+								)}
+							/>
+						)}
 
 						<div className="itmar_title_type">
 							<RadioControl
@@ -717,6 +896,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 															? "x"
 															: "y",
 													scale: 50,
+													unit: "%",
 												},
 											});
 										} else {
@@ -743,6 +923,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 															? "x"
 															: "y",
 													scale: newVal,
+													unit: "%",
 												},
 											})
 										}
@@ -780,20 +961,25 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										step={0.1}
 										onChange={(newVal) =>
 											setAttributes({
-												parallax_obj: { type: "scale", scale: newVal },
+												parallax_obj: {
+													type: "scale",
+													scale: newVal,
+													unit: "",
+												},
 											})
 										}
 										withInputField={true}
 									/>
 								</>
 							)}
-						{(slideInfo.effect === "slide_single_view" ||
+						{(slideInfo.effect === "none" ||
+							slideInfo.effect === "slide_single_view" ||
 							slideInfo.effect === "fade_single_view") && (
 							<>
 								<RangeControl
 									label={__("Speed", "slide-blocks")}
 									value={slideInfo.slideSpeed}
-									max={3000}
+									max={10000}
 									min={0}
 									step={100}
 									onChange={(newVal) =>
