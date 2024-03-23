@@ -323,13 +323,15 @@ const StyledDiv = styled.div`
 					&.swiper-slide-thumb-active {
 						${borderPseudo}
 						.group_contents {
-							transition: all 0.3s ease 0s;
-							filter: blur(${slideInfo.activeSlideEffect?.blur}px);
-							opacity: ${slideInfo.activeSlideEffect?.opacity};
-							transform: scale(${slideInfo.activeSlideEffect?.zoom});
-						}
-						. img {
-							mix-blend-mode: ${slideInfo.activeSlideEffect?.blend};
+							figure {
+								transition: all 0.3s ease 0s;
+								filter: blur(${slideInfo.activeSlideEffect?.blur}px);
+								opacity: ${slideInfo.activeSlideEffect?.opacity};
+								transform: scale(${slideInfo.activeSlideEffect?.zoom});
+							}
+							. img {
+								mix-blend-mode: ${slideInfo.activeSlideEffect?.blend};
+							}
 						}
 					}
 				}
