@@ -109,6 +109,7 @@ jQuery(function ($) {
 		const effectOption = {
 			none: {
 				centeredSlides: swiper_info.isActiveCenter,
+				direction: swiper_info.singleDirection,
 				speed: swiper_info.slideSpeed,
 				slidesPerView: swiper_info.mobilePerView,
 				spaceBetween: swiper_info.mobileBetween,

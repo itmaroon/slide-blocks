@@ -1,1 +1,1 @@
-{"version":3,"sources":["../src/blocks/slide-mv/style.scss","style.css"],"names":[],"mappings":"AAAA;;;;;EAAA;AAQC;EACC,WAAA;EACA,YAAA;ACDF;ADKC;EACC,YAAA;EACA,wDAAA;EACA,gBAAA;ACHF","file":"style.css"}
+{"version":3,"sources":["../src/blocks/slide-mv/style.scss","style.css"],"names":[],"mappings":"AAAA;;;;;EAAA;AAMA;EACC,kBAAA;ACCD;;ADEC;EACC,WAAA;EACA,YAAA;ACCF;ADGC;EACC,YAAA;EACA,wDAAA;EACA,gBAAA;ACDF","file":"style.css"}

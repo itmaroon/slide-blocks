@@ -110,11 +110,6 @@
           "left": "20px",
           "bottom": "20px",
           "right": "20px"
-        },
-        "is_moveable": false,
-        "position": {
-          "x": "0px",
-          "y": "0px"
         }
       }
     },
@@ -129,12 +124,17 @@
           "left": "10px",
           "bottom": "20px",
           "right": "10px"
-        },
-        "is_moveable": false,
-        "position": {
-          "x": "0px",
-          "y": "0px"
         }
+      }
+    },
+    "radius_slide": {
+      "type": "object",
+      "default": {
+        "topLeft": "0px",
+        "topRight": "0px",
+        "bottomRight": "0px",
+        "bottomLeft": "0px",
+        "value": "0px"
       }
     },
     "shadow_element": {

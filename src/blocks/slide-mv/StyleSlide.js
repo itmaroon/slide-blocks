@@ -4,6 +4,7 @@ import {
 	space_prm,
 	convertToScss,
 	borderProperty,
+	radius_prm,
 } from "../cssPropertes";
 import { Arrow } from "../../pseudo";
 import { ShadowElm } from "../ShadowStyle";
@@ -22,6 +23,7 @@ const StyledDiv = styled.div`
 			is_thumbnail,
 			default_val,
 			mobile_val,
+			radius_slide,
 			shadow_result,
 			slideInfo,
 			is_shadow,
@@ -33,6 +35,8 @@ const StyledDiv = styled.div`
 		//ブロックの配置
 		const default_block_align = align_prm(default_val.lat_pos);
 		const mobile_block_align = align_prm(mobile_val.lat_pos);
+		//角丸の設定
+		const slide_radius_prm = radius_prm(radius_slide);
 
 		//シャドースタイル
 		const box_shadow_style =
@@ -259,6 +263,7 @@ const StyledDiv = styled.div`
 				${navStyle}
         ${slideInfo.navigation.hoverAppear ? navAppear : null}
         .swiper {
+					border-radius: ${slide_radius_prm};
 					${slideInfo.cubeZoom ? zoom_in : null}
 				}
 			}

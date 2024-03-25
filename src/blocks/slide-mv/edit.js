@@ -9,6 +9,7 @@ import {
 	InspectorControls,
 	BlockControls,
 	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
+	__experimentalBorderRadiusControl as BorderRadiusControl,
 } from "@wordpress/block-editor";
 import {
 	PanelBody,
@@ -41,7 +42,6 @@ import "swiper/swiper-bundle.css";
 import { useState, useRef, useEffect } from "@wordpress/element";
 import { useSelect, useDispatch } from "@wordpress/data";
 import "../customStore";
-import DraggableBox, { useDraggingMove } from "../DraggableBox";
 import { justifyCenter, justifyLeft, justifyRight } from "@wordpress/icons";
 
 //スペースのリセットバリュー
@@ -117,6 +117,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		is_thumbnail,
 		default_val,
 		mobile_val,
+		radius_slide,
 		is_shadow,
 		slideInfo,
 		parallax_obj,
@@ -159,12 +160,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				: { mobile_val: { ...mobile_val, position: newPos } },
 		);
 	};
-	useDraggingMove(
-		!isMobile ? default_val.is_moveable : mobile_val.is_moveable,
-		blockRef,
-		!isMobile ? default_val.position : mobile_val.position,
-		handlePositionChange,
-	);
 
 	//インナーブロック
 	const TEMPLATE = [["itmar/design-group", {}]];
@@ -185,6 +180,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				parallax_obj: {
 					type: slideInfo.singleDirection === "horizontal" ? "x" : "y",
 					scale: parallax_obj.scale,
+					unit: "%",
 				},
 			});
 		} else if (
@@ -296,11 +292,13 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		}
 	}, [editorBlocks]);
 
-	//Swiperエフェクトのオプションをマッピング
+	//parallaxオプションのスイッチ
 	const parallax_option = parallax_obj != null ? { parallax: true } : {}; //parallax_optionを定義
+	//Swiperエフェクトのオプションをマッピング
 	const effectOption = {
 		none: {
 			centeredSlides: slideInfo.isActiveCenter,
+			direction: slideInfo.singleDirection,
 			speed: slideInfo.slideSpeed,
 			slidesPerView: isMobile
 				? slideInfo.mobilePerView
@@ -762,7 +760,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								}}
 								withInputField={true}
 								help={__(
-									"It will automatically slide at the interval you entered. If set to 0, it will not slide automatically.",
+									"It will automatically slide at the interval you entered. If set to 0, it will slide smoothly non-stop.",
 									"slide-blocks",
 								)}
 							/>
@@ -861,7 +859,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								}}
 							/>
 						)}
-						{slideInfo.effect === "slide_single_view" && (
+						{(slideInfo.effect === "none" ||
+							slideInfo.effect === "slide_single_view") && (
 							<>
 								<div className="itmar_title_type">
 									<RadioControl
@@ -1328,6 +1327,16 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						} // リセット時の値
 					/>
 
+					<BorderRadiusControl
+						values={radius_slide}
+						onChange={(newBrVal) =>
+							setAttributes({
+								radius_slide:
+									typeof newBrVal === "string" ? { value: newBrVal } : newBrVal,
+							})
+						}
+					/>
+
 					<ToggleControl
 						label={__("Is Shadow", "slide-blocks")}
 						checked={is_shadow}
@@ -1342,42 +1351,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								setAttributes({ shadow_result: newStyle.style });
 								setAttributes({ shadow_element: newState });
 							}}
-						/>
-					)}
-				</PanelBody>
-				<PanelBody
-					title={
-						!isMobile
-							? __("Position moveable(desk top)", "slide-blocks")
-							: __("Position moveable(mobile)", "slide-blocks")
-					}
-					initialOpen={true}
-				>
-					<ToggleControl
-						label={__("make it moveable", "slide-blocks")}
-						checked={
-							!isMobile ? default_val.is_moveable : mobile_val.is_moveable
-						}
-						onChange={(value) => {
-							setAttributes(
-								!isMobile
-									? { default_val: { ...default_val, is_moveable: value } }
-									: { mobile_val: { ...mobile_val, is_moveable: value } },
-							);
-						}}
-					/>
-					{(!isMobile ? default_val.is_moveable : mobile_val.is_moveable) && (
-						<DraggableBox
-							attributes={
-								!isMobile ? default_val.position : mobile_val.position
-							}
-							onPositionChange={(pos) =>
-								setAttributes(
-									!isMobile
-										? { default_val: { ...default_val, position: pos } }
-										: { mobile_val: { ...mobile_val, position: pos } },
-								)
-							}
 						/>
 					)}
 				</PanelBody>
