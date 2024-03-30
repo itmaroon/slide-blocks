@@ -152,15 +152,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	//サイトエディタの場合はiframeにスタイルをわたす。
 	useStyleIframe(StyleComp, attributes);
 
-	//移動可能ブロックならドラッグのカスタムフックを付加
-	const handlePositionChange = (newPos) => {
-		setAttributes(
-			!isMobile
-				? { default_val: { ...default_val, position: newPos } }
-				: { mobile_val: { ...mobile_val, position: newPos } },
-		);
-	};
-
 	//インナーブロック
 	const TEMPLATE = [["itmar/design-group", {}]];
 	const innerBlocksProps = useInnerBlocksProps(
