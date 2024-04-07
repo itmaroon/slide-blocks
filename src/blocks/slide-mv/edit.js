@@ -158,7 +158,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		{ className: "swiper-wrapper" },
 		{
 			template: TEMPLATE,
-			allowedBlocks: ["itmar/design-group"],
+			allowedBlocks: ["itmar/design-group", "itmar/pickup-posts"],
 			templateLock: false,
 		},
 	);
