@@ -2,20 +2,20 @@
     "packages": [
         {
             "name": "itmar/block-class-package",
-            "version": "v1.0.1",
-            "version_normalized": "1.0.1.0",
+            "version": "v1.0.3",
+            "version_normalized": "1.0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/itmaroon/block-class-package.git",
-                "reference": "4dfb0f6a46395f7c3cdfd8d253c46c22aaedeebd"
+                "reference": "a8d6f40d829e41fd6f1ea0819e62f111115bb0b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/itmaroon/block-class-package/zipball/4dfb0f6a46395f7c3cdfd8d253c46c22aaedeebd",
-                "reference": "4dfb0f6a46395f7c3cdfd8d253c46c22aaedeebd",
+                "url": "https://api.github.com/repos/itmaroon/block-class-package/zipball/a8d6f40d829e41fd6f1ea0819e62f111115bb0b2",
+                "reference": "a8d6f40d829e41fd6f1ea0819e62f111115bb0b2",
                 "shasum": ""
             },
-            "time": "2024-04-01T01:46:57+00:00",
+            "time": "2024-04-08T07:32:22+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -34,7 +34,7 @@
             ],
             "description": "Gutenberg block class package",
             "support": {
-                "source": "https://github.com/itmaroon/block-class-package/tree/v1.0.1",
+                "source": "https://github.com/itmaroon/block-class-package/tree/v1.0.3",
                 "issues": "https://github.com/itmaroon/block-class-package/issues"
             },
             "install-path": "../itmar/block-class-package"

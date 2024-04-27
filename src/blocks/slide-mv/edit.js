@@ -1,8 +1,14 @@
 import { __ } from "@wordpress/i18n";
 import { StyleComp } from "./StyleSlide";
 import { useStyleIframe } from "../iframeFooks";
-import ShadowStyle, { ShadowElm } from "../ShadowStyle";
-import { useElementBackgroundColor, useIsIframeMobile } from "../CustomFooks";
+
+import {
+	useIsIframeMobile,
+	useElementBackgroundColor,
+	ShadowElm,
+	ShadowStyle,
+} from "itmar-block-packages";
+
 import {
 	useBlockProps,
 	useInnerBlocksProps,

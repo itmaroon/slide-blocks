@@ -6,36 +6,26 @@ class ItmarEntryClass
 {
   function block_init($text_domain, $file_path)
   {
+    //jsで使えるようにhome_urlをローカライズ
+    $js_name = str_replace("-", "_", $text_domain);
+    wp_enqueue_script('itmar-script-handle', plugins_url('', $file_path) . '/assets/block_handle.js', null, null, false);
+    wp_localize_script('itmar-script-handle', $js_name, array(
+      'home_url' => home_url(),
+      'plugin_url' => plugins_url('', $file_path)
+    ));
+
     //ブロックの登録
     foreach (glob(plugin_dir_path($file_path) . 'build/blocks/*') as $block) {
-      $block_name = basename($block);
-      $script_handle = 'itmar-handle-' . $block_name;
-      $script_file = plugin_dir_path($file_path) . 'build/blocks/' . $block_name . '/index.js';
-      // スクリプトの登録
-      wp_register_script(
-        $script_handle,
-        plugins_url('build/blocks/' . $block_name . '/index.js', $file_path),
-        array('wp-blocks', 'wp-element', 'wp-i18n', 'wp-block-editor'),
-        filemtime($script_file)
-      );
-
       // ブロックの登録
-      register_block_type(
-        $block,
-        array(
-          'editor_script' => $script_handle
-        )
-      );
-
+      $block_type = register_block_type($block);
       // その後、このハンドルを使用してスクリプトの翻訳をセット
-      wp_set_script_translations($script_handle, $text_domain, plugin_dir_path($file_path) . 'languages');
-      //jsで使えるようにhome_urlをローカライズ
-      $js_name = str_replace("-", "_", $text_domain);
-      wp_localize_script($script_handle, $js_name, array(
-        'home_url' => home_url(),
-        'plugin_url' => plugins_url('', $file_path)
-      ));
+      if ($block_type instanceof \WP_Block_Type) {
+        $block_handle = str_replace("/", "-", $block_type->name);
+        // register_block_typeで生成されるハンドルを使用してスクリプトの翻訳をセット
+        wp_set_script_translations($block_handle . '-editor-script', $text_domain, plugin_dir_path($file_path) . 'languages');
+      }
     }
+
 
     //PHP用のテキストドメインの読込（国際化）
     load_plugin_textdomain($text_domain, false, basename(dirname($file_path)) . '/languages');

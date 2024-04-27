@@ -1,13 +1,14 @@
 import styled, { css } from "styled-components";
+
 import {
 	align_prm,
 	space_prm,
 	convertToScss,
 	borderProperty,
 	radius_prm,
-} from "../cssPropertes";
-import { Arrow } from "../../pseudo";
-import { ShadowElm } from "../ShadowStyle";
+	ShadowElm,
+	Arrow,
+} from "itmar-block-packages";
 
 export const StyleComp = ({ attributes, isFront, children }) => {
 	return (
@@ -37,7 +38,6 @@ const StyledDiv = styled.div`
 		const mobile_block_align = align_prm(mobile_val.lat_pos);
 		//角丸の設定
 		const slide_radius_prm = radius_prm(radius_slide);
-
 		//シャドースタイル
 		const box_shadow_style =
 			is_shadow && shadow_result ? convertToScss(shadow_result) : "";

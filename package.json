@@ -16,10 +16,12 @@
 		"start": "wp-scripts start"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^27.2.0"
+		"@wordpress/scripts": "^27.6.0"
 	},
 	"dependencies": {
 		"@wordpress/icons": "^9.42.0",
+		"itmar-block-packages": "^1.2.3",
+		"react-dom": "^18.2.0",
 		"styled-components": "^6.1.8",
 		"swiper": "^11.0.7"
 	}
