@@ -4,8 +4,8 @@
  * Plugin Name:       Slide Blocks
  * Plugin URI:        https://itmaroon.net
  * Description:       This block allows you to control slide plugins and customize the slider.
- * Requires at least: 6.1
- * Requires PHP:      7.0
+ * Requires at least: 6.3
+ * Requires PHP:      8.1.22
  * Version:           0.1.0
  * Author:            Web Creator ITmaroon
  * License:           GPL-2.0-or-later
