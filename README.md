@@ -39,6 +39,6 @@ zipファイルをダウンロードしてWordpress管理画面からプラグ�
 1. Fade MainVeiwブロックでは、VEGAS2を使用しています。ライセンス等については、次の利用規約にしたがってください。  
 [Vegas – Backgrounds and Slideshows](https://github.com/jaysalvat/vegas)  
 なお、2024/4/29現在で、このプラグインはv.2.5.4をダウンロードして利用しています。
-2.Slide MainViewブロックでは、SWIPERを使用しています。利用規約等については、次のページに記載されています。  
-[Swiper](https://github.com/nolimits4web/swiper)
+2. Slide MainViewブロックでは、SWIPERを使用しています。利用規約等については、次のページに記載されています。  
+[Swiper](https://github.com/nolimits4web/swiper)  
 なお、2024/4/29現在で、このプラグインはv.11.0.7をダウンロードして利用しています。
