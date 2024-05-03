@@ -54,7 +54,6 @@ msgstr ""
 msgid "Return to Plugins Setting"
 msgstr ""
 
-
 #: build/620.js:1
 #: build/blocks/slide-mv/index.js
 #: src/blocks/slide-mv/edit.js:272
