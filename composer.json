@@ -1,26 +1,17 @@
 {
-    "name": "itmar/slide-blocks-composer",
-    "description": "Gutenberg block class package",
-    "license": "MIT",
+    "name": "itmaroon/slide-blocks",
     "autoload": {
         "psr-4": {
-            "Itmar\\BlockClassPakage\\": "src/"
+            "Itmaroon\\SlideBlocks\\": "src/"
         }
     },
     "authors": [
         {
             "name": "itmaroon",
-            "email": "master@itmaroon.net"
+            "email": "itmaroon@icloud.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/itmaroon/block-class-package"
-        }
-    ],
-    "minimum-stability": "dev",
     "require": {
-        "itmar/block-class-package": "^1.0"
+        "itmar/block-class-package": "^1.1"
     }
 }

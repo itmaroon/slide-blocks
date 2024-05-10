@@ -4,20 +4,24 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit026c7f7c674883e2294139225e8272be
+class ComposerStaticInit9522ce0f47026d5b292b7a33bab6b46e
 {
     public static $prefixLengthsPsr4 = array (
         'I' => 
         array (
+            'Itmaroon\\SlideBlocks\\' => 21,
             'Itmar\\BlockClassPakage\\' => 23,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Itmar\\BlockClassPakage\\' => 
+        'Itmaroon\\SlideBlocks\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
-            1 => __DIR__ . '/..' . '/itmar/block-class-package/src',
+        ),
+        'Itmar\\BlockClassPakage\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/itmar/block-class-package/src',
         ),
     );
 
@@ -28,9 +32,9 @@ class ComposerStaticInit026c7f7c674883e2294139225e8272be
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit026c7f7c674883e2294139225e8272be::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit026c7f7c674883e2294139225e8272be::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit026c7f7c674883e2294139225e8272be::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit9522ce0f47026d5b292b7a33bab6b46e::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit9522ce0f47026d5b292b7a33bab6b46e::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit9522ce0f47026d5b292b7a33bab6b46e::$classMap;
 
         }, null, ClassLoader::class);
     }

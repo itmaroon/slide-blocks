@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
-        'name' => 'itmar/slide-blocks-composer',
+        'name' => 'itmaroon/slide-blocks',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '308a342d6f0a1cedfb1c2f9c448592b0c45f25a2',
+        'reference' => 'b3badd2367e0c25a1c68f054154e53e15a00d1df',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,18 +11,18 @@
     ),
     'versions' => array(
         'itmar/block-class-package' => array(
-            'pretty_version' => 'v1.0.4',
-            'version' => '1.0.4.0',
-            'reference' => '5540cc49f5eadb01ffb0bb3ddb2fd0c5a507a8fa',
+            'pretty_version' => 'v1.1.1',
+            'version' => '1.1.1.0',
+            'reference' => 'd9e642a99d6d24616b4aca89b62cdb2d1350c0cc',
             'type' => 'library',
             'install_path' => __DIR__ . '/../itmar/block-class-package',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'itmar/slide-blocks-composer' => array(
+        'itmaroon/slide-blocks' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '308a342d6f0a1cedfb1c2f9c448592b0c45f25a2',
+            'reference' => 'b3badd2367e0c25a1c68f054154e53e15a00d1df',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
