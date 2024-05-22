@@ -3,7 +3,7 @@
         'name' => 'itmaroon/slide-blocks',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'b3badd2367e0c25a1c68f054154e53e15a00d1df',
+        'reference' => '3b832c3c18dd549fa18d22698e453957cdf4a8c8',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'itmaroon/slide-blocks' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'b3badd2367e0c25a1c68f054154e53e15a00d1df',
+            'reference' => '3b832c3c18dd549fa18d22698e453957cdf4a8c8',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

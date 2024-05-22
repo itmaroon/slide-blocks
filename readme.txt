@@ -3,7 +3,7 @@ Contributors:      Web Creator ITmaroon
 Tags:              block, swiper, vegas, slider ,carousel
 Requires at least: 6.3
 Tested up to:      6.5.2
-Stable tag:        0.1.0
+Stable tag:        0.1.1
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 8.1.22
@@ -66,10 +66,11 @@ Please note that responsiveness for tablet display is not supported.
 As of April 29, 2024, this plugin has been downloaded and used v.2.5.4.
 5. The Slide MainView block uses SWIPER. Terms and conditions are listed on the next page.
 [Swiper](https://github.com/nolimits4web/swiper)
-As of April 29, 2024, this plugin has been downloaded and is using v.11.0.7.
+As of May 22, 2024, this plugin has been downloaded and is using v.11.1.3.
 6. PHP class management is now done using Composer.  
 [GitHub](https://github.com/itmaroon/block-class-package)  
-[Packagist](https://packagist.org/packages/itmar/block-class-package) 
+[Packagist](https://packagist.org/packages/itmar/block-class-package)
+As of May 22, 2024, this plugin has been downloaded and is using v.1.1.1. 
 7. I decided to make functions and components common to other plugins into npm packages, and install and use them from npm.  
 [npm](https://www.npmjs.com/package/itmar-block-packages)  
 [GitHub](https://github.com/itmaroon/itmar-block-packages)

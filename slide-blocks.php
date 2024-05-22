@@ -6,7 +6,7 @@
  * Description:       This block allows you to control slide plugins and customize the slider.
  * Requires at least: 6.3
  * Requires PHP:      8.1.22
- * Version:           0.1.0
+ * Version:           0.1.1
  * Author:            Web Creator ITmaroon
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -50,24 +50,42 @@ function itmar_slide_add_enqueue()
 {
 	//jquery-easingを読み込む
 	if (!wp_script_is('itmar_jquery_easing', 'enqueued')) {
-		wp_enqueue_script('itmar_jquery_easing', plugins_url('assets/jquery.easing.min.js', __FILE__), array('jquery'), true);
+		wp_enqueue_script(
+			'itmar_jquery_easing',
+			plugins_url('assets/jquery.easing.min.js', __FILE__),
+			array('jquery'),
+			'1.0.0',
+			array('in_footer'  => true)
+		);
 	}
 	//vegasを読み込む
 	if (!wp_script_is('itmar_vegas_js', 'enqueued')) {
-		wp_enqueue_script('itmar_vegas_js', plugins_url('assets/vegas.min.js', __FILE__), array('jquery'), true);
+		wp_enqueue_script(
+			'itmar_vegas_js',
+			plugins_url('assets/vegas.min.js', __FILE__),
+			array('jquery'),
+			'1.0.0',
+			array('in_footer'  => true)
+		);
 	}
 
 	if (!wp_style_is('itmar_vegas_css', 'enqueued')) {
-		wp_enqueue_style('itmar_vegas_css', plugins_url('assets/vegas.min.css', __FILE__));
+		wp_enqueue_style('itmar_vegas_css', plugins_url('assets/vegas.min.css', __FILE__), array(), "1.0.0");
 	}
 
 	//swiperを読み込む
 	if (!wp_script_is('itmar_swiper_js', 'enqueued')) {
-		wp_enqueue_script('itmar_swiper_js', plugins_url('assets/swiper-bundle.min.js', __FILE__), array('jquery'), true);
+		wp_enqueue_script(
+			'itmar_swiper_js',
+			plugins_url('assets/swiper-bundle.min.js', __FILE__),
+			array('jquery'),
+			'1.0.0',
+			array('in_footer'  => true)
+		);
 	}
 
 	if (!wp_style_is('itmar_swiper_css', 'enqueued')) {
-		wp_enqueue_style('itmar_swiper_css', plugins_url('assets/swiper-bundle.min.css', __FILE__));
+		wp_enqueue_style('itmar_swiper_css', plugins_url('assets/swiper-bundle.min.css', __FILE__), array(), "1.0.0");
 	}
 
 	if (!is_admin()) {

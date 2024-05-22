@@ -19,6 +19,6 @@
 		"@wordpress/icons": "^9.42.0",
 		"react-dom": "^18.2.0",
 		"styled-components": "^6.1.8",
-		"swiper": "^11.0.7"
+		"swiper": "^11.1.3"
 	}
 }
