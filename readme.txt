@@ -2,8 +2,8 @@
 Contributors:      Web Creator ITmaroon
 Tags:              block, swiper, vegas, slider ,carousel
 Requires at least: 6.3
-Tested up to:      6.5.2
-Stable tag:        0.1.1
+Tested up to:      6.5.4
+Stable tag:        1.0.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 8.1.22
@@ -48,8 +48,10 @@ OR…
 
 
 == Screenshots ==
-
-
+1. Fade slide of Vegas2 created with Fade MainView
+2. A Swiper thumbnail-linked slide created with Slide MainView
+3. A cube-shaped slide by Swiper created with Slide MainView
+4. Swiper cover flow slide created with Slide MainView
 
 == Changelog ==
 
