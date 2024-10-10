@@ -1,6 +1,9 @@
 import styled, { css } from "styled-components";
 
 import {
+	width_prm,
+	height_prm,
+	max_width_prm,
 	align_prm,
 	space_prm,
 	convertToScss,
@@ -36,6 +39,32 @@ const StyledDiv = styled.div`
 		//ブロックの配置
 		const default_block_align = align_prm(default_val.lat_pos);
 		const mobile_block_align = align_prm(mobile_val.lat_pos);
+		//ブロック幅
+		const default_width_style = width_prm(
+			default_val.width_val,
+			default_val.free_width,
+		);
+		const mobile_width_style = width_prm(
+			mobile_val.width_val,
+			default_val.free_width,
+		);
+		const default_max_width_style = max_width_prm(
+			default_val.width_val,
+			default_val.free_width,
+		);
+		const mobile_max_width_style = max_width_prm(
+			mobile_val.width_val,
+			default_val.free_width,
+		);
+		//ブロックの高さ
+		const default_height_style = height_prm(
+			default_val.height_val,
+			default_val.free_height,
+		);
+		const mobile_height_style = height_prm(
+			mobile_val.height_val,
+			default_val.free_height,
+		);
 		//角丸の設定
 		const slide_radius_prm = radius_prm(radius_slide);
 		//シャドースタイル
@@ -246,15 +275,15 @@ const StyledDiv = styled.div`
 			margin-block-start: 0;
 			> div {
 				position: relative;
-				width: ${default_val.width}vw;
-				height: ${default_val.height}vh;
+				${!isFront ? default_width_style : default_max_width_style}
+				${default_height_style}
 				${box_shadow_style};
 				${default_tranceform};
 				${default_block_align};
 				padding: ${default_content_padding_prm};
 				@media (max-width: 767px) {
-					width: ${mobile_val.width}vw;
-					height: ${mobile_val.height}vh;
+					${isFront ? mobile_width_style : mobile_max_width_style}
+					${mobile_height_style}
 					padding: ${mobile_contnt_padding_prm};
 					${mobile_tranceform};
 					${mobile_block_align};
@@ -296,12 +325,12 @@ const StyledDiv = styled.div`
 							filter: blur(0);
 							.wp-block-itmar-design-group {
 								width: 140%;
-								height: ${default_val.height}vh;
+								height: ${default_val.height};
 								position: absolute;
 								left: 50%;
 								transform: translateX(-50%);
 								@media (max-width: 767px) {
-									height: ${mobile_val.height}vh;
+									height: ${mobile_val.height};
 								}
 							}
 						}

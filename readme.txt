@@ -2,8 +2,8 @@
 Contributors:      Web Creator ITmaroon
 Tags:              block, swiper, vegas, slider ,carousel
 Requires at least: 6.3
-Tested up to:      6.5.4
-Stable tag:        1.0.0
+Tested up to:      6.6.2
+Stable tag:        1.1.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 8.1.22
@@ -54,8 +54,11 @@ OR…
 4. Swiper cover flow slide created with Slide MainView
 
 == Changelog ==
+= 1.1.0 =
+- Fixed a bug in class name assignment to make core/image an extended block when it became an inner block.
+- A function has been added that allows only one itmar/pickup-posts block to be placed in the inner block directly below.
 
-= 0.1.0 =
+= 1.0.0 =
 * Release
 
 == Arbitrary section ==

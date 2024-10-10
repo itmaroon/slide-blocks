@@ -5,8 +5,11 @@ import { useStyleIframe } from "../iframeFooks";
 import {
 	useIsIframeMobile,
 	useElementBackgroundColor,
+	useDuplicateBlockRemove,
 	ShadowElm,
 	ShadowStyle,
+	BlockWidth,
+	BlockHeight,
 } from "itmar-block-packages";
 
 import {
@@ -19,6 +22,7 @@ import {
 } from "@wordpress/block-editor";
 import {
 	PanelBody,
+	PanelRow,
 	ToggleControl,
 	RangeControl,
 	RadioControl,
@@ -27,6 +31,7 @@ import {
 	ComboboxControl,
 	__experimentalBoxControl as BoxControl,
 	__experimentalBorderBoxControl as BorderBoxControl,
+	__experimentalUnitControl as UnitControl,
 } from "@wordpress/components";
 
 import "./editor.scss";
@@ -47,6 +52,7 @@ import {
 import "swiper/swiper-bundle.css";
 import { useState, useRef, useEffect } from "@wordpress/element";
 import { useSelect, useDispatch } from "@wordpress/data";
+import { createBlock } from "@wordpress/blocks";
 import "../customStore";
 import { justifyCenter, justifyLeft, justifyRight } from "@wordpress/icons";
 
@@ -116,11 +122,31 @@ const findAllBlocksOfType = (blocks, blockType) => {
 	return foundBlocks;
 };
 
+//インナーブロックを含めてブロックのクローンを再生成する関数（clientIdの重複を避けるため）
+const createBlockRecursively = (block) => {
+	// 新しいブロックを作成（インナーブロックなし）
+	const newBlock = createBlock(
+		block.name,
+		block.attributes,
+		[], // 空の配列を渡して、元のインナーブロックは含めない
+	);
+
+	// インナーブロックがある場合、再帰的に処理
+	if (block.innerBlocks && block.innerBlocks.length > 0) {
+		newBlock.innerBlocks = block.innerBlocks.map((innerBlock) =>
+			createBlockRecursively(innerBlock),
+		);
+	}
+
+	return newBlock;
+};
+
 export default function Edit({ attributes, setAttributes, clientId }) {
 	const {
 		swiper_id,
 		relate_id,
 		is_thumbnail,
+		isFront,
 		default_val,
 		mobile_val,
 		radius_slide,
@@ -132,6 +158,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 	//モバイルの判定
 	const isMobile = useIsIframeMobile();
+	// カスタムフックを使用して、重複したitmar/pickup-postsブロックを自動削除し、通知を表示
+	useDuplicateBlockRemove(clientId, ["itmar/pickup-posts"]);
+	//ブロックの編集関数
+	const { updateBlockAttributes } = useDispatch("core/block-editor");
 
 	//ブロックの参照
 	const blockRef = useRef(null);
@@ -204,8 +234,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		[clientId],
 	);
 
-	const { updateBlockAttributes } = useDispatch("core/block-editor");
-
+	//swiper属性等の変更
 	useEffect(() => {
 		innerBlocks.forEach((innerBlock) => {
 			if (innerBlock.name === "itmar/design-group") {
@@ -223,17 +252,24 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				});
 			}
 		});
-	}, [innerBlocks.length, parallax_obj, clientId]);
+	}, [innerBlocks, parallax_obj, clientId]);
 
 	//コアイメージを拡張するためcore/imageにitmar_ex_blockクラスをつける
 	const imageBlocks = findAllBlocksOfType(innerBlocks, "core/image");
 
 	useEffect(() => {
 		imageBlocks.forEach((imageBlock) => {
-			updateBlockAttributes(imageBlock.clientId, {
-				...imageBlock.attributes,
-				className: "itmar_ex_block",
-			});
+			//既にitmar_ex_blockがついている場合は処理しない
+			if (!imageBlock.attributes.className?.includes("itmar_ex_block")) {
+				updateBlockAttributes(imageBlock.clientId, {
+					...imageBlock.attributes,
+					className: `itmar_ex_block ${
+						imageBlock.attributes.className
+							? imageBlock.attributes.className
+							: ""
+					}`,
+				});
+			}
 		});
 	}, [innerBlocks.length, imageBlocks, clientId]);
 
@@ -520,7 +556,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			createSwiperObj();
 		}
 	}, [
-		innerBlocks.length,
+		innerBlocks,
 		slideInfo,
 		parallax_obj,
 		isMobile,
@@ -1259,44 +1295,51 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					initialOpen={true}
 					className="form_design_ctrl"
 				>
-					<RangeControl
-						label={
-							!isMobile
-								? __("Width settings(vw)(desk top)", "slide-blocks")
-								: __("Width settings(vw)(mobile)", "slide-blocks")
-						}
-						value={!isMobile ? default_val.width : mobile_val.width}
-						max={100}
-						min={30}
-						step={1}
-						onChange={(value) =>
-							setAttributes(
-								!isMobile
-									? { default_val: { ...default_val, width: value } }
-									: { mobile_val: { ...mobile_val, width: value } },
-							)
-						}
-						withInputField={true}
+					<ToggleControl
+						label={__("Is Main Vew", "slide-blocks")}
+						checked={isFront}
+						onChange={(newVal) => {
+							setAttributes({ isFront: newVal });
+						}}
 					/>
 
-					<RangeControl
-						label={
-							!isMobile
-								? __("Height settings(vh)(desk top)", "slide-blocks")
-								: __("Height settings(vh)(mobile)", "slide-blocks")
-						}
-						value={!isMobile ? default_val.height : mobile_val.height}
-						max={100}
-						min={10}
-						step={1}
-						onChange={(value) =>
+					<BlockWidth
+						attributes={attributes}
+						isMobile={isMobile}
+						isSubmenu={isFront}
+						onWidthChange={(value) => {
 							setAttributes(
 								!isMobile
-									? { default_val: { ...default_val, height: value } }
-									: { mobile_val: { ...mobile_val, height: value } },
-							)
-						}
-						withInputField={true}
+									? { default_val: { ...default_val, width_val: value } }
+									: { mobile_val: { ...mobile_val, width_val: value } },
+							);
+						}}
+						onFreeWidthChange={(value) => {
+							setAttributes(
+								!isMobile
+									? { default_val: { ...default_val, free_width: value } }
+									: { mobile_val: { ...mobile_val, free_width: value } },
+							);
+						}}
+					/>
+
+					<BlockHeight
+						attributes={attributes}
+						isMobile={isMobile}
+						onHeightChange={(value) => {
+							setAttributes(
+								!isMobile
+									? { default_val: { ...default_val, height_val: value } }
+									: { mobile_val: { ...mobile_val, height_val: value } },
+							);
+						}}
+						onFreeHeightChange={(value) => {
+							setAttributes(
+								!isMobile
+									? { default_val: { ...default_val, free_height: value } }
+									: { mobile_val: { ...mobile_val, free_height: value } },
+							);
+						}}
 					/>
 
 					<BoxControl
@@ -1377,7 +1420,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				/>
 			</BlockControls>
 
-			<StyleComp attributes={attributes} isFront={false}>
+			<StyleComp attributes={attributes} isFront={isFront}>
 				<div {...blockProps}>
 					<div className="swiper" ref={swiperRef}>
 						<div {...innerBlocksProps}></div>

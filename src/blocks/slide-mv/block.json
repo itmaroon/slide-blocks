@@ -99,11 +99,17 @@
 				}
 			}
 		},
+		"isFront":{
+			"type":"boolean",
+			"default":false
+		},
 		"default_val": {
 			"type": "object",
 			"default": {
-				"width": 70,
-				"height": 60,
+				"width_val": "wideSize",
+				"free_width": "70vw",
+				"height_val": "fit",
+				"free_height": "60vh",
 				"lat_pos": "center",
 				"padding_content": {
 					"top": "20px",
@@ -116,8 +122,10 @@
 		"mobile_val": {
 			"type": "object",
 			"default": {
-				"width": 90,
-				"height": 90,
+				"width_val": "wideSize",
+				"free_width": "90vw",
+				"height_val": "fit",
+				"free_height": "90vh",
 				"lat_pos": "left",
 				"padding_content": {
 					"top": "20px",
