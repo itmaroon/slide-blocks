@@ -1,13 +1,20 @@
 import styled, { css } from "styled-components";
-//import { align_prm, space_prm, convertToScss } from '../cssPropertes';
-import { align_prm, space_prm, convertToScss } from "itmar-block-packages";
+import {
+	width_prm,
+	height_prm,
+	max_width_prm,
+	align_prm,
+	space_prm,
+	convertToScss,
+} from "itmar-block-packages";
 export const StyleComp = ({ attributes, children }) => {
 	return <StyledDiv attributes={{ ...attributes }}>{children}</StyledDiv>;
 };
 
 const StyledDiv = styled.div`
 	${({ attributes }) => {
-		const { default_val, mobile_val, shadow_result, is_shadow } = attributes;
+		const { isFront, default_val, mobile_val, shadow_result, is_shadow } =
+			attributes;
 
 		//スペースの設定
 		const default_content_padding_prm = space_prm(default_val.padding_content);
@@ -15,6 +22,32 @@ const StyledDiv = styled.div`
 		//ブロックの配置
 		const default_block_align = align_prm(default_val.lat_pos);
 		const mobile_block_align = align_prm(mobile_val.lat_pos);
+		//ブロック幅
+		const default_width_style = width_prm(
+			default_val.width_val,
+			default_val.free_width,
+		);
+		const mobile_width_style = width_prm(
+			mobile_val.width_val,
+			default_val.free_width,
+		);
+		const default_max_width_style = max_width_prm(
+			default_val.width_val,
+			default_val.free_width,
+		);
+		const mobile_max_width_style = max_width_prm(
+			mobile_val.width_val,
+			default_val.free_width,
+		);
+		//ブロックの高さ
+		const default_height_style = height_prm(
+			default_val.height_val,
+			default_val.free_height,
+		);
+		const mobile_height_style = height_prm(
+			mobile_val.height_val,
+			default_val.free_height,
+		);
 
 		//シャドースタイル
 		const box_shadow_style =
@@ -37,15 +70,15 @@ const StyledDiv = styled.div`
 			margin-block-start: 0;
 			overflow: hidden;
 			> div {
-				width: ${default_val.width}vw;
-				height: ${default_val.height}vh;
+				${!isFront ? default_width_style : default_max_width_style}
+				${default_height_style}
 				${box_shadow_style};
 				${default_tranceform};
 				${default_block_align};
 				padding: ${default_content_padding_prm};
 				@media (max-width: 767px) {
-					width: ${mobile_val.width}vw;
-					height: ${mobile_val.height}vh;
+					${isFront ? mobile_width_style : mobile_max_width_style}
+					${mobile_height_style}
 					padding: ${mobile_contnt_padding_prm};
 					${mobile_tranceform};
 					${mobile_block_align};

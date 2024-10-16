@@ -4,15 +4,23 @@ import { renderToString } from "react-dom/server";
 import { StyleComp } from "./StyleSlide";
 
 export default function save({ attributes }) {
-	const { swiper_id, relate_id, is_thumbnail, slideInfo, parallax_obj } =
-		attributes;
+	const {
+		swiper_id,
+		relate_id,
+		is_thumbnail,
+		isFront,
+		slideInfo,
+		parallax_obj,
+	} = attributes;
 
 	const blockProps = useBlockProps.save();
 
 	//styled-componentsのHTML化
 	const sheet = new ServerStyleSheet();
 	const html = renderToString(
-		sheet.collectStyles(<StyleComp attributes={attributes} isFront={true} />),
+		sheet.collectStyles(
+			<StyleComp attributes={attributes} isFront={isFront} />,
+		),
 	);
 	const styleTags = sheet.getStyleTags();
 	// 正規表現で styled-components のクラス名を取得

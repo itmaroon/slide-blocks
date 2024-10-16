@@ -22,6 +22,8 @@ import {
 	useDraggingMove,
 	useElementBackgroundColor,
 	useIsIframeMobile,
+	BlockWidth,
+	BlockHeight,
 } from "itmar-block-packages";
 
 import "./editor.scss";
@@ -59,8 +61,14 @@ const alignIconMap = {
 
 export default function Edit(props) {
 	const { attributes, setAttributes } = props;
-	const { default_val, mobile_val, shadow_element, is_shadow, slide_settings } =
-		attributes;
+	const {
+		isFront,
+		default_val,
+		mobile_val,
+		shadow_element,
+		is_shadow,
+		slide_settings,
+	} = attributes;
 
 	//スライドの参照
 	const slideRef = useRef(null);
@@ -302,43 +310,51 @@ export default function Edit(props) {
 					initialOpen={true}
 					className="form_design_ctrl"
 				>
-					<RangeControl
-						label={
-							!isMobile
-								? __("Width settings(desk top)", "slide-blocks")
-								: __("Width settings(mobile)", "slide-blocks")
-						}
-						value={!isMobile ? default_val.width : mobile_val.width}
-						max={100}
-						min={30}
-						step={5}
-						onChange={(value) =>
-							setAttributes(
-								!isMobile
-									? { default_val: { ...default_val, width: value } }
-									: { mobile_val: { ...mobile_val, width: value } },
-							)
-						}
-						withInputField={true}
+					<ToggleControl
+						label={__("Is Main Vew", "slide-blocks")}
+						checked={isFront}
+						onChange={(newVal) => {
+							setAttributes({ isFront: newVal });
+						}}
 					/>
-					<RangeControl
-						label={
-							!isMobile
-								? __("Height settings(desk top)", "slide-blocks")
-								: __("Height settings(mobile)", "slide-blocks")
-						}
-						value={!isMobile ? default_val.height : mobile_val.height}
-						max={100}
-						min={30}
-						step={5}
-						onChange={(value) =>
+
+					<BlockWidth
+						attributes={attributes}
+						isMobile={isMobile}
+						isSubmenu={!isFront}
+						onWidthChange={(value) => {
 							setAttributes(
 								!isMobile
-									? { default_val: { ...default_val, height: value } }
-									: { mobile_val: { ...mobile_val, height: value } },
-							)
-						}
-						withInputField={true}
+									? { default_val: { ...default_val, width_val: value } }
+									: { mobile_val: { ...mobile_val, width_val: value } },
+							);
+						}}
+						onFreeWidthChange={(value) => {
+							setAttributes(
+								!isMobile
+									? { default_val: { ...default_val, free_width: value } }
+									: { mobile_val: { ...mobile_val, free_width: value } },
+							);
+						}}
+					/>
+
+					<BlockHeight
+						attributes={attributes}
+						isMobile={isMobile}
+						onHeightChange={(value) => {
+							setAttributes(
+								!isMobile
+									? { default_val: { ...default_val, height_val: value } }
+									: { mobile_val: { ...mobile_val, height_val: value } },
+							);
+						}}
+						onFreeHeightChange={(value) => {
+							setAttributes(
+								!isMobile
+									? { default_val: { ...default_val, free_height: value } }
+									: { mobile_val: { ...mobile_val, free_height: value } },
+							);
+						}}
 					/>
 					<BoxControl
 						label={

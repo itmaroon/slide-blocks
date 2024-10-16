@@ -1,20 +1,27 @@
+.itmar_image_display .block-container {
+  display: flex;
+  flex-wrap: wrap;
+  -moz-column-gap: 5px;
+       column-gap: 5px;
+}
+.itmar_image_display .block-container figure {
+  width: 31%;
+}
+.itmar_image_display .block-container figure img {
+  width: 100%;
+}
+
 /**
  * The following styles get applied both on the front of your site
  * and in the editor.
  *
  * Replace them with your own styles or remove the file completely.
  */
-.wp-site-blocks {
+.wp-block-itmar-fade-mv #mv-slider-area {
   position: relative;
-}
-
-.wp-block-itmar-slide-mv .swiper {
-  width: 100%;
   height: 100%;
 }
-.wp-block-itmar-slide-mv .swiper-slide {
+.wp-block-itmar-fade-mv #mv-slider-area #mv-slider {
   height: 100%;
-  background-color: var(--wp--preset--color--content-back);
-  overflow: hidden;
 }
 /*# sourceMappingURL=style.css.map */

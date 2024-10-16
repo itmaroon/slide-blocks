@@ -530,6 +530,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 				swiperInstance.current.destroy(false, true);
 			}
+
 			//エフェクトでセットされた要素等を削除
 			const slides = swiperRef.current.querySelectorAll(".swiper-slide");
 			slides.forEach((slide) => {
@@ -661,6 +662,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								setAttributes({ is_thumbnail: newVal });
 							}}
 						/>
+
 						{is_thumbnail && (
 							<PanelBody
 								title={__("Active Effect", "slide-blocks")}
@@ -762,6 +764,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								/>
 							</PanelBody>
 						)}
+
 						<ToggleControl
 							label={__("Loop", "slide-blocks")}
 							checked={slideInfo.loop}

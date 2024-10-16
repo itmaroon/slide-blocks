@@ -46,7 +46,7 @@ const StyledDiv = styled.div`
 		);
 		const mobile_width_style = width_prm(
 			mobile_val.width_val,
-			default_val.free_width,
+			mobile_val.free_width,
 		);
 		const default_max_width_style = max_width_prm(
 			default_val.width_val,
@@ -54,7 +54,7 @@ const StyledDiv = styled.div`
 		);
 		const mobile_max_width_style = max_width_prm(
 			mobile_val.width_val,
-			default_val.free_width,
+			mobile_val.free_width,
 		);
 		//ブロックの高さ
 		const default_height_style = height_prm(
@@ -63,7 +63,7 @@ const StyledDiv = styled.div`
 		);
 		const mobile_height_style = height_prm(
 			mobile_val.height_val,
-			default_val.free_height,
+			mobile_val.free_height,
 		);
 		//角丸の設定
 		const slide_radius_prm = radius_prm(radius_slide);
@@ -282,7 +282,7 @@ const StyledDiv = styled.div`
 				${default_block_align};
 				padding: ${default_content_padding_prm};
 				@media (max-width: 767px) {
-					${isFront ? mobile_width_style : mobile_max_width_style}
+					${!isFront ? mobile_width_style : mobile_max_width_style}
 					${mobile_height_style}
 					padding: ${mobile_contnt_padding_prm};
 					${mobile_tranceform};

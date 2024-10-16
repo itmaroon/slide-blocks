@@ -52,7 +52,7 @@
           "opacity": 1,
           "zoom": 1.2,
           "blend": "hard-light",
-          "border": null
+          "border": {}
         },
         "navigation": {
           "disp": true,

@@ -57,6 +57,8 @@ OR…
 = 1.1.0 =
 - Fixed a bug in class name assignment to make core/image an extended block when it became an inner block.
 - A function has been added that allows only one itmar/pickup-posts block to be placed in the inner block directly below.
+- Fixed an issue where size settings did not reflect free size in mobile mode.
+- Fixed a bug that caused an error when setting the thumbnail slider due to a malfunction of the initial value setting.
 
 = 1.0.0 =
 * Release
