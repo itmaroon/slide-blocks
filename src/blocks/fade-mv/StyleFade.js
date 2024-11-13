@@ -13,8 +13,7 @@ export const StyleComp = ({ attributes, children }) => {
 
 const StyledDiv = styled.div`
 	${({ attributes }) => {
-		const { isFront, default_val, mobile_val, shadow_result, is_shadow } =
-			attributes;
+		const { default_val, mobile_val, shadow_result, is_shadow } = attributes;
 
 		//スペースの設定
 		const default_content_padding_prm = space_prm(default_val.padding_content);
@@ -69,15 +68,17 @@ const StyledDiv = styled.div`
 			position: relative;
 			margin-block-start: 0;
 			overflow: hidden;
-			> div {
-				${!isFront ? default_width_style : default_max_width_style}
+			${box_shadow_style}
+			.wp-block-itmar-fade-mv {
+				${default_width_style}
+				${default_max_width_style}
 				${default_height_style}
-				${box_shadow_style};
 				${default_tranceform};
 				${default_block_align};
 				padding: ${default_content_padding_prm};
 				@media (max-width: 767px) {
-					${isFront ? mobile_width_style : mobile_max_width_style}
+					${mobile_width_style}
+					${mobile_max_width_style}
 					${mobile_height_style}
 					padding: ${mobile_contnt_padding_prm};
 					${mobile_tranceform};

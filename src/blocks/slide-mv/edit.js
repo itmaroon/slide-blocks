@@ -146,7 +146,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		swiper_id,
 		relate_id,
 		is_thumbnail,
-		isFront,
 		default_val,
 		mobile_val,
 		radius_slide,
@@ -370,7 +369,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			coverflowEffect: {
 				rotate: 50, // (前後のスライドの回転)
 				depth: 100, // (前後のスライドの奥行)
-				stretch: isMobile ? 50 : 0, // (スライド間のスペース)
+				stretch: 0, // (スライド間のスペース)
 				modifier: 1, // (rotate・depth・stretchの値を乗算する)
 				scale: 0.9, // (前後のスライドのサイズ比率)
 				slideShadows: true, // (前後のスライド表面の影の有無)
@@ -1082,6 +1081,43 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									/>
 								</div>
 
+								<UnitControl
+									dragDirection="e"
+									onChange={(newVal) =>
+										setAttributes(
+											!isMobile
+												? {
+														slideInfo: {
+															...slideInfo,
+															navigation: {
+																...slideInfo.navigation,
+																defaultSize: newVal,
+															},
+														},
+												  }
+												: {
+														slideInfo: {
+															...slideInfo,
+															navigation: {
+																...slideInfo.navigation,
+																mobileSize: newVal,
+															},
+														},
+												  },
+										)
+									}
+									label={
+										!isMobile
+											? __("Button Size(desk top)", "block-collections")
+											: __("Button Size(mobile)", "block-collections")
+									}
+									value={
+										!isMobile
+											? slideInfo.navigation.defaultSize
+											: slideInfo.navigation.mobileSize
+									}
+								/>
+
 								<RangeControl
 									label={
 										!isMobile
@@ -1298,30 +1334,21 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					initialOpen={true}
 					className="form_design_ctrl"
 				>
-					<ToggleControl
-						label={__("Is Main Vew", "slide-blocks")}
-						checked={isFront}
-						onChange={(newVal) => {
-							setAttributes({ isFront: newVal });
-						}}
-					/>
-
 					<BlockWidth
 						attributes={attributes}
 						isMobile={isMobile}
-						isSubmenu={isFront}
-						onWidthChange={(value) => {
+						onWidthChange={(key, value) => {
 							setAttributes(
 								!isMobile
-									? { default_val: { ...default_val, width_val: value } }
-									: { mobile_val: { ...mobile_val, width_val: value } },
+									? { default_val: { ...default_val, [key]: value } }
+									: { mobile_val: { ...mobile_val, [key]: value } },
 							);
 						}}
-						onFreeWidthChange={(value) => {
+						onFreeWidthChange={(key, value) => {
 							setAttributes(
 								!isMobile
-									? { default_val: { ...default_val, free_width: value } }
-									: { mobile_val: { ...mobile_val, free_width: value } },
+									? { default_val: { ...default_val, [key]: value } }
+									: { mobile_val: { ...mobile_val, [key]: value } },
 							);
 						}}
 					/>
@@ -1423,7 +1450,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				/>
 			</BlockControls>
 
-			<StyleComp attributes={attributes} isFront={isFront}>
+			<StyleComp attributes={attributes}>
 				<div {...blockProps}>
 					<div className="swiper" ref={swiperRef}>
 						<div {...innerBlocksProps}></div>

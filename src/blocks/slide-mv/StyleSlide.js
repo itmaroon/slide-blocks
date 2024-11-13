@@ -13,16 +13,12 @@ import {
 	Arrow,
 } from "itmar-block-packages";
 
-export const StyleComp = ({ attributes, isFront, children }) => {
-	return (
-		<StyledDiv attributes={{ ...attributes }} isFront={isFront}>
-			{children}
-		</StyledDiv>
-	);
+export const StyleComp = ({ attributes, children }) => {
+	return <StyledDiv attributes={{ ...attributes }}>{children}</StyledDiv>;
 };
 
 const StyledDiv = styled.div`
-	${({ attributes, isFront }) => {
+	${({ attributes }) => {
 		const {
 			is_thumbnail,
 			default_val,
@@ -156,8 +152,14 @@ const StyledDiv = styled.div`
 			[class^="swiper-button-"] {
 				top: ${slideInfo.navigation.defaultVertPos}%;
 				color: var(--wp--preset--color--accent-1);
+				&::after {
+					font-size: ${slideInfo.navigation.defaultSize};
+				}
 				@media (max-width: 767px) {
 					top: ${slideInfo.navigation.mobileVertPos}%;
+					&::after {
+						font-size: ${slideInfo.navigation.mobileSize};
+					}
 				}
 			}
 			.swiper-button-prev {
@@ -179,8 +181,8 @@ const StyledDiv = styled.div`
 		const circleNav = css`
 			[class^="swiper-button-"] {
 				top: ${slideInfo.navigation.defaultVertPos}%;
-				width: 3em;
-				height: 3em;
+				width: ${slideInfo.navigation.defaultSize};
+				height: ${slideInfo.navigation.defaultSize};
 				border-radius: 50%;
 				background-color: ${slideInfo.navigation.bgColor ||
 				slideInfo.navigation.bgGradient};
@@ -192,6 +194,8 @@ const StyledDiv = styled.div`
 				}
 				@media (max-width: 767px) {
 					top: ${slideInfo.navigation.mobileVertPos}%;
+					width: ${slideInfo.navigation.mobileSize};
+					height: ${slideInfo.navigation.mobileSize};
 				}
 			}
 			.swiper-button-prev {
@@ -275,14 +279,16 @@ const StyledDiv = styled.div`
 			margin-block-start: 0;
 			> div {
 				position: relative;
-				${!isFront ? default_width_style : default_max_width_style}
+				${default_width_style}
+				${default_max_width_style}
 				${default_height_style}
 				${box_shadow_style};
 				${default_tranceform};
 				${default_block_align};
 				padding: ${default_content_padding_prm};
 				@media (max-width: 767px) {
-					${!isFront ? mobile_width_style : mobile_max_width_style}
+					${mobile_width_style}
+					${mobile_max_width_style}
 					${mobile_height_style}
 					padding: ${mobile_contnt_padding_prm};
 					${mobile_tranceform};

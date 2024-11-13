@@ -60,6 +60,8 @@
           "mobileVertPos": 50,
           "defaultHorizonPos": 10,
           "mobileHorizenPos": 10,
+          "defaultSize": "3em",
+          "mobileSize": "3em",
           "design": "default",
           "bgColor": "var(--wp--preset--color--content-back)",
           "bgGradient": "",
@@ -107,7 +109,9 @@
       "type": "object",
       "default": {
         "width_val": "wideSize",
+        "max_width": "100%",
         "free_width": "70vw",
+        "max_free_width": "100%",
         "height_val": "fit",
         "free_height": "60vh",
         "lat_pos": "center",
@@ -123,7 +127,9 @@
       "type": "object",
       "default": {
         "width_val": "wideSize",
+        "max_width": "100%",
         "free_width": "90vw",
+        "max_free_width": "100%",
         "height_val": "fit",
         "free_height": "90vh",
         "lat_pos": "left",

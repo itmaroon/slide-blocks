@@ -61,14 +61,8 @@ const alignIconMap = {
 
 export default function Edit(props) {
 	const { attributes, setAttributes } = props;
-	const {
-		isFront,
-		default_val,
-		mobile_val,
-		shadow_element,
-		is_shadow,
-		slide_settings,
-	} = attributes;
+	const { default_val, mobile_val, shadow_element, is_shadow, slide_settings } =
+		attributes;
 
 	//スライドの参照
 	const slideRef = useRef(null);
@@ -310,30 +304,21 @@ export default function Edit(props) {
 					initialOpen={true}
 					className="form_design_ctrl"
 				>
-					<ToggleControl
-						label={__("Is Main Vew", "slide-blocks")}
-						checked={isFront}
-						onChange={(newVal) => {
-							setAttributes({ isFront: newVal });
-						}}
-					/>
-
 					<BlockWidth
 						attributes={attributes}
 						isMobile={isMobile}
-						isSubmenu={!isFront}
-						onWidthChange={(value) => {
+						onWidthChange={(key, value) => {
 							setAttributes(
 								!isMobile
-									? { default_val: { ...default_val, width_val: value } }
-									: { mobile_val: { ...mobile_val, width_val: value } },
+									? { default_val: { ...default_val, [key]: value } }
+									: { mobile_val: { ...mobile_val, [key]: value } },
 							);
 						}}
-						onFreeWidthChange={(value) => {
+						onFreeWidthChange={(key, value) => {
 							setAttributes(
 								!isMobile
-									? { default_val: { ...default_val, free_width: value } }
-									: { mobile_val: { ...mobile_val, free_width: value } },
+									? { default_val: { ...default_val, [key]: value } }
+									: { mobile_val: { ...mobile_val, [key]: value } },
 							);
 						}}
 					/>

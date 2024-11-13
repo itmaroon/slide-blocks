@@ -149,7 +149,7 @@ jQuery(function ($) {
 				coverflowEffect: {
 					rotate: 50, // (前後のスライドの回転)
 					depth: 100, // (前後のスライドの奥行)
-					stretch: 50, // (スライド間のスペース)
+					stretch: 0, // (スライド間のスペース)
 					modifier: 1, // (rotate・depth・stretchの値を乗算する)
 					scale: 0.9, // (前後のスライドのサイズ比率)
 					slideShadows: true, // (前後のスライド表面の影の有無)

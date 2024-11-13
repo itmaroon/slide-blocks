@@ -19,17 +19,16 @@
 		}
 	},
 	"attributes": {
-		"isFront":{
-			"type":"boolean",
-			"default":false
-		},
+		
 		"default_val": {
 			"type": "object",
 			"default": {
 				"mediaID": [],
 				"media": [],
 				"width_val": "wideSize",
+				"max_width": "100%",
 				"free_width": "70vw",
+				"max_free_width": "100%",
 				"height_val": "fit",
 				"free_height": "60vh",
 				"lat_pos": "center",
@@ -52,7 +51,9 @@
 				"mediaID": [],
 				"media": [],
 				"width_val": "wideSize",
+				"max_width": "100%",
 				"free_width": "90vw",
+				"max_free_width": "100%",
 				"height_val": "fit",
 				"free_height": "90vh",
 				"lat_pos": "left",
