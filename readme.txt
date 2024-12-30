@@ -2,7 +2,7 @@
 Contributors:      Web Creator ITmaroon
 Tags:              block, swiper, vegas, slider ,carousel
 Requires at least: 6.3
-Tested up to:      6.6.2
+Tested up to:      6.7
 Stable tag:        1.1.1
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -30,8 +30,8 @@ An overview of the features is below.
 == Installation ==
 
 1. From the WP admin panel, click “Plugins” -> “Add new”.
-2. In the browser input box, type “Block Collections”.
-3. Select the “Block Collections” plugin and click “Install”.
+2. In the browser input box, type “Slide Blocks”.
+3. Select the “Slide Blocks” plugin and click “Install”.
 4. Activate the plugin.
 
 OR…
