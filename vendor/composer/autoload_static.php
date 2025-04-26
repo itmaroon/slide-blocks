@@ -9,19 +9,19 @@ class ComposerStaticInit9522ce0f47026d5b292b7a33bab6b46e
     public static $prefixLengthsPsr4 = array (
         'I' => 
         array (
-            'Itmaroon\\SlideBlocks\\' => 21,
-            'Itmar\\BlockClassPakage\\' => 23,
+            'Itmar\\BlockClassPackage\\' => 24,
+            'Itmar\\Autoloader\\' => 17,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Itmaroon\\SlideBlocks\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
-        ),
-        'Itmar\\BlockClassPakage\\' => 
+        'Itmar\\BlockClassPackage\\' => 
         array (
             0 => __DIR__ . '/..' . '/itmar/block-class-package/src',
+        ),
+        'Itmar\\Autoloader\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/itmar/loader-package/src',
         ),
     );
 

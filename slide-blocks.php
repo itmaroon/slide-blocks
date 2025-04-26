@@ -11,22 +11,23 @@
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       slide-blocks
- *
+ * Domain Path:       /languages
  * @package           itmar
  */
 
 //PHPファイルに対する直接アクセスを禁止
 if (!defined('ABSPATH')) exit;
 
-//composerによるリモートリポジトリからの読み込みを要求
-require_once __DIR__ . '/vendor/autoload.php';
+
 
 // プラグイン情報取得に必要なファイルを読み込む
 if (!function_exists('get_plugin_data')) {
 	require_once(ABSPATH . 'wp-admin/includes/plugin.php');
 }
 
-$block_entry = new \Itmar\BlockClassPakage\ItmarEntryClass();
+//composerによるリモートリポジトリからの読み込みを要求
+require_once __DIR__ . '\vendor\itmar\loader-package\src\register_autoloader.php';
+$block_entry = new \Itmar\BlockClassPackage\ItmarEntryClass();
 
 //ブロックの初期登録
 add_action('init', function () use ($block_entry) {
