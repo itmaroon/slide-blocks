@@ -4,9 +4,9 @@
  * Plugin Name:       Slide Blocks
  * Plugin URI:        https://itmaroon.net
  * Description:       This block allows you to control slide plugins and customize the slider.
- * Requires at least: 6.3
+ * Requires at least: 6.4
  * Requires PHP:      8.2.10
- * Version:           1.1.1
+ * Version:           1.2.0
  * Author:            Web Creator ITmaroon
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -26,7 +26,7 @@ if (!function_exists('get_plugin_data')) {
 }
 
 //composerによるリモートリポジトリからの読み込みを要求
-require_once __DIR__ . '\vendor\itmar\loader-package\src\register_autoloader.php';
+require_once __DIR__ . '/vendor/itmar/loader-package/src/register_autoloader.php';
 $block_entry = new \Itmar\BlockClassPackage\ItmarEntryClass();
 
 //ブロックの初期登録
