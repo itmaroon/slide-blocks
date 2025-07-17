@@ -3,7 +3,7 @@ Contributors:      Web Creator ITmaroon
 Tags:              block, swiper, vegas, slider ,carousel
 Requires at least: 6.4
 Tested up to:      6.8
-Stable tag:        1.2.0
+Stable tag:        1.2.1
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 8.1.22
@@ -54,6 +54,9 @@ OR…
 4. Swiper cover flow slide created with Slide MainView
 
 == Changelog ==
+= 1.2.1 =
+-  Change the DOM element that sets the size of slide-mv to the root element
+
 = 1.2.0 =
 - Regarding the method of loading composer components, a mechanism has been introduced that does not conflict with other plugins. Accordingly, the composer components have been updated.
 - Operation check with WordPress 6.8  

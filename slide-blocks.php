@@ -6,7 +6,7 @@
  * Description:       This block allows you to control slide plugins and customize the slider.
  * Requires at least: 6.4
  * Requires PHP:      8.2.10
- * Version:           1.2.0
+ * Version:           1.2.1
  * Author:            Web Creator ITmaroon
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html

@@ -277,27 +277,30 @@ const StyledDiv = styled.div`
 		const commonStyle = css`
 			position: relative;
 			margin-block-start: 0;
+			${default_width_style}
+			${default_max_width_style}
+			${default_height_style}
+			${default_tranceform};
+			${default_block_align};
+			@media (max-width: 767px) {
+				${mobile_width_style}
+				${mobile_max_width_style}
+				${mobile_height_style}
+				${mobile_tranceform};
+				${mobile_block_align};
+			}
 			> div {
-				position: relative;
-				${default_width_style}
-				${default_max_width_style}
-				${default_height_style}
+				width: 100%;
+				height: 100%;
 				${box_shadow_style};
-				${default_tranceform};
-				${default_block_align};
 				padding: ${default_content_padding_prm};
 				@media (max-width: 767px) {
-					${mobile_width_style}
-					${mobile_max_width_style}
-					${mobile_height_style}
 					padding: ${mobile_contnt_padding_prm};
-					${mobile_tranceform};
-					${mobile_block_align};
 				}
 				${bulletStyle}
 				${navStyle}
-        ${slideInfo.navigation.hoverAppear ? navAppear : null}
-        .swiper {
+				${slideInfo.navigation.hoverAppear ? navAppear : null}
+				.swiper {
 					border-radius: ${slide_radius_prm};
 					${slideInfo.cubeZoom ? zoom_in : null}
 				}
