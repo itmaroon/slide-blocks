@@ -83,6 +83,86 @@ jQuery(function ($) {
 			slideBlockSwiperInit($(this));
 		}
 	});
+
+	//masonry要素の処理
+	const grids = document.querySelectorAll(".itmar-masonry-grid");
+	if (!grids.length) return;
+
+	grids.forEach((gridEl) => {
+		const {
+			sourceType,
+			defaultMedia,
+			mobileMedia,
+			defaultColumns,
+			mobileColumns,
+			choiceFields,
+		} = gridEl.dataset;
+
+		// 列数を決定
+		const columns = mobile_flg
+			? parseInt(mobileColumns || defaultColumns || "1", 10)
+			: parseInt(defaultColumns || "1", 10);
+
+		const columnWidthPercent = 100 / (columns || 1);
+
+		let media = [];
+		//sourceTypeがstaticのときはここでマソンリーをレンダリング、dynamicの時はpickupのレンダリングに任せる
+		if (sourceType === "static") {
+			try {
+				media = JSON.parse(
+					mobile_flg ? mobileMedia || "[]" : defaultMedia || "[]",
+				);
+			} catch (e) {
+				console.error("Failed to parse media JSON", e);
+				media = [];
+			}
+
+			// まず既存の item/sizer をクリア
+			gridEl.innerHTML = "";
+
+			// sizer を再追加
+			const sizer = document.createElement("div");
+			sizer.className = "itmar-masonry-sizer";
+			sizer.style.width = `${columnWidthPercent}%`;
+			gridEl.appendChild(sizer);
+
+			// 画像アイテムを追加
+			media.forEach((item) => {
+				const fig = document.createElement("figure");
+				fig.className = "itmar-masonry-item";
+				fig.style.width = `${columnWidthPercent}%`;
+
+				const img = document.createElement("img");
+				img.src = item.url;
+				img.alt = item.alt || "";
+				img.style.display = "block";
+				img.style.width = "100%";
+				img.style.height = "auto";
+
+				fig.appendChild(img);
+				gridEl.appendChild(fig);
+			});
+
+			// Masonry 初期化（iframe ではないので素直に window.Masonry を使えばOK）
+			const Masonry = window.Masonry;
+			const imagesLoaded = window.imagesLoaded;
+			if (!Masonry || !imagesLoaded) {
+				console.warn("Masonry or imagesLoaded not found on front-end");
+				return;
+			}
+
+			const msnry = new Masonry(gridEl, {
+				itemSelector: ".itmar-masonry-item",
+				columnWidth: ".itmar-masonry-sizer",
+				percentPosition: true,
+			});
+
+			const imgLoad = imagesLoaded(gridEl);
+			imgLoad.on("progress", () => {
+				msnry.layout();
+			});
+		}
+	});
 });
 
 //Swiper初期化関数
@@ -319,4 +399,53 @@ function slideBlockSwiperInit($swiperElement) {
 			}
 		}
 	});
+}
+
+/**
+ * ACF/SCF の画像フィールド値から URL を取り出すユーティリティ
+ *  - { url: "..." }
+ *  - { sizes: { large: "..." } }
+ *  - 文字列 URL
+ */
+function extractImageUrlFromAcfValue(value) {
+	if (!value) return null;
+
+	if (typeof value === "string") {
+		if (/^https?:\/\//.test(value)) return value;
+		return null; // IDだけなどはここでは扱わない
+	}
+
+	if (typeof value === "object") {
+		if (value.url) return value.url;
+		if (value.sizes?.large) return value.sizes.large;
+		if (value.sizes?.full) return value.sizes.full;
+	}
+
+	return null;
+}
+
+/**
+ * 現在表示中の投稿から、アイキャッチ＋指定ACFフィールドの画像URLを取得
+ *
+ * @param {Object} options
+ * @param {string} options.restBase  - 例: "posts", "my_cpt"
+ * @param {number} options.postId
+ * @param {string[]} options.acfImageFields - 例: ["main_image", "gallery"]
+ * @param {boolean} options.includeFeatured - アイキャッチを含めるか
+ *
+ * @returns {Promise<Array<{ url: string, type: string, field: string }>>}
+ */
+async function fetchPostImageUrls({
+	restBase,
+	postId,
+	acfImageFields = [],
+	includeFeatured = true,
+}) {
+	const endpoint = `/wp-json/wp/v2/${restBase}/${postId}?_embed&acf_format=standard&_fields=featured_media,_embedded,acf`;
+
+	const res = await fetch(endpoint);
+	if (!res.ok) {
+		console.error("Failed to fetch post data", res.status, res.statusText);
+		return [];
+	}
 }

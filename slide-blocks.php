@@ -54,7 +54,9 @@ function itmar_slide_add_enqueue()
 		wp_enqueue_script(
 			'itmar_jquery_easing',
 			plugins_url('assets/jquery.easing.min.js', __FILE__),
-			array('jquery'),
+			array(
+				'jquery'
+			),
 			'1.0.0',
 			array('in_footer'  => true)
 		);
@@ -88,17 +90,24 @@ function itmar_slide_add_enqueue()
 	if (!wp_style_is('itmar_swiper_css', 'enqueued')) {
 		wp_enqueue_style('itmar_swiper_css', plugins_url('assets/swiper-bundle.min.css', __FILE__), array(), "1.0.0");
 	}
-
-	if (!is_admin()) {
-		//独自jsのエンキュー
-		$script_path = plugin_dir_path(__FILE__) . 'assets/slideBlocks.js';
-		wp_enqueue_script(
-			'itmar-slide-handle',
-			plugins_url('/assets/slideBlocks.js', __FILE__),
-			array('jquery', 'wp-i18n'),
-			filemtime($script_path),
-			true
-		);
-	}
+	// Masonry / imagesloaded は WordPress コアスクリプト
+	wp_enqueue_script('masonry');
+	wp_enqueue_script('imagesloaded');
 }
 add_action('enqueue_block_assets', 'itmar_slide_add_enqueue');
+
+// フロント用：テーマ側の表示時だけ
+add_action('wp_enqueue_scripts', function () {
+	$script_path = plugin_dir_path(__FILE__) . 'assets/slideBlocks.js';
+	// Masonry / imagesloaded は WordPress コアスクリプト
+	wp_enqueue_script('masonry');
+	wp_enqueue_script('imagesloaded');
+
+	wp_enqueue_script(
+		'itmar-slide-blocks',
+		plugins_url('assets/slideBlocks.js', __FILE__),
+		array('masonry', 'imagesloaded'),
+		filemtime($script_path),
+		true
+	);
+});
