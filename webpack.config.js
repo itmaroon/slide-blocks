@@ -4,8 +4,19 @@ const defaultConfig = require("@wordpress/scripts/config/webpack.config");
 
 const mode = "production"; // この行でproductionモードを指定
 
+//フロントエンドモジュールのトランスパイル
+const path = require("path");
+const newEntryConfig = async () => {
+	const originalEntry = await defaultConfig.entry();
+
+	return {
+		...originalEntry,
+		slideBlocks: path.resolve(__dirname, "./assets/slideBlocks.js"),
+	};
+};
+
 module.exports = {
 	...defaultConfig,
 	mode: mode,
-	
+	entry: newEntryConfig,
 };

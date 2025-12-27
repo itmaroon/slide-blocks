@@ -1,552 +1,495 @@
-# Copyright (C) 2024 Web Creator ITmaroon
+# Copyright (C) 2025 Web Creator ITmaroon
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Slide Blocks 1.1.0\n"
+"Project-Id-Version: Slide Blocks 1.2.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/slide-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-16T08:17:03+02:00\n"
+"POT-Creation-Date: 2025-12-27T03:05:29+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.10.0\n"
+"X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: slide-blocks\n"
 
 #. Plugin Name of the plugin
-#: C:\Users\itmaroon\Local Sites\block-test\app\public\wp-content\plugins\slide-blocks\slide-blocks.php
+#: slide-blocks.php
 msgid "Slide Blocks"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: C:\Users\itmaroon\Local Sites\block-test\app\public\wp-content\plugins\slide-blocks\slide-blocks.php
+#: slide-blocks.php
 msgid "https://itmaroon.net"
 msgstr ""
 
 #. Description of the plugin
-#: C:\Users\itmaroon\Local Sites\block-test\app\public\wp-content\plugins\slide-blocks\slide-blocks.php
+#: slide-blocks.php
 msgid "This block allows you to control slide plugins and customize the slider."
 msgstr ""
 
 #. Author of the plugin
-#: C:\Users\itmaroon\Local Sites\block-test\app\public\wp-content\plugins\slide-blocks\slide-blocks.php
+#: slide-blocks.php
 msgid "Web Creator ITmaroon"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:314
+#: src/blocks/slide-mv/edit.js:313
 msgid "A block with the same swiper ID exists. Please change your ID."
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/edit.js:205
-#: src/blocks/slide-mv/edit.js:637
+#: build/blocks/fade-mv/index.js:50
+#: src/blocks/fade-mv/edit.js:199
+#: src/blocks/slide-mv/edit.js:636
 msgid "Slide Settings"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:642
+#: src/blocks/slide-mv/edit.js:641
 msgid "Global Setting"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:646
+#: src/blocks/slide-mv/edit.js:645
 msgid "Slide ID"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:651
+#: src/blocks/slide-mv/edit.js:650
 msgid "ID of the associated slider"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:659
+#: src/blocks/slide-mv/edit.js:658
 msgid "Make it a thumbnail slider"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:668
+#: src/blocks/slide-mv/edit.js:667
 msgid "Active Effect"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:673
+#: src/blocks/slide-mv/edit.js:672
 msgid "Blur(px)"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:692
+#: src/blocks/slide-mv/edit.js:691
 msgid "Opacity"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:711
+#: src/blocks/slide-mv/edit.js:710
 msgid "Zoom"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:729
+#: src/blocks/slide-mv/edit.js:728
 msgid "Image Blend Mode"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:749
+#: src/blocks/slide-mv/edit.js:748
 msgid "Borders"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:769
+#: src/blocks/slide-mv/edit.js:768
 msgid "Loop"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:777
+#: src/blocks/slide-mv/edit.js:776
 msgid "Is AutoPlay"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:788
+#: src/blocks/slide-mv/edit.js:787
 msgid "Autoplay"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:798
+#: src/blocks/slide-mv/edit.js:797
 msgid "It will automatically slide at the interval you entered. If set to 0, it will slide smoothly non-stop."
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:807
+#: src/blocks/slide-mv/edit.js:806
 msgid "Effect Type"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:810
-#: src/blocks/slide-mv/edit.js:976
+#: src/blocks/slide-mv/edit.js:809
+#: src/blocks/slide-mv/edit.js:975
 msgid "None"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:812
+#: src/blocks/slide-mv/edit.js:811
 msgid "Slide Single"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:816
+#: src/blocks/slide-mv/edit.js:815
 msgid "Fade Single"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:820
+#: src/blocks/slide-mv/edit.js:819
 msgid "Coverflow 1"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:824
+#: src/blocks/slide-mv/edit.js:823
 msgid "Coverflow 2"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:827
+#: src/blocks/slide-mv/edit.js:826
 msgid "Cube"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:828
+#: src/blocks/slide-mv/edit.js:827
 msgid "Flip"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:829
+#: src/blocks/slide-mv/edit.js:828
 msgid "Cards"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:844
+#: src/blocks/slide-mv/edit.js:843
 msgid "SlidesPerView(mobile)"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:843
+#: src/blocks/slide-mv/edit.js:842
 msgid "SlidesPerView(desk top)"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:869
+#: src/blocks/slide-mv/edit.js:868
 msgid "Slide Space Between(mobile)"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:868
+#: src/blocks/slide-mv/edit.js:867
 msgid "Slide Space Between(desk top)"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:889
+#: src/blocks/slide-mv/edit.js:888
 msgid "Active Slide Center"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:903
+#: src/blocks/slide-mv/edit.js:902
 msgid "Slide Direction"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:907
+#: src/blocks/slide-mv/edit.js:906
 msgid "Horizontal"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:911
+#: src/blocks/slide-mv/edit.js:910
 msgid "Vertical"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:923
+#: src/blocks/slide-mv/edit.js:922
 msgid "Parallax Slide"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:948
+#: src/blocks/slide-mv/edit.js:947
 msgid "Parallax Area(%)"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:973
+#: src/blocks/slide-mv/edit.js:972
 msgid "Fade Motion"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:977
-#: src/blocks/slide-mv/edit.js:1031
+#: src/blocks/slide-mv/edit.js:976
+#: src/blocks/slide-mv/edit.js:1030
 msgid "Zoom Up"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:992
+#: src/blocks/slide-mv/edit.js:991
 msgid "Zoom Scale"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1015
+#: src/blocks/slide-mv/edit.js:1014
 msgid "Speed"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1043
+#: src/blocks/slide-mv/edit.js:1042
 msgid "Navigation Setting"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1047
-#: src/blocks/slide-mv/edit.js:1243
-#: src/blocks/slide-mv/edit.js:1280
+#: src/blocks/slide-mv/edit.js:1046
+#: src/blocks/slide-mv/edit.js:1279
+#: src/blocks/slide-mv/edit.js:1316
 msgid "Display"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1062
+#: src/blocks/slide-mv/edit.js:1061
 msgid "Display Design"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1066
-#: src/blocks/slide-mv/edit.js:1260
+#: src/blocks/slide-mv/edit.js:1065
+#: src/blocks/slide-mv/edit.js:1296
 msgid "Default"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1069
+#: src/blocks/slide-mv/edit.js:1068
 msgid "Circle"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1089
+#: src/blocks/slide-mv/edit.js:1125
 msgid "Horizen position(mobile)"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1088
+#: src/blocks/slide-mv/edit.js:1124
 msgid "Horizen position(desk top)"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1128
+#: src/blocks/slide-mv/edit.js:1164
 msgid "Vertical position(mobile)"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1127
+#: src/blocks/slide-mv/edit.js:1163
 msgid "Vertical position(desk top)"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1164
+#: src/blocks/slide-mv/edit.js:1200
 msgid "Hover Appear"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1184
+#: src/blocks/slide-mv/edit.js:1220
 msgid "Background Color Setting"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1189
+#: src/blocks/slide-mv/edit.js:1225
 msgid "Choose Background color"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/edit.js:385
-#: src/blocks/slide-mv/edit.js:1201
-#: src/blocks/slide-mv/edit.js:1384
+#: build/blocks/fade-mv/index.js:50
+#: build/blocks/masonry-mv/index.js:33
+#: src/blocks/fade-mv/edit.js:370
+#: src/blocks/masonry-mv/edit.js:459
+#: src/blocks/masonry-mv/edit.js:505
+#: src/blocks/slide-mv/edit.js:1237
+#: src/blocks/slide-mv/edit.js:1411
 msgid "Is Shadow"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1239
+#: src/blocks/slide-mv/edit.js:1275
 msgid "Pagenation Setting"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1257
+#: src/blocks/slide-mv/edit.js:1293
 msgid "Design type"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1261
+#: src/blocks/slide-mv/edit.js:1297
 msgid "Bar"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1276
+#: src/blocks/slide-mv/edit.js:1312
 msgid "ScrollBar Setting"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/edit.js:309
-#: src/blocks/slide-mv/edit.js:1297
+#: build/blocks/fade-mv/index.js:50
+#: src/blocks/fade-mv/edit.js:303
+#: src/blocks/slide-mv/edit.js:1333
 msgid "Content Style"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/edit.js:314
-#: src/blocks/slide-mv/edit.js:1302
-msgid "Is Main Vew"
-msgstr ""
-
-#: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/edit.js:363
-#: src/blocks/slide-mv/edit.js:1352
+#: build/blocks/fade-mv/index.js:50
+#: build/blocks/masonry-mv/index.js:33
+#: src/blocks/fade-mv/edit.js:348
+#: src/blocks/masonry-mv/edit.js:484
+#: src/blocks/slide-mv/edit.js:1379
 msgid "Padding settings(mobile)"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/edit.js:362
-#: src/blocks/slide-mv/edit.js:1351
+#: build/blocks/fade-mv/index.js:50
+#: build/blocks/masonry-mv/index.js:33
+#: src/blocks/fade-mv/edit.js:347
+#: src/blocks/masonry-mv/edit.js:483
+#: src/blocks/slide-mv/edit.js:1378
 msgid "Padding settings(desk top)"
 msgstr ""
 
 #: build/15.js:1
-#: build/blocks/slide-mv/index.js
-#: build/blocks/slide-mv/index.js
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/edit.js:441
-#: src/blocks/slide-mv/edit.js:1404
+#: build/blocks/fade-mv/index.js:50
+#: src/blocks/fade-mv/edit.js:426
+#: src/blocks/slide-mv/edit.js:1431
 msgid "Lateral Position"
 msgstr ""
 
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/index.js:15
-msgid "This is a block that changes the main view while fading in and out."
-msgstr ""
-
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/edit.js:173
-msgid "Selected Images(mobile)"
-msgstr ""
-
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/edit.js:172
-msgid "Selected Images(desk top)"
-msgstr ""
-
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/edit.js:211
-msgid "Transition"
-msgstr ""
-
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/edit.js:238
-msgid "Transition Duration"
-msgstr ""
-
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/edit.js:256
-msgid "Animation"
-msgstr ""
-
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/edit.js:280
-msgid "Animation Duration"
-msgstr ""
-
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/edit.js:297
-msgid "Is Timer Display"
-msgstr ""
-
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/edit.js:405
-msgid "Position moveable(mobile)"
-msgstr ""
-
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/edit.js:404
-msgid "Position moveable(desk top)"
-msgstr ""
-
-#: build/blocks/fade-mv/index.js:24
-#: src/blocks/fade-mv/edit.js:410
-msgid "make it moveable"
-msgstr ""
-
-#: build/blocks/fade-mv/index.js:37
-#: build/blocks/slide-mv/index.js:259
+#: build/blocks/fade-mv/index.js:14
+#: build/blocks/masonry-mv/index.js:46
+#: build/blocks/slide-mv/index.js:272
+#: build/slideBlocks.js:14
 msgid "Image Upload"
 msgstr ""
 
-#: build/blocks/fade-mv/index.js:37
-#: build/blocks/slide-mv/index.js:259
+#: build/blocks/fade-mv/index.js:14
+#: build/blocks/masonry-mv/index.js:46
+#: build/blocks/slide-mv/index.js:272
+#: build/slideBlocks.js:14
 msgid "Delete All"
 msgstr ""
 
-#: build/blocks/slide-mv/index.js:246
+#: build/blocks/fade-mv/index.js:50
+#: build/blocks/masonry-mv/index.js:33
+#: src/blocks/fade-mv/index.js:15
+#: src/blocks/masonry-mv/index.js:13
+msgid "This is a block that changes the main view while fading in and out."
+msgstr ""
+
+#: build/blocks/fade-mv/index.js:50
+#: build/blocks/masonry-mv/index.js:33
+#: src/blocks/fade-mv/edit.js:167
+#: src/blocks/masonry-mv/edit.js:332
+msgid "Selected Images(mobile)"
+msgstr ""
+
+#: build/blocks/fade-mv/index.js:50
+#: build/blocks/masonry-mv/index.js:33
+#: src/blocks/fade-mv/edit.js:166
+#: src/blocks/masonry-mv/edit.js:331
+msgid "Selected Images(desk top)"
+msgstr ""
+
+#: build/blocks/fade-mv/index.js:50
+#: src/blocks/fade-mv/edit.js:205
+msgid "Transition"
+msgstr ""
+
+#: build/blocks/fade-mv/index.js:50
+#: src/blocks/fade-mv/edit.js:232
+msgid "Transition Duration"
+msgstr ""
+
+#: build/blocks/fade-mv/index.js:50
+#: src/blocks/fade-mv/edit.js:250
+msgid "Animation"
+msgstr ""
+
+#: build/blocks/fade-mv/index.js:50
+#: src/blocks/fade-mv/edit.js:274
+msgid "Animation Duration"
+msgstr ""
+
+#: build/blocks/fade-mv/index.js:50
+#: src/blocks/fade-mv/edit.js:291
+msgid "Is Timer Display"
+msgstr ""
+
+#: build/blocks/fade-mv/index.js:50
+#: src/blocks/fade-mv/edit.js:390
+msgid "Position moveable(mobile)"
+msgstr ""
+
+#: build/blocks/fade-mv/index.js:50
+#: src/blocks/fade-mv/edit.js:389
+msgid "Position moveable(desk top)"
+msgstr ""
+
+#: build/blocks/fade-mv/index.js:50
+#: src/blocks/fade-mv/edit.js:395
+msgid "make it moveable"
+msgstr ""
+
+#: build/blocks/masonry-mv/index.js:33
+#: src/blocks/masonry-mv/edit.js:302
+msgid "Image Source Select"
+msgstr ""
+
+#: build/blocks/masonry-mv/index.js:33
+#: src/blocks/masonry-mv/edit.js:309
+msgid "Sorce Type"
+msgstr ""
+
+#: build/blocks/masonry-mv/index.js:33
+#: src/blocks/masonry-mv/edit.js:312
+msgid "Static"
+msgstr ""
+
+#: build/blocks/masonry-mv/index.js:33
+#: src/blocks/masonry-mv/edit.js:313
+msgid "Dynamic"
+msgstr ""
+
+#: build/blocks/masonry-mv/index.js:33
+#: src/blocks/masonry-mv/edit.js:370
+msgid "Field Source Select"
+msgstr ""
+
+#: build/blocks/masonry-mv/index.js:33
+#: src/blocks/masonry-mv/edit.js:389
+msgid "Masonry Option"
+msgstr ""
+
+#: build/blocks/masonry-mv/index.js:33
+#: src/blocks/masonry-mv/edit.js:398
+msgid "Columns(mobile)"
+msgstr ""
+
+#: build/blocks/masonry-mv/index.js:33
+#: src/blocks/masonry-mv/edit.js:397
+msgid "Columns(desk top)"
+msgstr ""
+
+#: build/blocks/masonry-mv/index.js:33
+#: src/blocks/masonry-mv/edit.js:416
+msgid "Whole Block Style"
+msgstr ""
+
+#: build/blocks/masonry-mv/index.js:33
+#: src/blocks/masonry-mv/edit.js:476
+msgid "Individual Image Styles"
+msgstr ""
+
+#: build/blocks/masonry-mv/index.js:33
+#: src/blocks/masonry-mv/edit.js:551
+msgid "Please select an image from 'Selected Images' on the right."
+msgstr ""
+
+#: build/blocks/slide-mv/index.js:283
 #: src/blocks/slide-mv/index.js:21
 msgid "This is a block that switches the main view by sliding."
 msgstr ""
@@ -555,6 +498,12 @@ msgstr ""
 #: src/blocks/fade-mv/block.json
 msgctxt "block title"
 msgid "Fade MainVeiw"
+msgstr ""
+
+#: build/blocks/masonry-mv/block.json
+#: src/blocks/masonry-mv/block.json
+msgctxt "block title"
+msgid "Masonry MainVeiw"
 msgstr ""
 
 #: build/blocks/slide-mv/block.json

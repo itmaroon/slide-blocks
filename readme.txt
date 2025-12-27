@@ -3,7 +3,7 @@ Contributors:      Web Creator ITmaroon
 Tags:              block, swiper, vegas, slider ,carousel
 Requires at least: 6.4
 Tested up to:      6.8
-Stable tag:        1.2.1
+Stable tag:        1.3.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 8.1.22
@@ -52,8 +52,14 @@ OR…
 2. A Swiper thumbnail-linked slide created with Slide MainView
 3. A cube-shaped slide by Swiper created with Slide MainView
 4. Swiper cover flow slide created with Slide MainView
+5. Static image settings for Masonry View
+6. Dynamic image settings for Masonry View
+7. Enlarged image of Masonry View
 
 == Changelog ==
+= 1.3.0 =
+-  A new block has been added, the Masonry block, which has the function of placing images in a Masonry block.
+
 = 1.2.1 =
 -  Change the DOM element that sets the size of slide-mv to the root element
 

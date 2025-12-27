@@ -4,379 +4,403 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Slide Blocks 0.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/slide-blocks\n"
-"POT-Creation-Date: 2024-10-16T08:17:03+02:00\n"
-"PO-Revision-Date: 2024-11-18 19:45+0900\n"
+"POT-Creation-Date: 2025-12-27T03:05:29+01:00\n"
+"PO-Revision-Date: 2025-12-27 11:07+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.8\n"
 "X-Domain: slide-blocks\n"
 
 #. Plugin Name of the plugin
-#: C:\Users\itmaroon\Local
-#: Sites\block-test\app\public\wp-content\plugins\slide-blocks\slide-blocks.php
+#: slide-blocks.php
 msgid "Slide Blocks"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: C:\Users\itmaroon\Local
-#: Sites\block-test\app\public\wp-content\plugins\slide-blocks\slide-blocks.php
+#: slide-blocks.php
 msgid "https://itmaroon.net"
 msgstr ""
 
 #. Description of the plugin
-#: C:\Users\itmaroon\Local
-#: Sites\block-test\app\public\wp-content\plugins\slide-blocks\slide-blocks.php
+#: slide-blocks.php
 msgid ""
 "This block allows you to control slide plugins and customize the slider."
 msgstr ""
-"スライド プラグインを制御し、スライダーをカスタマイズするためのブロックです。"
+"スライド プラグインを制御し、スライダーをカスタマイズするためのブロックで"
+"す。"
 
 #. Author of the plugin
-#: C:\Users\itmaroon\Local
-#: Sites\block-test\app\public\wp-content\plugins\slide-blocks\slide-blocks.php
+#: slide-blocks.php
 msgid "Web Creator ITmaroon"
 msgstr "WebクリエイターITmaroon"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:314
+#: build/15.js:1 src/blocks/slide-mv/edit.js:313
 msgid "A block with the same swiper ID exists. Please change your ID."
-msgstr "同じスワイパーIDを持つブロックが存在します。 IDを変更してください。"
+msgstr ""
+"同じスワイパーIDを持つブロックが存在します。 IDを変更してください。"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/edit.js:205
-#: src/blocks/slide-mv/edit.js:637
+#: build/15.js:1 build/blocks/fade-mv/index.js:50
+#: src/blocks/fade-mv/edit.js:199 src/blocks/slide-mv/edit.js:636
 msgid "Slide Settings"
 msgstr "スライド設定"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:642
+#: build/15.js:1 src/blocks/slide-mv/edit.js:641
 msgid "Global Setting"
 msgstr "全体設定"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:646
+#: build/15.js:1 src/blocks/slide-mv/edit.js:645
 msgid "Slide ID"
 msgstr "スライドID"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:651
+#: build/15.js:1 src/blocks/slide-mv/edit.js:650
 msgid "ID of the associated slider"
 msgstr "関連付けられたスライダーのID"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:659
+#: build/15.js:1 src/blocks/slide-mv/edit.js:658
 msgid "Make it a thumbnail slider"
 msgstr "サムネイルスライダーにする"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:668
+#: build/15.js:1 src/blocks/slide-mv/edit.js:667
 msgid "Active Effect"
 msgstr "有効化されたエフェクト"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:673
+#: build/15.js:1 src/blocks/slide-mv/edit.js:672
 msgid "Blur(px)"
 msgstr "ブラー(px)"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:692
+#: build/15.js:1 src/blocks/slide-mv/edit.js:691
 msgid "Opacity"
 msgstr "透明度"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:711
+#: build/15.js:1 src/blocks/slide-mv/edit.js:710
 msgid "Zoom"
 msgstr "ズーム"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:729
+#: build/15.js:1 src/blocks/slide-mv/edit.js:728
 msgid "Image Blend Mode"
 msgstr "画像のブレンドモード"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:749
+#: build/15.js:1 src/blocks/slide-mv/edit.js:748
 msgid "Borders"
 msgstr "ボーダー"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:769
+#: build/15.js:1 src/blocks/slide-mv/edit.js:768
 msgid "Loop"
 msgstr "ループさせる"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:777
+#: build/15.js:1 src/blocks/slide-mv/edit.js:776
 msgid "Is AutoPlay"
 msgstr "自動再生にする"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:788
+#: build/15.js:1 src/blocks/slide-mv/edit.js:787
 msgid "Autoplay"
 msgstr "自動再生"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:798
+#: build/15.js:1 src/blocks/slide-mv/edit.js:797
 msgid ""
 "It will automatically slide at the interval you entered. If set to 0, it "
 "will slide smoothly non-stop."
 msgstr ""
-"入力した間隔で自動でスライドします。 0に設定するとノンストップでスムーズにス"
-"ライドします。"
+"入力した間隔で自動でスライドします。 0に設定するとノンストップでスムーズ"
+"にスライドします。"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:807
+#: build/15.js:1 src/blocks/slide-mv/edit.js:806
 msgid "Effect Type"
 msgstr "エフェクトタイプ"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:810
-#: src/blocks/slide-mv/edit.js:976
+#: build/15.js:1 src/blocks/slide-mv/edit.js:809
+#: src/blocks/slide-mv/edit.js:975
 msgid "None"
 msgstr "なし"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:812
+#: build/15.js:1 src/blocks/slide-mv/edit.js:811
 msgid "Slide Single"
 msgstr "シングルスライド"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:816
+#: build/15.js:1 src/blocks/slide-mv/edit.js:815
 msgid "Fade Single"
 msgstr "シングルフェード"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:820
+#: build/15.js:1 src/blocks/slide-mv/edit.js:819
 msgid "Coverflow 1"
 msgstr "カバーフロー１"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:824
+#: build/15.js:1 src/blocks/slide-mv/edit.js:823
 msgid "Coverflow 2"
 msgstr "カバーフロー２"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:827
+#: build/15.js:1 src/blocks/slide-mv/edit.js:826
 msgid "Cube"
 msgstr "キューブ"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:828
+#: build/15.js:1 src/blocks/slide-mv/edit.js:827
 msgid "Flip"
 msgstr "フリップ"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:829
+#: build/15.js:1 src/blocks/slide-mv/edit.js:828
 msgid "Cards"
 msgstr "カード"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:844
+#: build/15.js:1 src/blocks/slide-mv/edit.js:843
 msgid "SlidesPerView(mobile)"
 msgstr "スライドの枚数（モバイル）"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:843
+#: build/15.js:1 src/blocks/slide-mv/edit.js:842
 msgid "SlidesPerView(desk top)"
 msgstr "スライドの枚数（デスクトップ）"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:869
+#: build/15.js:1 src/blocks/slide-mv/edit.js:868
 msgid "Slide Space Between(mobile)"
 msgstr "スライドの間隔（モバイル）"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:868
+#: build/15.js:1 src/blocks/slide-mv/edit.js:867
 msgid "Slide Space Between(desk top)"
 msgstr "スライドの間隔（デスクトップ）"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:889
+#: build/15.js:1 src/blocks/slide-mv/edit.js:888
 msgid "Active Slide Center"
 msgstr "現在のスライドを中央に"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:903
+#: build/15.js:1 src/blocks/slide-mv/edit.js:902
 msgid "Slide Direction"
 msgstr "スライドの方向"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:907
+#: build/15.js:1 src/blocks/slide-mv/edit.js:906
 msgid "Horizontal"
 msgstr "横方向"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:911
+#: build/15.js:1 src/blocks/slide-mv/edit.js:910
 msgid "Vertical"
 msgstr "縦方向"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:923
+#: build/15.js:1 src/blocks/slide-mv/edit.js:922
 msgid "Parallax Slide"
 msgstr "視差効果スライド"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:948
+#: build/15.js:1 src/blocks/slide-mv/edit.js:947
 msgid "Parallax Area(%)"
 msgstr "視差の範囲(%)"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:973
+#: build/15.js:1 src/blocks/slide-mv/edit.js:972
 msgid "Fade Motion"
 msgstr "フェード時の動作"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:977
-#: src/blocks/slide-mv/edit.js:1031
+#: build/15.js:1 src/blocks/slide-mv/edit.js:976
+#: src/blocks/slide-mv/edit.js:1030
 msgid "Zoom Up"
 msgstr "ズームアップ"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js src/blocks/slide-mv/edit.js:992
+#: build/15.js:1 src/blocks/slide-mv/edit.js:991
 msgid "Zoom Scale"
 msgstr "ズームの大きさ"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1015
+#: build/15.js:1 src/blocks/slide-mv/edit.js:1014
 msgid "Speed"
 msgstr "速度"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1043
+#: build/15.js:1 src/blocks/slide-mv/edit.js:1042
 msgid "Navigation Setting"
 msgstr "ナビゲーション設定"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1047 src/blocks/slide-mv/edit.js:1243
-#: src/blocks/slide-mv/edit.js:1280
+#: build/15.js:1 src/blocks/slide-mv/edit.js:1046
+#: src/blocks/slide-mv/edit.js:1279 src/blocks/slide-mv/edit.js:1316
 msgid "Display"
 msgstr "表示"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1062
+#: build/15.js:1 src/blocks/slide-mv/edit.js:1061
 msgid "Display Design"
 msgstr "表示デザイン"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1066 src/blocks/slide-mv/edit.js:1260
+#: build/15.js:1 src/blocks/slide-mv/edit.js:1065
+#: src/blocks/slide-mv/edit.js:1296
 msgid "Default"
 msgstr "デフォルト"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1069
+#: build/15.js:1 src/blocks/slide-mv/edit.js:1068
 msgid "Circle"
 msgstr "円形"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1089
+#: build/15.js:1 src/blocks/slide-mv/edit.js:1125
 msgid "Horizen position(mobile)"
 msgstr "水平位置（モバイル）"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1088
+#: build/15.js:1 src/blocks/slide-mv/edit.js:1124
 msgid "Horizen position(desk top)"
 msgstr "水平位置（デスクトップ）"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1128
+#: build/15.js:1 src/blocks/slide-mv/edit.js:1164
 msgid "Vertical position(mobile)"
 msgstr "垂直位置（モバイル）"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1127
+#: build/15.js:1 src/blocks/slide-mv/edit.js:1163
 msgid "Vertical position(desk top)"
 msgstr "垂直位置（デスクトップ）"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1164
+#: build/15.js:1 src/blocks/slide-mv/edit.js:1200
 msgid "Hover Appear"
 msgstr "ホバーで表示"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1184
+#: build/15.js:1 src/blocks/slide-mv/edit.js:1220
 msgid "Background Color Setting"
 msgstr "背景色設定"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1189
+#: build/15.js:1 src/blocks/slide-mv/edit.js:1225
 msgid "Choose Background color"
 msgstr "背景色を選択"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/edit.js:385
-#: src/blocks/slide-mv/edit.js:1201 src/blocks/slide-mv/edit.js:1384
+#: build/15.js:1 build/blocks/fade-mv/index.js:50
+#: build/blocks/masonry-mv/index.js:33 src/blocks/fade-mv/edit.js:370
+#: src/blocks/masonry-mv/edit.js:459 src/blocks/masonry-mv/edit.js:505
+#: src/blocks/slide-mv/edit.js:1237 src/blocks/slide-mv/edit.js:1411
 msgid "Is Shadow"
 msgstr "シャドーを付ける"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1239
+#: build/15.js:1 src/blocks/slide-mv/edit.js:1275
 msgid "Pagenation Setting"
 msgstr "ページネーション設定"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1257
+#: build/15.js:1 src/blocks/slide-mv/edit.js:1293
 msgid "Design type"
 msgstr "デザインタイプ"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1261
+#: build/15.js:1 src/blocks/slide-mv/edit.js:1297
 msgid "Bar"
 msgstr "バー"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: src/blocks/slide-mv/edit.js:1276
+#: build/15.js:1 src/blocks/slide-mv/edit.js:1312
 msgid "ScrollBar Setting"
 msgstr "スクロールバー設定"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/edit.js:309
-#: src/blocks/slide-mv/edit.js:1297
+#: build/15.js:1 build/blocks/fade-mv/index.js:50
+#: src/blocks/fade-mv/edit.js:303 src/blocks/slide-mv/edit.js:1333
 msgid "Content Style"
 msgstr "内容のスタイル"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/edit.js:314
-#: src/blocks/slide-mv/edit.js:1302
-msgid "Is Main Vew"
-msgstr "メインビュー"
-
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/edit.js:363
-#: src/blocks/slide-mv/edit.js:1352
+#: build/15.js:1 build/blocks/fade-mv/index.js:50
+#: build/blocks/masonry-mv/index.js:33 src/blocks/fade-mv/edit.js:348
+#: src/blocks/masonry-mv/edit.js:484 src/blocks/slide-mv/edit.js:1379
 msgid "Padding settings(mobile)"
 msgstr "パディング設定（モバイル）"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/edit.js:362
-#: src/blocks/slide-mv/edit.js:1351
+#: build/15.js:1 build/blocks/fade-mv/index.js:50
+#: build/blocks/masonry-mv/index.js:33 src/blocks/fade-mv/edit.js:347
+#: src/blocks/masonry-mv/edit.js:483 src/blocks/slide-mv/edit.js:1378
 msgid "Padding settings(desk top)"
 msgstr "パディング設定（デスクトップ）"
 
-#: build/15.js:1 build/blocks/slide-mv/index.js
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/edit.js:441
-#: src/blocks/slide-mv/edit.js:1404
+#: build/15.js:1 build/blocks/fade-mv/index.js:50
+#: src/blocks/fade-mv/edit.js:426 src/blocks/slide-mv/edit.js:1431
 msgid "Lateral Position"
 msgstr "横幅位置"
 
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/index.js:15
-msgid "This is a block that changes the main view while fading in and out."
-msgstr ""
-"メインビューをフェードイン、フェードアウトしながら変化させるブロックです。"
-
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/edit.js:173
-msgid "Selected Images(mobile)"
-msgstr "画像選択（モバイル）"
-
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/edit.js:172
-msgid "Selected Images(desk top)"
-msgstr "画像選択（デスクトップ）"
-
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/edit.js:211
-msgid "Transition"
-msgstr "トランジション"
-
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/edit.js:238
-msgid "Transition Duration"
-msgstr "トランジションの長さ"
-
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/edit.js:256
-msgid "Animation"
-msgstr "アニメーション"
-
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/edit.js:280
-msgid "Animation Duration"
-msgstr "アニメーションの長さ"
-
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/edit.js:297
-msgid "Is Timer Display"
-msgstr "タイマー表示"
-
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/edit.js:405
-msgid "Position moveable(mobile)"
-msgstr "可動設定（モバイル）"
-
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/edit.js:404
-msgid "Position moveable(desk top)"
-msgstr "可動設定（デスクトップ）"
-
-#: build/blocks/fade-mv/index.js:24 src/blocks/fade-mv/edit.js:410
-msgid "make it moveable"
-msgstr "可動にする"
-
-#: build/blocks/fade-mv/index.js:37 build/blocks/slide-mv/index.js:259
+#: build/blocks/fade-mv/index.js:14 build/blocks/masonry-mv/index.js:46
+#: build/blocks/slide-mv/index.js:272 build/slideBlocks.js:14
 msgid "Image Upload"
 msgstr "画像のアップロード"
 
-#: build/blocks/fade-mv/index.js:37 build/blocks/slide-mv/index.js:259
+#: build/blocks/fade-mv/index.js:14 build/blocks/masonry-mv/index.js:46
+#: build/blocks/slide-mv/index.js:272 build/slideBlocks.js:14
 msgid "Delete All"
 msgstr "全て削除"
 
-#: build/blocks/slide-mv/index.js:246 src/blocks/slide-mv/index.js:21
+#: build/blocks/fade-mv/index.js:50 build/blocks/masonry-mv/index.js:33
+#: src/blocks/fade-mv/index.js:15 src/blocks/masonry-mv/index.js:13
+msgid "This is a block that changes the main view while fading in and out."
+msgstr ""
+"メインビューをフェードイン、フェードアウトしながら変化させるブロックで"
+"す。"
+
+#: build/blocks/fade-mv/index.js:50 build/blocks/masonry-mv/index.js:33
+#: src/blocks/fade-mv/edit.js:167 src/blocks/masonry-mv/edit.js:332
+msgid "Selected Images(mobile)"
+msgstr "画像選択（モバイル）"
+
+#: build/blocks/fade-mv/index.js:50 build/blocks/masonry-mv/index.js:33
+#: src/blocks/fade-mv/edit.js:166 src/blocks/masonry-mv/edit.js:331
+msgid "Selected Images(desk top)"
+msgstr "画像選択（デスクトップ）"
+
+#: build/blocks/fade-mv/index.js:50 src/blocks/fade-mv/edit.js:205
+msgid "Transition"
+msgstr "トランジション"
+
+#: build/blocks/fade-mv/index.js:50 src/blocks/fade-mv/edit.js:232
+msgid "Transition Duration"
+msgstr "トランジションの長さ"
+
+#: build/blocks/fade-mv/index.js:50 src/blocks/fade-mv/edit.js:250
+msgid "Animation"
+msgstr "アニメーション"
+
+#: build/blocks/fade-mv/index.js:50 src/blocks/fade-mv/edit.js:274
+msgid "Animation Duration"
+msgstr "アニメーションの長さ"
+
+#: build/blocks/fade-mv/index.js:50 src/blocks/fade-mv/edit.js:291
+msgid "Is Timer Display"
+msgstr "タイマー表示"
+
+#: build/blocks/fade-mv/index.js:50 src/blocks/fade-mv/edit.js:390
+msgid "Position moveable(mobile)"
+msgstr "可動設定（モバイル）"
+
+#: build/blocks/fade-mv/index.js:50 src/blocks/fade-mv/edit.js:389
+msgid "Position moveable(desk top)"
+msgstr "可動設定（デスクトップ）"
+
+#: build/blocks/fade-mv/index.js:50 src/blocks/fade-mv/edit.js:395
+msgid "make it moveable"
+msgstr "可動にする"
+
+#: build/blocks/masonry-mv/index.js:33 src/blocks/masonry-mv/edit.js:302
+msgid "Image Source Select"
+msgstr "イメージソース選択"
+
+#: build/blocks/masonry-mv/index.js:33 src/blocks/masonry-mv/edit.js:309
+msgid "Sorce Type"
+msgstr "ソースタイプ"
+
+#: build/blocks/masonry-mv/index.js:33 src/blocks/masonry-mv/edit.js:312
+msgid "Static"
+msgstr "静的"
+
+#: build/blocks/masonry-mv/index.js:33 src/blocks/masonry-mv/edit.js:313
+msgid "Dynamic"
+msgstr "動的"
+
+#: build/blocks/masonry-mv/index.js:33 src/blocks/masonry-mv/edit.js:370
+msgid "Field Source Select"
+msgstr "フィールドソースの選択"
+
+#: build/blocks/masonry-mv/index.js:33 src/blocks/masonry-mv/edit.js:389
+msgid "Masonry Option"
+msgstr "マソンリーオプション"
+
+#: build/blocks/masonry-mv/index.js:33 src/blocks/masonry-mv/edit.js:398
+msgid "Columns(mobile)"
+msgstr "列数（モバイル）"
+
+#: build/blocks/masonry-mv/index.js:33 src/blocks/masonry-mv/edit.js:397
+msgid "Columns(desk top)"
+msgstr "列数（デスクトップ）"
+
+#: build/blocks/masonry-mv/index.js:33 src/blocks/masonry-mv/edit.js:416
+msgid "Whole Block Style"
+msgstr "ブロックの全体スタイル"
+
+#: build/blocks/masonry-mv/index.js:33 src/blocks/masonry-mv/edit.js:476
+msgid "Individual Image Styles"
+msgstr "個々のイメージスタイル"
+
+#: build/blocks/masonry-mv/index.js:33 src/blocks/masonry-mv/edit.js:551
+msgid "Please select an image from 'Selected Images' on the right."
+msgstr "右側の「画像選択」から画像を選択してください。"
+
+#: build/blocks/slide-mv/index.js:283 src/blocks/slide-mv/index.js:21
 msgid "This is a block that switches the main view by sliding."
 msgstr "スライドでメインビューを切り替えるブロックです。"
 
@@ -384,6 +408,13 @@ msgstr "スライドでメインビューを切り替えるブロックです。
 msgctxt "block title"
 msgid "Fade MainVeiw"
 msgstr ""
+
+#: build/blocks/masonry-mv/block.json src/blocks/masonry-mv/block.json
+#, fuzzy
+#| msgid "Is Main Vew"
+msgctxt "block title"
+msgid "Masonry MainVeiw"
+msgstr "メインビュー"
 
 #: build/blocks/slide-mv/block.json src/blocks/slide-mv/block.json
 msgctxt "block title"

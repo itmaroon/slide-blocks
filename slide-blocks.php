@@ -6,7 +6,7 @@
  * Description:       This block allows you to control slide plugins and customize the slider.
  * Requires at least: 6.4
  * Requires PHP:      8.2.10
- * Version:           1.2.1
+ * Version:           1.3.0
  * Author:            Web Creator ITmaroon
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -98,14 +98,14 @@ add_action('enqueue_block_assets', 'itmar_slide_add_enqueue');
 
 // フロント用：テーマ側の表示時だけ
 add_action('wp_enqueue_scripts', function () {
-	$script_path = plugin_dir_path(__FILE__) . 'assets/slideBlocks.js';
+	$script_path = plugin_dir_path(__FILE__) . 'build/slideBlocks.js';
 	// Masonry / imagesloaded は WordPress コアスクリプト
 	wp_enqueue_script('masonry');
 	wp_enqueue_script('imagesloaded');
 
 	wp_enqueue_script(
 		'itmar-slide-blocks',
-		plugins_url('assets/slideBlocks.js', __FILE__),
+		plugins_url('build/slideBlocks.js', __FILE__),
 		array('masonry', 'imagesloaded'),
 		filemtime($script_path),
 		true

@@ -1,4 +1,4 @@
-import { useBlockProps } from "@wordpress/block-editor";
+import { useBlockProps, InnerBlocks } from "@wordpress/block-editor";
 import { ServerStyleSheet } from "styled-components";
 import { renderToString } from "react-dom/server";
 import { StyleComp } from "./StyleMasonry";
@@ -32,6 +32,10 @@ export default function save({ attributes }) {
 						data-choice-fields={JSON.stringify(choiceFields)}
 					>
 						<div className="itmar-masonry-sizer" />
+					</div>
+
+					<div className="itmar-masonry-inner-blocks">
+						<InnerBlocks.Content />
 					</div>
 				</div>
 			</div>

@@ -22,6 +22,7 @@ import {
 	BlockWidth,
 	BlockHeight,
 	FieldChoiceControl,
+	flattenBlocks,
 	MasonryControl,
 } from "itmar-block-packages";
 
@@ -32,7 +33,8 @@ import {
 	useRef,
 	useLayoutEffect,
 } from "@wordpress/element";
-import { useSelect } from "@wordpress/data";
+import { useSelect, useDispatch } from "@wordpress/data";
+import { createBlock } from "@wordpress/blocks";
 
 import featuredPlaceholderUrl from "../../../assets/feature_img.png";
 import contentPlaceholderUrl from "../../../assets/content_img.png";
@@ -114,7 +116,7 @@ export default function Edit(props) {
 
 	const activeVal = !isMobile ? default_val : mobile_val;
 	const columnWidthPercent = 100 / (activeVal.columns || 1);
-	//Dynmicの場合のプレーホルダー作成関数
+	//Dynmicの場合のプレースホルダー作成関数
 	const createPlaceholderImages = (choiceFields) => {
 		const placeholder_images = [];
 
@@ -141,8 +143,8 @@ export default function Edit(props) {
 		return placeholder_images;
 	};
 
-	// ★ ここで media を「その場で」決める
-	const media =
+	// ここでその都度 media を計算する
+	const source_medias =
 		sourceType === "static"
 			? activeVal?.media || []
 			: createPlaceholderImages(choiceFields);
@@ -168,18 +170,18 @@ export default function Edit(props) {
 		const gridEl = gridRef.current;
 
 		// コンテナがまだない / 画像が一枚もないときは何もしない
-		if (!gridEl || !media.length) {
+		if (!gridEl || !source_medias.length) {
 			return;
 		}
 
 		// MasonryControl 用に必要な情報だけ抽出
-		const imagesForMasonry = media.map((m) => ({
+		const imagesForMasonry = source_medias.map((m) => ({
 			url: m.url,
 			alt: m.alt || "",
 		}));
 
 		const msnry = MasonryControl(gridEl, imagesForMasonry, {
-			columns,
+			columns: activeVal.columns || 1,
 			renderItems: false, // JSX 側で <figure> を描画しているので false
 		});
 
@@ -189,12 +191,14 @@ export default function Edit(props) {
 			}
 		};
 
-		// media が変わったとき / カラム数・モバイル切替のたびに走る
-	}, [media, activeVal.columns, isMobile]);
+		// source_mediasの中味 が変わったとき / カラム数・モバイル切替のたびに走る
+	}, [sourceType, activeVal.media, choiceFields, activeVal.columns, isMobile]);
 
-	const { hasPickup, pickupClientId, pickupAttributes } = useSelect(
+	const { replaceInnerBlocks } = useDispatch("core/block-editor");
+
+	const { hasPickup, pickupAttributes, swiperBlock } = useSelect(
 		(select) => {
-			const { getBlock, getBlockParentsByBlockName } =
+			const { getBlock, getBlocks, getBlockParentsByBlockName } =
 				select("core/block-editor");
 
 			// このブロックの親の中から、itmar/pickup-posts を探す
@@ -203,6 +207,12 @@ export default function Edit(props) {
 				clientId,
 				["itmar/pickup-posts"],
 				true,
+			);
+			//itmar/slide-mvがあればそれを取り出す
+			const childBlocks = getBlocks(clientId);
+			const flattenChildBlocks = flattenBlocks(childBlocks);
+			const slideMvBlock = flattenChildBlocks.find(
+				(block) => block.name === "itmar/slide-mv",
 			);
 
 			if (!pickupParents.length) {
@@ -222,10 +232,68 @@ export default function Edit(props) {
 				hasPickup: true,
 				pickupClientId: parentId,
 				pickupAttributes: attrs,
+				swiperBlock: slideMvBlock || null,
 			};
 		},
 		[clientId],
 	);
+
+	//itmar/slide-mvにメディアのデータをimageブロックにして注入
+	useEffect(() => {
+		if (!swiperBlock || !swiperBlock.clientId) return;
+
+		if (!source_medias.length) return;
+
+		// 1番目の itmar/design-group をテンプレートとして使う
+		const templateDesignGroup = swiperBlock.innerBlocks[0];
+		const templateImage =
+			templateDesignGroup?.innerBlocks && templateDesignGroup.innerBlocks[0];
+
+		const designGroupBaseAttrs = templateDesignGroup?.attributes || {};
+		const imageBaseAttrs = templateImage?.attributes || {};
+		const imageBaseInnerBlocks = templateImage?.innerBlocks || [];
+
+		// もしテンプレートが無かったら、とりあえず何もしない
+		if (!templateDesignGroup || !templateImage) {
+			console.warn(
+				"[masonry] swiperBlock にテンプレートとなる itmar/design-group / core/image がありません。",
+			);
+			return;
+		}
+
+		// ② source_medias から新しいインナーブロック配列を組み立てる
+		const newInnerBlocks = source_medias.map((item) => {
+			// core/image の属性 = 元の image 属性をベースに、id/url/alt だけ上書き
+			const imageAttrs = {
+				...imageBaseAttrs,
+				id: item.id,
+				url: item.url,
+				alt: item.alt ?? imageBaseAttrs.alt ?? "",
+			};
+
+			const imageBlock = createBlock(
+				"core/image",
+				imageAttrs,
+				// もし元の core/image の中にさらにインナーブロックがあれば引き継ぐ
+				imageBaseInnerBlocks,
+			);
+
+			// itmar/design-group の属性 = 元の design-group 属性をコピー
+			const designAttrs = {
+				...designGroupBaseAttrs,
+				// 必要ならここで index ごとの調整もできる
+			};
+			return createBlock("itmar/design-group", designAttrs, [imageBlock]);
+		});
+
+		replaceInnerBlocks(swiperBlock.clientId, newInnerBlocks, false);
+	}, [
+		swiperBlock?.clientId,
+		sourceType, // static / dynamic が変わったらやり直し
+		activeVal.media, // static のときの元データ
+		choiceFields, // dynamic のときの元データ
+		replaceInnerBlocks,
+	]);
 
 	return (
 		<>
@@ -305,7 +373,7 @@ export default function Edit(props) {
 						>
 							<FieldChoiceControl
 								type="imgField"
-								selectedSlug={pickupAttributes.selectedSlug}
+								selectedSlug={pickupAttributes?.selectedRest || ""}
 								choiceItems={choiceFields}
 								blockMap={[]}
 								textDomain="slide-blocks"
@@ -453,7 +521,7 @@ export default function Edit(props) {
 			</InspectorControls>
 
 			<StyleComp attributes={attributes}>
-				<div {...innerBlocksProps}>
+				<div {...blockProps}>
 					<div ref={gridRef} className="itmar-masonry-grid">
 						{/* カラム幅の基準になる要素 */}
 						<div
@@ -462,8 +530,8 @@ export default function Edit(props) {
 						/>
 
 						{/* 画像アイテム */}
-						{media.length ? (
-							media.map((image, index) => (
+						{source_medias.length ? (
+							source_medias.map((image, index) => (
 								<figure
 									key={image.id || index}
 									className="itmar-masonry-item"
@@ -481,13 +549,14 @@ export default function Edit(props) {
 						) : (
 							<p className="itmar-masonry-no-images">
 								{__(
-									"右側の「Selected Images」から画像を選択してください。",
+									"Please select an image from 'Selected Images' on the right.",
 									"slide-blocks",
 								)}
 							</p>
 						)}
 					</div>
 				</div>
+				<div {...innerBlocksProps}></div>
 			</StyleComp>
 		</>
 	);
