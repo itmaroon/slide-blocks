@@ -98,16 +98,7 @@ add_action('enqueue_block_assets', 'itmar_slide_add_enqueue');
 
 // フロント用：テーマ側の表示時だけ
 add_action('wp_enqueue_scripts', function () {
-	$script_path = plugin_dir_path(__FILE__) . 'build/slideBlocks.js';
 	// Masonry / imagesloaded は WordPress コアスクリプト
 	wp_enqueue_script('masonry');
 	wp_enqueue_script('imagesloaded');
-
-	wp_enqueue_script(
-		'itmar-slide-blocks',
-		plugins_url('build/slideBlocks.js', __FILE__),
-		array('masonry', 'imagesloaded'),
-		filemtime($script_path),
-		true
-	);
 });
