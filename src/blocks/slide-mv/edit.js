@@ -502,6 +502,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 		//インスタンス初期化の実行
 		const instance = new Swiper(swiperRef.current, swiperOptions);
+
 		swiperInstance.current = instance;
 		//格納用オブジェクトの生成
 		const swiperObj = {
