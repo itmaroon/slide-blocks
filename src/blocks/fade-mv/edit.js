@@ -13,7 +13,6 @@ import {
 	__experimentalBoxControl as BoxControl,
 } from "@wordpress/components";
 import { StyleComp } from "./StyleFade";
-import { useStyleIframe } from "../iframeFooks";
 import {
 	MultiImageSelect,
 	ShadowStyle,
@@ -27,7 +26,9 @@ import {
 } from "itmar-block-packages";
 
 import "./editor.scss";
-import { useEffect, useRef } from "@wordpress/element";
+import { useCallback, useEffect, useRef, useState } from "@wordpress/element";
+import { useMergeRefs } from "@wordpress/compose";
+import { StyleSheetManager } from "styled-components";
 import { justifyCenter, justifyLeft, justifyRight } from "@wordpress/icons";
 
 //スペースのリセットバリュー
@@ -72,10 +73,15 @@ export default function Edit(props) {
 
 	//ブロックの参照
 	const blockRef = useRef(null);
+	const [styleSheetTarget, setStyleSheetTarget] = useState(null);
+	const ownerDocumentRef = useCallback((node) => {
+		setStyleSheetTarget(node?.ownerDocument.head ?? null);
+	}, []);
+	const mergedBlockRef = useMergeRefs([blockRef, ownerDocumentRef]);
 
 	//blockPropsの参照
 	const blockProps = useBlockProps({
-		ref: blockRef, // ここで参照を blockProps に渡しています
+		ref: mergedBlockRef,
 	});
 
 	//背景色の取得
@@ -93,9 +99,6 @@ export default function Edit(props) {
 			}
 		}
 	}, [baseColor]);
-
-	//サイトエディタの場合はiframeにスタイルをわたす。
-	useStyleIframe(StyleComp, attributes);
 
 	//移動可能ブロックならドラッグのカスタムフックを付加
 	const handlePositionChange = (newPos) => {
@@ -445,13 +448,15 @@ export default function Edit(props) {
 				/>
 			</BlockControls>
 
-			<StyleComp attributes={attributes}>
-				<div {...blockProps}>
-					<div id="mv-slider-area">
-						<div id="mv-slider" ref={slideRef}></div>
+			<StyleSheetManager target={styleSheetTarget ?? undefined}>
+				<StyleComp attributes={attributes}>
+					<div {...blockProps}>
+						<div id="mv-slider-area">
+							<div id="mv-slider" ref={slideRef}></div>
+						</div>
 					</div>
-				</div>
-			</StyleComp>
+				</StyleComp>
+			</StyleSheetManager>
 		</>
 	);
 }

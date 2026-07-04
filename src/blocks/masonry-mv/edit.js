@@ -12,7 +12,6 @@ import {
 	__experimentalBoxControl as BoxControl,
 } from "@wordpress/components";
 import { StyleComp } from "./StyleMasonry";
-import { useStyleIframe } from "../iframeFooks";
 import {
 	MultiImageSelect,
 	ShadowStyle,
@@ -32,7 +31,10 @@ import {
 	useState,
 	useRef,
 	useLayoutEffect,
+	useCallback,
 } from "@wordpress/element";
+import { useMergeRefs } from "@wordpress/compose";
+import { StyleSheetManager } from "styled-components";
 import { useSelect, useDispatch } from "@wordpress/data";
 import { createBlock } from "@wordpress/blocks";
 
@@ -96,11 +98,16 @@ export default function Edit(props) {
 
 	// ブロック外側ラッパー用（背景色取得とかに使うならこっち）
 	const blockRef = useRef(null);
+	const [styleSheetTarget, setStyleSheetTarget] = useState(null);
+	const ownerDocumentRef = useCallback((node) => {
+		setStyleSheetTarget(node?.ownerDocument.head ?? null);
+	}, []);
+	const mergedBlockRef = useMergeRefs([blockRef, ownerDocumentRef]);
 
 	const gridRef = useRef(null);
 
 	const blockProps = useBlockProps({
-		ref: blockRef,
+		ref: mergedBlockRef,
 	});
 
 	//インナーブロックのひな型を用意
@@ -161,9 +168,6 @@ export default function Edit(props) {
 			}
 		}
 	}, [baseColor]);
-
-	//サイトエディタの場合はiframeにスタイルをわたす。
-	useStyleIframe(StyleComp, attributes);
 
 	//Masonry 初期化・再レイアウト
 	useLayoutEffect(() => {
@@ -520,9 +524,10 @@ export default function Edit(props) {
 				</PanelBody>
 			</InspectorControls>
 
-			<StyleComp attributes={attributes}>
-				<div {...blockProps}>
-					<div ref={gridRef} className="itmar-masonry-grid">
+			<StyleSheetManager target={styleSheetTarget ?? undefined}>
+				<StyleComp attributes={attributes}>
+					<div {...blockProps}>
+						<div ref={gridRef} className="itmar-masonry-grid">
 						{/* カラム幅の基準になる要素 */}
 						<div
 							className="itmar-masonry-sizer"
@@ -554,10 +559,11 @@ export default function Edit(props) {
 								)}
 							</p>
 						)}
+						</div>
 					</div>
-				</div>
-				<div {...innerBlocksProps}></div>
-			</StyleComp>
+					<div {...innerBlocksProps}></div>
+				</StyleComp>
+			</StyleSheetManager>
 		</>
 	);
 }

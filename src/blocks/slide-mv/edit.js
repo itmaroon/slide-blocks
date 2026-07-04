@@ -1,6 +1,5 @@
 import { __ } from "@wordpress/i18n";
 import { StyleComp } from "./StyleSlide";
-import { useStyleIframe } from "../iframeFooks";
 
 import {
 	useIsIframeMobile,
@@ -50,7 +49,9 @@ import {
 	Thumbs,
 } from "swiper/modules";
 import "swiper/swiper-bundle.css";
-import { useState, useRef, useEffect } from "@wordpress/element";
+import { useCallback, useEffect, useRef, useState } from "@wordpress/element";
+import { useMergeRefs } from "@wordpress/compose";
+import { StyleSheetManager } from "styled-components";
 import { useSelect, useDispatch } from "@wordpress/data";
 import { createBlock } from "@wordpress/blocks";
 import "../customStore";
@@ -164,8 +165,13 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 	//ブロックの参照
 	const blockRef = useRef(null);
+	const [styleSheetTarget, setStyleSheetTarget] = useState(null);
+	const ownerDocumentRef = useCallback((node) => {
+		setStyleSheetTarget(node?.ownerDocument.head ?? null);
+	}, []);
+	const mergedBlockRef = useMergeRefs([blockRef, ownerDocumentRef]);
 	const blockProps = useBlockProps({
-		ref: blockRef, // ここで参照を blockProps に渡しています
+		ref: mergedBlockRef,
 	});
 
 	//背景色の取得
@@ -183,9 +189,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			}
 		}
 	}, [baseColor]);
-
-	//サイトエディタの場合はiframeにスタイルをわたす。
-	useStyleIframe(StyleComp, attributes);
 
 	//インナーブロック
 	const TEMPLATE = [["itmar/design-group", {}]];
@@ -1451,20 +1454,22 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				/>
 			</BlockControls>
 
-			<StyleComp attributes={attributes}>
-				<div {...blockProps}>
-					<div className="swiper" ref={swiperRef}>
-						<div {...innerBlocksProps}></div>
+			<StyleSheetManager target={styleSheetTarget ?? undefined}>
+				<StyleComp attributes={attributes}>
+					<div {...blockProps}>
+						<div className="swiper" ref={swiperRef}>
+							<div {...innerBlocksProps}></div>
+						</div>
+						{/* <!-- ナビゲーションボタンの表示 --> */}
+						<div class={`swiper-button-prev ${swiper_id}-prev`}></div>
+						<div class={`swiper-button-next ${swiper_id}-next`}></div>
+						{/* <!-- ページネーションの表示 --> */}
+						<div class={`swiper-pagination ${swiper_id}-pagination`}></div>
+						{/* <!-- スクロールバーの表示 --> */}
+						<div class={`swiper-scrollbar ${swiper_id}-scrollbar`}></div>
 					</div>
-					{/* <!-- ナビゲーションボタンの表示 --> */}
-					<div class={`swiper-button-prev ${swiper_id}-prev`}></div>
-					<div class={`swiper-button-next ${swiper_id}-next`}></div>
-					{/* <!-- ページネーションの表示 --> */}
-					<div class={`swiper-pagination ${swiper_id}-pagination`}></div>
-					{/* <!-- スクロールバーの表示 --> */}
-					<div class={`swiper-scrollbar ${swiper_id}-scrollbar`}></div>
-				</div>
-			</StyleComp>
+				</StyleComp>
+			</StyleSheetManager>
 		</>
 	);
 }
