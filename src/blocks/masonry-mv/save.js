@@ -1,48 +1,45 @@
 import { useBlockProps, InnerBlocks } from "@wordpress/block-editor";
-import { ServerStyleSheet } from "styled-components";
-import { renderToString } from "react-dom/server";
-import { StyleComp } from "./StyleMasonry";
+
+const removeStyledComponentClasses = (className = "") => {
+	const classes = String(className).split(/\s+/).filter(Boolean);
+
+	return classes
+		.filter((classValue, index) => {
+			if (/^sc-[a-zA-Z0-9]+$/.test(classValue)) return false;
+			const prevClass = classes[index - 1];
+			return !(prevClass && /^sc-[a-zA-Z0-9]+$/.test(prevClass));
+		})
+		.join(" ");
+};
 
 export default function save({ attributes }) {
 	const { sourceType, default_val, mobile_val, choiceFields } = attributes;
+	const className = removeStyledComponentClasses(attributes.className);
 
-	const blockProps = useBlockProps.save();
-
-	//styled-componentsのHTML化
-	const sheet = new ServerStyleSheet();
-	const html = renderToString(
-		sheet.collectStyles(<StyleComp attributes={attributes} />),
-	);
-	const styleTags = sheet.getStyleTags();
-	// 正規表現で styled-components のクラス名を取得
-	const classMatch = html.match(/class="([^"]+)"/);
-	const className = classMatch ? classMatch[1] : "";
+	const blockProps = useBlockProps.save({
+		className,
+		"data-attributes": JSON.stringify(attributes),
+	});
 
 	return (
-		<>
-			<div className={className}>
-				<div {...blockProps}>
-					<div
-						className="itmar-masonry-grid"
-						data-source-type={sourceType}
-						data-default-media={JSON.stringify(default_val.media)}
-						data-mobile-media={JSON.stringify(mobile_val.media)}
-						data-default-columns={default_val.columns}
-						data-mobile-columns={mobile_val.columns}
-						data-choice-fields={JSON.stringify(choiceFields)}
-					>
-						<div className="itmar-masonry-sizer" />
-					</div>
+		<div className="itmar-masonry-mv-style-root">
+			<div {...blockProps}>
+				<div
+					className="itmar-masonry-grid"
+					data-source-type={sourceType}
+					data-default-media={JSON.stringify(default_val.media)}
+					data-mobile-media={JSON.stringify(mobile_val.media)}
+					data-default-columns={default_val.columns}
+					data-mobile-columns={mobile_val.columns}
+					data-choice-fields={JSON.stringify(choiceFields)}
+				>
+					<div className="itmar-masonry-sizer" />
+				</div>
 
-					<div className="itmar-masonry-inner-blocks">
-						<InnerBlocks.Content />
-					</div>
+				<div className="itmar-masonry-inner-blocks">
+					<InnerBlocks.Content />
 				</div>
 			</div>
-			<div
-				className="itmar_style_div"
-				dangerouslySetInnerHTML={{ __html: styleTags }}
-			/>
-		</>
+		</div>
 	);
 }

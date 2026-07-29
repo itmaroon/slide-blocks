@@ -6,14 +6,15 @@ import {
 	align_prm,
 	space_prm,
 	convertToScss,
+	cssValueToString,
 } from "itmar-block-packages";
-export const StyleComp = ({ attributes, children }) => {
-	return <StyledDiv attributes={{ ...attributes }}>{children}</StyledDiv>;
+export const StyleComp = ({ attributes, children }: any) => {
+	return <StyledDiv $attr={attributes}>{children}</StyledDiv>;
 };
 
 const StyledDiv = styled.div`
-	${({ attributes }) => {
-		const { default_val, mobile_val, shadow_result, is_shadow } = attributes;
+	${({ $attr }) => {
+		const { default_val, mobile_val, shadow_result, is_shadow } = $attr;
 
 		//スペースの設定
 		const default_content_padding_prm = space_prm(default_val.padding_content);
@@ -92,3 +93,75 @@ const StyledDiv = styled.div`
 		`;
 	}}
 `;
+
+export const createFadeStyleCss = (attributes, scope) => {
+	const { default_val, mobile_val, shadow_result, is_shadow } = attributes;
+
+	const default_content_padding_prm = space_prm(default_val.padding_content);
+	const mobile_contnt_padding_prm = space_prm(mobile_val.padding_content);
+	const default_block_align = align_prm(default_val.lat_pos);
+	const mobile_block_align = align_prm(mobile_val.lat_pos);
+	const default_width_style = width_prm(
+		default_val.width_val,
+		default_val.free_width,
+	);
+	const mobile_width_style = width_prm(
+		mobile_val.width_val,
+		default_val.free_width,
+	);
+	const default_max_width_style = max_width_prm(
+		default_val.width_val,
+		default_val.free_width,
+	);
+	const mobile_max_width_style = max_width_prm(
+		mobile_val.width_val,
+		default_val.free_width,
+	);
+	const default_height_style = height_prm(
+		default_val.height_val,
+		default_val.free_height,
+	);
+	const mobile_height_style = height_prm(
+		mobile_val.height_val,
+		default_val.free_height,
+	);
+	const box_shadow_style =
+		is_shadow && shadow_result
+			? cssValueToString(convertToScss(shadow_result))
+			: "";
+	const default_tranceform = default_val.is_moveable
+		? `transform: translate(${default_val.position?.x || 0}, ${
+				default_val.position?.y || 0
+		  });`
+		: "transform: none;";
+	const mobile_tranceform = mobile_val.is_moveable
+		? `transform: translate(${mobile_val.position?.x || 0}, ${
+				mobile_val.position?.y || 0
+		  });`
+		: "transform: none;";
+
+	return `
+		${scope} {
+			position: relative;
+			margin-block-start: 0;
+			overflow: hidden;
+			${box_shadow_style}
+			${default_width_style}
+			${default_max_width_style}
+			${default_height_style}
+			${default_tranceform}
+			${default_block_align}
+			padding: ${default_content_padding_prm};
+		}
+		@media (max-width: 767px) {
+			${scope} {
+				${mobile_width_style}
+				${mobile_max_width_style}
+				${mobile_height_style}
+				padding: ${mobile_contnt_padding_prm};
+				${mobile_tranceform}
+				${mobile_block_align}
+			}
+		}
+	`;
+};

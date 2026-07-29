@@ -48,7 +48,6 @@ import {
 	Parallax,
 	Thumbs,
 } from "swiper/modules";
-import "swiper/swiper-bundle.css";
 import { useCallback, useEffect, useRef, useState } from "@wordpress/element";
 import { useMergeRefs } from "@wordpress/compose";
 import { StyleSheetManager } from "styled-components";
@@ -56,6 +55,12 @@ import { useSelect, useDispatch } from "@wordpress/data";
 import { createBlock } from "@wordpress/blocks";
 import "../customStore";
 import { justifyCenter, justifyLeft, justifyRight } from "@wordpress/icons";
+import {
+	bindCubeMediaReady,
+	bindCubeZoomEvents,
+	resetCubeSize,
+	updateCubeSize,
+} from "./cubeSize";
 
 //スペースのリセットバリュー
 const padding_resetValues = {
@@ -394,22 +399,26 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		cube: {
 			speed: 800,
 			effect: "cube",
+			autoHeight: false,
 			cubeEffect: {
-				slideShadows: true, // スライド表面の影の有無
-				shadow: true, // スライド下の影の有無
-				shadowOffset: 40, // スライド下の影の位置（px）
-				shadowScale: 0.94, //スライド下の影のサイズ比率（0~1）
+				slideShadows: true,
+				shadow: true,
+				shadowOffset: 40,
+				shadowScale: 0.94,
 			},
 			on: {
-				// トランジション開始時
-				slideChangeTransitionStart: function () {
-					this.el.classList.remove("scale-in");
-					this.el.classList.add("scale-out");
+				init: function () {
+					bindCubeMediaReady(this);
+					bindCubeZoomEvents(this);
+					window.requestAnimationFrame(() => updateCubeSize(this));
 				},
-				// トランジション終了時
-				slideChangeTransitionEnd: function () {
-					this.el.classList.remove("scale-out");
-					this.el.classList.add("scale-in");
+				resize: function () {
+					if (!this.animating) {
+						window.requestAnimationFrame(() => updateCubeSize(this));
+					}
+				},
+				slideChange: function () {
+					updateCubeSize(this);
 				},
 			},
 		},
@@ -440,13 +449,16 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 	//スワイパーオブジェクトの生成関数
 	const createSwiperObj = () => {
+		if (!swiperRef.current) return null;
+
 		const parentElement = swiperRef.current.parentElement;
+		if (!parentElement) return null;
 
 		//オプトインするモジュールの配列
-		let moduleArray = [];
+		let moduleArray: any[] = [];
 
 		//スワイパーのオプションを生成
-		let swiperOptions = {
+		let swiperOptions: any = {
 			simulateTouch: false,
 			loop: slideInfo.loop,
 		};
@@ -517,48 +529,88 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 		//格納用の環境変数に保存
 		setStoreObj(swiperObj);
+		return instance;
+	};
+
+	const destroySwiperObj = () => {
+		if (!swiperRef.current) return;
+
+		if (swiperInstance.current) {
+			const paginationBullets =
+				swiperRef.current.parentElement?.querySelectorAll(
+					".swiper-pagination-bullet",
+				) || [];
+			paginationBullets.forEach((bullet) => bullet.remove());
+
+			swiperInstance.current.destroy(false, true);
+			swiperInstance.current = null;
+		}
+
+		resetCubeSize(swiperRef.current);
+
+		const slides = swiperRef.current.querySelectorAll(".swiper-slide");
+		slides.forEach((slide) => {
+			const firstDiv = slide.querySelector("div");
+			if (firstDiv) {
+				firstDiv.removeAttribute("style");
+			}
+
+			const shadowDivs = slide.querySelectorAll(
+				'div[class^="swiper-slide-shadow"]',
+			);
+			shadowDivs.forEach((div) => {
+				div.remove();
+			});
+		});
+
+		const cubeShadow = swiperRef.current.querySelectorAll(
+			'div[class^="swiper-cube-shadow"]',
+		);
+		cubeShadow.forEach((div) => {
+			div.remove();
+		});
 	};
 
 	//スワイパーオブジェクト構築の実行
 	useEffect(() => {
-		if (swiperRef.current) {
-			// 既存のSwiperインスタンスがあれば破棄
-			if (swiperInstance.current) {
-				// Swiper インスタンスを破棄する前に、動的に生成された DOM 要素を削除
-				const paginationBullets =
-					swiperRef.current.parentElement.querySelectorAll(
-						".swiper-pagination-bullet",
-					);
-				paginationBullets.forEach((bullet) => bullet.remove());
+		if (!swiperRef.current) return;
 
-				swiperInstance.current.destroy(false, true);
-			}
+		let isCancelled = false;
+		let timeoutId = null;
+		let firstFrameId = null;
+		let secondFrameId = null;
+		let updateFrameId = null;
 
-			//エフェクトでセットされた要素等を削除
-			const slides = swiperRef.current.querySelectorAll(".swiper-slide");
-			slides.forEach((slide) => {
-				//Parallax等でついていたスタイルを削除
-				const firstDiv = slide.querySelector("div"); // 直下のdiv要素を取得
-				if (firstDiv) {
-					firstDiv.removeAttribute("style"); // 直下のdiv要素のstyle属性を削除
-				}
-				//キューブやカードのシャドーを削除
-				const shadowDivs = slide.querySelectorAll(
-					'div[class^="swiper-slide-shadow"]',
-				);
-				shadowDivs.forEach((div) => {
-					div.remove(); // 各div要素を削除
+		const scheduleInit = () => {
+			destroySwiperObj();
+
+			firstFrameId = window.requestAnimationFrame(() => {
+				secondFrameId = window.requestAnimationFrame(() => {
+					if (isCancelled || !swiperRef.current) return;
+
+					const instance = createSwiperObj();
+					updateFrameId = window.requestAnimationFrame(() => {
+						if (isCancelled || !instance || instance.destroyed) return;
+
+						instance.update();
+						instance.navigation?.update();
+						instance.pagination?.render();
+						instance.pagination?.update();
+						instance.scrollbar?.updateSize();
+					});
 				});
 			});
-			const cubeShadow = swiperRef.current.querySelectorAll(
-				'div[class^="swiper-cube-shadow"]',
-			);
-			cubeShadow.forEach((div) => {
-				div.remove(); // キューブのシャドーを削除
-			});
-			//構築
-			createSwiperObj();
-		}
+		};
+
+		timeoutId = window.setTimeout(scheduleInit, 0);
+
+		return () => {
+			isCancelled = true;
+			if (timeoutId) window.clearTimeout(timeoutId);
+			if (firstFrameId) window.cancelAnimationFrame(firstFrameId);
+			if (secondFrameId) window.cancelAnimationFrame(secondFrameId);
+			if (updateFrameId) window.cancelAnimationFrame(updateFrameId);
+		};
 	}, [
 		innerBlocks,
 		slideInfo,
@@ -572,7 +624,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	useSelect(
 		(select) => {
 			// const allObj = select("itmar-custom/store").getSwiperInstances();
-			// console.log(allObj);
 			const relateObj =
 				select("itmar-custom/store").getSwiperInstanceById(relate_id);
 			if (storeObj && relateObj) {
@@ -1461,12 +1512,12 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							<div {...innerBlocksProps}></div>
 						</div>
 						{/* <!-- ナビゲーションボタンの表示 --> */}
-						<div class={`swiper-button-prev ${swiper_id}-prev`}></div>
-						<div class={`swiper-button-next ${swiper_id}-next`}></div>
+						<div className={`swiper-button-prev ${swiper_id}-prev`}></div>
+						<div className={`swiper-button-next ${swiper_id}-next`}></div>
 						{/* <!-- ページネーションの表示 --> */}
-						<div class={`swiper-pagination ${swiper_id}-pagination`}></div>
+						<div className={`swiper-pagination ${swiper_id}-pagination`}></div>
 						{/* <!-- スクロールバーの表示 --> */}
-						<div class={`swiper-scrollbar ${swiper_id}-scrollbar`}></div>
+						<div className={`swiper-scrollbar ${swiper_id}-scrollbar`}></div>
 					</div>
 				</StyleComp>
 			</StyleSheetManager>

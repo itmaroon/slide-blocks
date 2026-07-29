@@ -8,16 +8,45 @@
 	position: relative;
 }
 .wp-block-itmar-slide-mv {
-	box-sizing: border-box;
 	.swiper {
 		width: 100%;
 		height: 100%;
-
 	}
 
 	.swiper-slide {
 		height: 100%;
-		background-color: var(--wp--preset--color--content-back);
 		overflow: hidden;
+		background-color: var(
+			--wp--preset--color--content-back,
+			#fff
+		);
+	}
+
+	// Cube専用
+	.swiper.swiper-cube {
+		overflow: hidden;
+
+		.swiper-slide {
+			display: flex;
+			align-items: center;
+			width: 100%;
+			height: 100%;
+		}
+
+		// フロント側にだけ存在するラッパー
+		.swiper-slide > .itmar-wrap {
+			width: 100%;
+			height: auto;
+		}
+
+		// エディター側ではstyled-componentsのラッパーが1層追加される
+		.swiper-slide > div:has(> .wp-block-itmar-design-group) {
+			width: 100%;
+			height: auto;
+		}
+
+		.swiper-slide > .itmar-wrap > .wp-block-itmar-design-group {
+			width: 100%;
+		}
 	}
 }

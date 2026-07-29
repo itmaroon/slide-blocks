@@ -19,6 +19,10 @@
 		}
 	},
 	"attributes": {
+		"className": {
+			"type": "string",
+			"default": ""
+		},
 		"swiper_id": {
 			"type": "string",
 			"default": "main_slide"
