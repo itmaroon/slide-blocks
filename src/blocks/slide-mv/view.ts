@@ -22,7 +22,7 @@ const getSlideStyleRoot = (element: Element): Element => {
 		return parent;
 	}
 
-	// 旧保存形式でもエディタのStyleCompと同じ階層にそろえる。
+	// 旧保存形式でも現在の共通スタイル用ラッパーと同じ階層にそろえる。
 	const styleRoot = element.ownerDocument.createElement("div");
 	styleRoot.className = "itmar-slide-mv-style-root";
 	element.before(styleRoot);

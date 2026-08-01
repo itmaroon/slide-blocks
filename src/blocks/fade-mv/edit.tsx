@@ -12,7 +12,7 @@ import {
 	ToolbarDropdownMenu,
 	__experimentalBoxControl as BoxControl,
 } from "@wordpress/components";
-import { StyleComp } from "./StyleFade";
+import { createFadeStyleCss } from "./StyleFade";
 import {
 	MultiImageSelect,
 	ShadowStyle,
@@ -26,9 +26,7 @@ import {
 } from "itmar-block-packages";
 
 import "./editor.scss";
-import { useCallback, useEffect, useRef, useState } from "@wordpress/element";
-import { useMergeRefs } from "@wordpress/compose";
-import { StyleSheetManager } from "styled-components";
+import { useEffect, useRef } from "@wordpress/element";
 import { justifyCenter, justifyLeft, justifyRight } from "@wordpress/icons";
 
 //スペースのリセットバリュー
@@ -61,7 +59,7 @@ const alignIconMap = {
 };
 
 export default function Edit(props) {
-	const { attributes, setAttributes } = props;
+	const { attributes, setAttributes, clientId } = props;
 	const { default_val, mobile_val, shadow_element, is_shadow, slide_settings } =
 		attributes;
 
@@ -73,15 +71,19 @@ export default function Edit(props) {
 
 	//ブロックの参照
 	const blockRef = useRef(null);
-	const [styleSheetTarget, setStyleSheetTarget] = useState(null);
-	const ownerDocumentRef = useCallback((node) => {
-		setStyleSheetTarget(node?.ownerDocument.head ?? null);
-	}, []);
-	const mergedBlockRef = useMergeRefs([blockRef, ownerDocumentRef]);
+	const editorStyleClass = `itmar-fade-editor-${clientId.replace(
+		/[^a-zA-Z0-9_-]/g,
+		"",
+	)}`;
+	const editorStyleCss = createFadeStyleCss(
+		attributes,
+		`.${editorStyleClass}`,
+	);
 
 	//blockPropsの参照
 	const blockProps = useBlockProps({
-		ref: mergedBlockRef,
+		ref: blockRef,
+		className: editorStyleClass,
 	});
 
 	//背景色の取得
@@ -448,15 +450,12 @@ export default function Edit(props) {
 				/>
 			</BlockControls>
 
-			<StyleSheetManager target={styleSheetTarget ?? undefined}>
-				<StyleComp attributes={attributes}>
-					<div {...blockProps}>
-						<div id="mv-slider-area">
-							<div id="mv-slider" ref={slideRef}></div>
-						</div>
-					</div>
-				</StyleComp>
-			</StyleSheetManager>
+			<div {...blockProps}>
+				<style>{editorStyleCss}</style>
+				<div id="mv-slider-area">
+					<div id="mv-slider" ref={slideRef}></div>
+				</div>
+			</div>
 		</>
 	);
 }

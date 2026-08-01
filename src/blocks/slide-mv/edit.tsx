@@ -1,5 +1,5 @@
 import { __ } from "@wordpress/i18n";
-import { StyleComp } from "./StyleSlide";
+import { createSlideStyleCss } from "./StyleSlide";
 
 import {
 	useIsIframeMobile,
@@ -48,9 +48,7 @@ import {
 	Parallax,
 	Thumbs,
 } from "swiper/modules";
-import { useCallback, useEffect, useRef, useState } from "@wordpress/element";
-import { useMergeRefs } from "@wordpress/compose";
-import { StyleSheetManager } from "styled-components";
+import { useEffect, useRef, useState } from "@wordpress/element";
 import { useSelect, useDispatch } from "@wordpress/data";
 import { createBlock } from "@wordpress/blocks";
 import "../customStore";
@@ -170,14 +168,17 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 	//ブロックの参照
 	const blockRef = useRef(null);
-	const [styleSheetTarget, setStyleSheetTarget] = useState(null);
-	const ownerDocumentRef = useCallback((node) => {
-		setStyleSheetTarget(node?.ownerDocument.head ?? null);
-	}, []);
-	const mergedBlockRef = useMergeRefs([blockRef, ownerDocumentRef]);
 	const blockProps = useBlockProps({
-		ref: mergedBlockRef,
+		ref: blockRef,
 	});
+	const editorStyleClass = `itmar-slide-editor-${clientId.replace(
+		/[^a-zA-Z0-9_-]/g,
+		"",
+	)}`;
+	const editorStyleCss = createSlideStyleCss(
+		attributes,
+		`.${editorStyleClass}`,
+	);
 
 	//背景色の取得
 	const baseColor = useElementBackgroundColor(blockRef, blockProps.style);
@@ -1505,22 +1506,21 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				/>
 			</BlockControls>
 
-			<StyleSheetManager target={styleSheetTarget ?? undefined}>
-				<StyleComp attributes={attributes}>
-					<div {...blockProps}>
-						<div className="swiper" ref={swiperRef}>
-							<div {...innerBlocksProps}></div>
-						</div>
-						{/* <!-- ナビゲーションボタンの表示 --> */}
-						<div className={`swiper-button-prev ${swiper_id}-prev`}></div>
-						<div className={`swiper-button-next ${swiper_id}-next`}></div>
-						{/* <!-- ページネーションの表示 --> */}
-						<div className={`swiper-pagination ${swiper_id}-pagination`}></div>
-						{/* <!-- スクロールバーの表示 --> */}
-						<div className={`swiper-scrollbar ${swiper_id}-scrollbar`}></div>
+			<div className={`itmar-slide-mv-style-root ${editorStyleClass}`}>
+				<style>{editorStyleCss}</style>
+				<div {...blockProps}>
+					<div className="swiper" ref={swiperRef}>
+						<div {...innerBlocksProps}></div>
 					</div>
-				</StyleComp>
-			</StyleSheetManager>
+					{/* <!-- ナビゲーションボタンの表示 --> */}
+					<div className={`swiper-button-prev ${swiper_id}-prev`}></div>
+					<div className={`swiper-button-next ${swiper_id}-next`}></div>
+					{/* <!-- ページネーションの表示 --> */}
+					<div className={`swiper-pagination ${swiper_id}-pagination`}></div>
+					{/* <!-- スクロールバーの表示 --> */}
+					<div className={`swiper-scrollbar ${swiper_id}-scrollbar`}></div>
+				</div>
+			</div>
 		</>
 	);
 }

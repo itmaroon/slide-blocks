@@ -7,12 +7,18 @@ import {
 	convertToScss,
 	cssValueToString,
 } from "itmar-block-packages";
-
 /**
  * エディタ・フロントエンド共通のスコープ付きCSSを生成する。
  */
-export const createFadeStyleCss = (attributes, scope) => {
-	const { default_val, mobile_val, shadow_result, is_shadow } = attributes;
+export const createMasonryStyleCss = (attributes, scope) => {
+	const {
+		default_val,
+		mobile_val,
+		shadow_result,
+		shadow_image_result,
+		is_shadow,
+		is_image_shadow,
+	} = attributes;
 
 	const default_content_padding_prm = space_prm(default_val.padding_content);
 	const mobile_contnt_padding_prm = space_prm(mobile_val.padding_content);
@@ -42,42 +48,46 @@ export const createFadeStyleCss = (attributes, scope) => {
 		mobile_val.height_val,
 		default_val.free_height,
 	);
+
 	const box_shadow_style =
 		is_shadow && shadow_result
 			? cssValueToString(convertToScss(shadow_result))
 			: "";
-	const default_tranceform = default_val.is_moveable
-		? `transform: translate(${default_val.position?.x || 0}, ${
-				default_val.position?.y || 0
-		  });`
-		: "transform: none;";
-	const mobile_tranceform = mobile_val.is_moveable
-		? `transform: translate(${mobile_val.position?.x || 0}, ${
-				mobile_val.position?.y || 0
-		  });`
-		: "transform: none;";
+	const image_shadow_style =
+		is_image_shadow && shadow_image_result
+			? cssValueToString(convertToScss(shadow_image_result))
+			: "";
 
 	return `
 		${scope} {
 			position: relative;
 			margin-block-start: 0;
 			overflow: hidden;
-			${box_shadow_style}
 			${default_width_style}
 			${default_max_width_style}
 			${default_height_style}
-			${default_tranceform}
 			${default_block_align}
+			${box_shadow_style}
+		}
+		${scope}.wp-block-itmar-masonry-mv .itmar-masonry-item,
+		${scope} .wp-block-itmar-masonry-mv .itmar-masonry-item {
+			box-sizing: border-box;
 			padding: ${default_content_padding_prm};
+		}
+		${scope}.wp-block-itmar-masonry-mv .itmar-masonry-item img,
+		${scope} .wp-block-itmar-masonry-mv .itmar-masonry-item img {
+			${image_shadow_style}
 		}
 		@media (max-width: 767px) {
 			${scope} {
 				${mobile_width_style}
 				${mobile_max_width_style}
 				${mobile_height_style}
-				padding: ${mobile_contnt_padding_prm};
-				${mobile_tranceform}
 				${mobile_block_align}
+			}
+			${scope}.wp-block-itmar-masonry-mv .itmar-masonry-item,
+			${scope} .wp-block-itmar-masonry-mv .itmar-masonry-item {
+				padding: ${mobile_contnt_padding_prm};
 			}
 		}
 	`;

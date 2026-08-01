@@ -1,8 +1,8 @@
 import { MasonryControl, styleDataApply } from "itmar-block-packages";
 import { createMasonryStyleCss } from "./StyleMasonry";
 
-const removeStyledComponentClasses = (element) => {
-	const classes = Array.from(element.classList);
+const removeStyledComponentClasses = (element: Element) => {
+	const classes = Array.from(element.classList) as string[];
 
 	classes.forEach((classValue, index) => {
 		if (/^sc-[a-zA-Z0-9]+$/.test(classValue)) {
@@ -40,6 +40,7 @@ jQuery(function ($) {
 	if (!grids.length) return;
 
 	grids.forEach((gridEl) => {
+		const gridElement = gridEl as HTMLElement;
 		const {
 			sourceType,
 			defaultMedia,
@@ -47,7 +48,7 @@ jQuery(function ($) {
 			defaultColumns,
 			mobileColumns,
 			choiceFields,
-		} = gridEl.dataset;
+		} = gridElement.dataset;
 
 		// 列数を決定
 		const columns = mobile_flg

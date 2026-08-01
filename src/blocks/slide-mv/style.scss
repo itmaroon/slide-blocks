@@ -39,7 +39,7 @@
 			height: auto;
 		}
 
-		// エディター側ではstyled-componentsのラッパーが1層追加される
+		// エディター側の共通スタイル用ラッパーにも対応する
 		.swiper-slide > div:has(> .wp-block-itmar-design-group) {
 			width: 100%;
 			height: auto;

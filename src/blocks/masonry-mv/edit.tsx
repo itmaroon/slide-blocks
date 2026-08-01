@@ -11,7 +11,7 @@ import {
 	RadioControl,
 	__experimentalBoxControl as BoxControl,
 } from "@wordpress/components";
-import { StyleComp } from "./StyleMasonry";
+import { createMasonryStyleCss } from "./StyleMasonry";
 import {
 	MultiImageSelect,
 	ShadowStyle,
@@ -28,13 +28,9 @@ import {
 import "./editor.scss";
 import {
 	useEffect,
-	useState,
+	useMemo,
 	useRef,
-	useLayoutEffect,
-	useCallback,
 } from "@wordpress/element";
-import { useMergeRefs } from "@wordpress/compose";
-import { StyleSheetManager } from "styled-components";
 import { useSelect, useDispatch } from "@wordpress/data";
 import { createBlock } from "@wordpress/blocks";
 
@@ -98,16 +94,21 @@ export default function Edit(props) {
 
 	// ブロック外側ラッパー用（背景色取得とかに使うならこっち）
 	const blockRef = useRef(null);
-	const [styleSheetTarget, setStyleSheetTarget] = useState(null);
-	const ownerDocumentRef = useCallback((node) => {
-		setStyleSheetTarget(node?.ownerDocument.head ?? null);
-	}, []);
-	const mergedBlockRef = useMergeRefs([blockRef, ownerDocumentRef]);
+	const editorStyleClass = `itmar-masonry-editor-${clientId.replace(
+		/[^a-zA-Z0-9_-]/g,
+		"",
+	)}`;
+	const editorStyleCss = createMasonryStyleCss(
+		attributes,
+		`.${editorStyleClass}`,
+	);
 
-	const gridRef = useRef(null);
+	// @wordpress/element のローカル型宣言では useRef が any のため、
+	// 型引数ではなく戻り値側で参照要素の型を指定する
+	const gridRef = useRef(null) as { current: HTMLDivElement | null };
 
 	const blockProps = useBlockProps({
-		ref: mergedBlockRef,
+		ref: blockRef,
 	});
 
 	//インナーブロックのひな型を用意
@@ -150,11 +151,20 @@ export default function Edit(props) {
 		return placeholder_images;
 	};
 
-	// ここでその都度 media を計算する
-	const source_medias =
-		sourceType === "static"
-			? activeVal?.media || []
-			: createPlaceholderImages(choiceFields);
+	// モバイル画像が未設定の場合は、デスクトップ画像を表示に使用する
+	const activeMedia =
+		isMobile && mobile_val?.media?.length
+			? mobile_val.media
+			: default_val?.media || [];
+
+	// 同じ入力からは同じ配列を返し、Masonry の不要な再初期化を防ぐ
+	const source_medias = useMemo(
+		() =>
+			sourceType === "static"
+				? activeMedia
+				: createPlaceholderImages(choiceFields || []),
+		[sourceType, activeMedia, choiceFields],
+	);
 
 	//背景色変更によるシャドー属性の書き換え
 	useEffect(() => {
@@ -169,8 +179,8 @@ export default function Edit(props) {
 		}
 	}, [baseColor]);
 
-	//Masonry 初期化・再レイアウト
-	useLayoutEffect(() => {
+	// MasonryControl 内部の imagesLoaded に画像読み込み待機を任せる
+	useEffect(() => {
 		const gridEl = gridRef.current;
 
 		// コンテナがまだない / 画像が一枚もないときは何もしない
@@ -178,25 +188,69 @@ export default function Edit(props) {
 			return;
 		}
 
+		let animationFrameId: number | undefined;
+		let retryTimerId: number | undefined;
+		let retryCount = 0;
+		let cancelled = false;
+		let msnry;
+
 		// MasonryControl 用に必要な情報だけ抽出
 		const imagesForMasonry = source_medias.map((m) => ({
 			url: m.url,
 			alt: m.alt || "",
 		}));
 
-		const msnry = MasonryControl(gridEl, imagesForMasonry, {
-			columns: activeVal.columns || 1,
-			renderItems: false, // JSX 側で <figure> を描画しているので false
+		const initializeMasonry = () => {
+			if (cancelled) return;
+
+			const gridWindow = gridEl.ownerDocument.defaultView as
+				| (Window & { Masonry?: unknown; imagesLoaded?: unknown })
+				| null;
+
+			// 初回描画時はライブラリがまだ iframe に読み込まれていないことがある。
+			// React の依存値は変化しないため、準備完了まで短時間だけ再試行する。
+			if (!gridWindow?.Masonry || !gridWindow.imagesLoaded) {
+				if (retryCount < 100) {
+					retryCount += 1;
+					retryTimerId = window.setTimeout(initializeMasonry, 50);
+				}
+				return;
+			}
+
+			msnry = MasonryControl(gridEl, imagesForMasonry, {
+				columns: activeVal.columns || 1,
+				renderItems: false, // JSX 側で <figure> を描画しているので false
+			});
+		};
+
+		// JSX の更新がDOMへ反映された次のフレームで初期化する
+		animationFrameId = requestAnimationFrame(() => {
+			initializeMasonry();
 		});
 
 		return () => {
+			cancelled = true;
+			if (animationFrameId !== undefined) {
+				cancelAnimationFrame(animationFrameId);
+			}
+			if (retryTimerId !== undefined) {
+				window.clearTimeout(retryTimerId);
+			}
 			if (msnry && typeof msnry.destroy === "function") {
 				msnry.destroy();
 			}
 		};
+	}, [source_medias, activeVal.columns]);
 
-		// source_mediasの中味 が変わったとき / カラム数・モバイル切替のたびに走る
-	}, [sourceType, activeVal.media, choiceFields, activeVal.columns, isMobile]);
+	// React が描画した各画像の寸法確定後にも配置を更新する
+	const handleMasonryImageLoad = () => {
+		const masonryGrid = gridRef.current as
+			| (HTMLDivElement & {
+					__masonryInstance?: { layout?: () => void };
+			  })
+			| null;
+		masonryGrid?.__masonryInstance?.layout?.();
+	};
 
 	const { replaceInnerBlocks } = useDispatch("core/block-editor");
 
@@ -240,6 +294,9 @@ export default function Edit(props) {
 			};
 		},
 		[clientId],
+	);
+	const hasSwiperTemplate = Boolean(
+		swiperBlock?.innerBlocks?.[0]?.innerBlocks?.[0],
 	);
 
 	//itmar/slide-mvにメディアのデータをimageブロックにして注入
@@ -293,9 +350,8 @@ export default function Edit(props) {
 		replaceInnerBlocks(swiperBlock.clientId, newInnerBlocks, false);
 	}, [
 		swiperBlock?.clientId,
-		sourceType, // static / dynamic が変わったらやり直し
-		activeVal.media, // static のときの元データ
-		choiceFields, // dynamic のときの元データ
+		hasSwiperTemplate, // 子ブロックが遅れて生成された場合にもやり直す
+		source_medias,
 		replaceInnerBlocks,
 	]);
 
@@ -524,10 +580,10 @@ export default function Edit(props) {
 				</PanelBody>
 			</InspectorControls>
 
-			<StyleSheetManager target={styleSheetTarget ?? undefined}>
-				<StyleComp attributes={attributes}>
-					<div {...blockProps}>
-						<div ref={gridRef} className="itmar-masonry-grid">
+			<div className={editorStyleClass}>
+				<style>{editorStyleCss}</style>
+				<div {...blockProps}>
+					<div ref={gridRef} className="itmar-masonry-grid">
 						{/* カラム幅の基準になる要素 */}
 						<div
 							className="itmar-masonry-sizer"
@@ -547,6 +603,8 @@ export default function Edit(props) {
 									<img
 										src={image.url}
 										alt={image.alt || ""}
+										onLoad={handleMasonryImageLoad}
+										onError={handleMasonryImageLoad}
 										style={{ display: "block", width: "100%", height: "auto" }}
 									/>
 								</figure>
@@ -559,11 +617,10 @@ export default function Edit(props) {
 								)}
 							</p>
 						)}
-						</div>
 					</div>
-					<div {...innerBlocksProps}></div>
-				</StyleComp>
-			</StyleSheetManager>
+				</div>
+				<div {...innerBlocksProps}></div>
+			</div>
 		</>
 	);
 }
