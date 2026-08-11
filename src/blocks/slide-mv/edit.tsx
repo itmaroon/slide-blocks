@@ -338,7 +338,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	//Swiperエフェクトのオプションをマッピング
 	const effectOption = {
 		none: {
-			centeredSlides: slideInfo.isActiveCenter,
+			centeredSlides: isMobile
+				? slideInfo.isActiveCenterMob
+				: slideInfo.isActiveCenterDef,
 			direction: slideInfo.singleDirection,
 			speed: slideInfo.slideSpeed,
 			slidesPerView: isMobile
@@ -941,12 +943,32 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						)}
 						{slideInfo.effect === "none" && (
 							<ToggleControl
-								label={__("Active Slide Center", "slide-blocks")}
-								checked={slideInfo.isActiveCenter}
+								label={
+									!isMobile
+										? __("Active Slide Center(desk top)", "slide-blocks")
+										: __("Active Slide Center(mobile)", "slide-blocks")
+								}
+								checked={
+									!isMobile
+										? slideInfo.isActiveCenterDef
+										: slideInfo.isActiveCenterMob
+								}
 								onChange={(newVal) => {
-									setAttributes({
-										slideInfo: { ...slideInfo, isActiveCenter: newVal },
-									});
+									setAttributes(
+										!isMobile
+											? {
+													slideInfo: {
+														...slideInfo,
+														isActiveCenterDef: newVal,
+													},
+											  }
+											: {
+													slideInfo: {
+														...slideInfo,
+														isActiveCenterMob: newVal,
+													},
+											  },
+									);
 								}}
 							/>
 						)}

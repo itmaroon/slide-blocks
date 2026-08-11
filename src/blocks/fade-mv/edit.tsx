@@ -1,4 +1,6 @@
 import { __ } from "@wordpress/i18n";
+import vegas from "vegas";
+import "vegas/dist/vegas.css";
 import {
 	useBlockProps,
 	InspectorControls,
@@ -13,6 +15,19 @@ import {
 	__experimentalBoxControl as BoxControl,
 } from "@wordpress/components";
 import { createFadeStyleCss } from "./StyleFade";
+import {
+	SLIDER_FRAME_ANIMATION_DURATION,
+	getSliderFrameStyle,
+	getRoundedFrameMorphValues,
+	getRoundedFramePath,
+	getRoundedFrameStepValues,
+	getRoundedWindowTransforms,
+	ROUNDED_FRAME_MORPH_DURATION,
+	ROUNDED_FRAME_STEP_DURATION,
+	type FrameAnimationMode,
+	type FrameType,
+	type RoundedWindowLayout,
+} from "./framePresets";
 import {
 	MultiImageSelect,
 	ShadowStyle,
@@ -62,23 +77,49 @@ export default function Edit(props) {
 	const { attributes, setAttributes, clientId } = props;
 	const { default_val, mobile_val, shadow_element, is_shadow, slide_settings } =
 		attributes;
+	const frameType: FrameType = attributes.frameType ?? "none";
+	const frameAnimationMode: FrameAnimationMode =
+		attributes.frameAnimationMode ?? "continuous";
+	const frameAnimationDelay = Number(attributes.frameAnimationDelay ?? 250);
+	const frameMorphDuration = Number(
+		attributes.frameMorphDuration ?? ROUNDED_FRAME_STEP_DURATION,
+	);
+	const frameWindowLayout: RoundedWindowLayout =
+		attributes.frameWindowLayout ?? "single";
+	const roundedWindowTransforms = getRoundedWindowTransforms(frameWindowLayout);
+	const sliderFrameTopOffset = attributes.sliderFrameTopOffset ?? 0;
+	const sliderFrameBottomOffset = attributes.sliderFrameBottomOffset ?? 0;
+	const sliderFrameStyle = getSliderFrameStyle(
+		sliderFrameTopOffset,
+		sliderFrameBottomOffset,
+	);
+	const sliderAnimationDelay = attributes.sliderAnimationDelay ?? 0;
+	const safeClientId = clientId.replace(/[^a-zA-Z0-9_-]/g, "");
+	const frameMaskId = `itmar-fade-rounded-mask-${safeClientId}`;
 
 	//スライドの参照
 	const slideRef = useRef(null);
+	const vegasInstance = useRef(null);
+	const frameMaskRef = useRef(null) as {
+		current: SVGMaskElement | null;
+	};
 
+	const frameMorphTimerRef = useRef(null) as {
+		current: number | null;
+	};
+	const sliderBandRef = useRef(null) as {
+		current: HTMLDivElement | null;
+	};
+	const sliderAnimationTimerRef = useRef(null) as {
+		current: number | null;
+	};
 	//モバイルの判定
 	const isMobile = useIsIframeMobile();
 
 	//ブロックの参照
 	const blockRef = useRef(null);
-	const editorStyleClass = `itmar-fade-editor-${clientId.replace(
-		/[^a-zA-Z0-9_-]/g,
-		"",
-	)}`;
-	const editorStyleCss = createFadeStyleCss(
-		attributes,
-		`.${editorStyleClass}`,
-	);
+	const editorStyleClass = `itmar-fade-editor-${safeClientId}`;
+	const editorStyleCss = createFadeStyleCss(attributes, `.${editorStyleClass}`);
 
 	//blockPropsの参照
 	const blockProps = useBlockProps({
@@ -90,6 +131,34 @@ export default function Edit(props) {
 	const baseColor = useElementBackgroundColor(blockRef, blockProps.style);
 
 	//背景色変更によるシャドー属性の書き換え
+	useEffect(() => {
+		const sliderElement = sliderBandRef.current?.parentElement?.querySelector(
+			".mv-slider",
+		) as HTMLElement | null;
+		if (!sliderElement) return;
+
+		Object.entries(sliderFrameStyle).forEach(([property, value]) => {
+			sliderElement.style.setProperty(property, value);
+		});
+	}, [sliderFrameTopOffset, sliderFrameBottomOffset]);
+
+	const triggerSliderFrame = () => {
+		const sliderBand = sliderBandRef.current;
+		if (frameType !== "slider" || !sliderBand) return;
+		const animationDelay = Number.parseFloat(sliderBand.style.animationDelay) || 0;
+
+		if (sliderAnimationTimerRef.current !== null) {
+			window.clearTimeout(sliderAnimationTimerRef.current);
+		}
+		sliderBand.classList.remove("is-slide-start");
+		void sliderBand.offsetWidth;
+		sliderBand.classList.add("is-slide-start");
+		sliderAnimationTimerRef.current = window.setTimeout(() => {
+			sliderBand.classList.remove("is-slide-start");
+			sliderAnimationTimerRef.current = null;
+		}, SLIDER_FRAME_ANIMATION_DURATION + animationDelay);
+	};
+
 	useEffect(() => {
 		if (baseColor) {
 			setAttributes({
@@ -117,47 +186,94 @@ export default function Edit(props) {
 		handlePositionChange,
 	);
 
-	//vegasの初期化・再設定
-	let $sliderElement = null;
-
-	useEffect(() => {
-		if (slideRef.current) {
-			// 要素を取得
-			const sliderElement = slideRef.current;
-
-			// sliderElementをjQueryオブジェクトに変換
-			$sliderElement = jQuery(sliderElement);
-
-			//スライドの要素
-			const render_media = isMobile ? mobile_val.media : default_val.media;
-			const slideArray = render_media
-				.filter((item) => item.url)
-				.map((item) => ({ src: item.url }));
-
-			//vegasが設定してあれば一旦クリア
-			if ($sliderElement.hasClass("vegas-container")) {
-				$sliderElement.vegas("destroy");
-			}
-
-			if (slideArray.length != 0) {
-				$sliderElement.vegas({
-					overlay: false,
-					transition: slide_settings.transition,
-					transitionDuration: slide_settings.transition_duration,
-					animationDuration: slide_settings.animation_duration,
-					animation: slide_settings.animation,
-					slides: slideArray,
-					timer: slide_settings.is_timer,
-				});
-			} else {
-				//画像の設定がなければ単一画像
-				$sliderElement.vegas({
-					cover: false,
-					slides: [{ src: `${slide_blocks.plugin_url}/assets/no-image.png` }],
-				});
-			}
+	const triggerRoundedFrameMorph = (index: number) => {
+		if (frameType !== "rounded" || frameAnimationMode !== "onChange") {
+			return;
 		}
-	}, [default_val.media, mobile_val.media, slide_settings, isMobile]);
+
+		if (frameMorphTimerRef.current !== null) {
+			window.clearTimeout(frameMorphTimerRef.current);
+		}
+		frameMorphTimerRef.current = window.setTimeout(() => {
+			const pathElements =
+				frameMaskRef.current?.querySelectorAll<SVGPathElement>(
+					".mv-frame-clip-path",
+				);
+			pathElements?.forEach((pathElement, windowIndex) => {
+				pathElement.setAttribute("d", getRoundedFramePath(index + windowIndex));
+				const animateElement = pathElement.querySelector(".mv-frame-morph") as
+					| (SVGElement & { beginElement?: () => void })
+					| null;
+				if (!animateElement) return;
+
+				animateElement.setAttribute(
+					"values",
+					getRoundedFrameStepValues(index, windowIndex),
+				);
+				animateElement.setAttribute("dur", `${frameMorphDuration}ms`);
+				animateElement.beginElement?.();
+			});
+			frameMorphTimerRef.current = null;
+		}, frameAnimationDelay);
+	};
+
+	//vegasの初期化・再設定
+	useEffect(() => {
+		const sliderElement = slideRef.current;
+		if (!sliderElement) return;
+
+		const render_media = isMobile ? mobile_val.media : default_val.media;
+		const slideArray = render_media
+			.filter((item) => item.url)
+			.map((item) => ({ src: item.url }));
+
+		vegasInstance.current?.destroy();
+
+		vegasInstance.current = vegas(
+			sliderElement,
+			slideArray.length !== 0
+				? {
+						overlay: false,
+						transition: slide_settings.transition,
+						transitionDuration: slide_settings.transition_duration,
+						animationDuration: slide_settings.animation_duration,
+						animation: slide_settings.animation,
+						slides: slideArray,
+						timer: slide_settings.is_timer,
+						walk: (index: number) => {
+					triggerRoundedFrameMorph(index);
+					triggerSliderFrame();
+						},
+				  }
+				: {
+						cover: false,
+						slides: [{ src: `${slide_blocks.plugin_url}/assets/no-image.png` }],
+				  },
+		);
+
+		return () => {
+			if (frameMorphTimerRef.current !== null) {
+				window.clearTimeout(frameMorphTimerRef.current);
+				frameMorphTimerRef.current = null;
+			}
+			if (sliderAnimationTimerRef.current !== null) {
+				window.clearTimeout(sliderAnimationTimerRef.current);
+				sliderAnimationTimerRef.current = null;
+			}
+			vegasInstance.current?.destroy();
+			vegasInstance.current = null;
+		};
+	}, [
+		default_val.media,
+		mobile_val.media,
+		slide_settings,
+		isMobile,
+		frameType,
+		frameAnimationMode,
+		frameAnimationDelay,
+		frameMorphDuration,
+		frameWindowLayout,
+	]);
 
 	return (
 		<>
@@ -274,6 +390,8 @@ export default function Edit(props) {
 								})
 							}
 						/>
+					</div>
+					<div className="itmar_link_type">
 						<RangeControl
 							value={slide_settings.animation_duration}
 							label={__("Animation Duration", "slide-blocks")}
@@ -301,6 +419,143 @@ export default function Edit(props) {
 							});
 						}}
 					/>
+				</PanelBody>
+				<PanelBody
+					title={__("Frame Settings", "slide-blocks")}
+					initialOpen={false}
+				>
+					<div className="itmar_link_type">
+						<RadioControl
+							selected={(attributes.frameType ?? "none") as FrameType}
+							options={[
+								{ label: __("None", "slide-blocks"), value: "none" },
+								{ label: __("Slider", "slide-blocks"), value: "slider" },
+								{ label: __("Rounded", "slide-blocks"), value: "rounded" },
+							]}
+							onChange={(value) =>
+								setAttributes({ frameType: value as FrameType })
+							}
+						/>
+					</div>
+
+					<RangeControl
+						label={__("Background Opacity", "slide-blocks")}
+						value={attributes.frameBackgroundOpacity ?? 1}
+						min={0}
+						max={1}
+						step={0.05}
+						onChange={(value) =>
+							setAttributes({ frameBackgroundOpacity: value })
+						}
+						withInputField={true}
+					/>
+
+				{frameType === "slider" && (
+					<>
+						<RangeControl
+							label={__("Upper Line Offset (%)", "slide-blocks")}
+							value={sliderFrameTopOffset}
+							onChange={(value) =>
+								setAttributes({ sliderFrameTopOffset: value ?? 0 })
+							}
+							min={-15}
+							max={20}
+							step={1}
+						/>
+						<RangeControl
+							label={__("Lower Line Offset (%)", "slide-blocks")}
+							value={sliderFrameBottomOffset}
+							onChange={(value) =>
+								setAttributes({ sliderFrameBottomOffset: value ?? 0 })
+							}
+							min={-20}
+							max={20}
+							step={1}
+						/>
+						<RangeControl
+						label={__("Slider Delay (ms)", "slide-blocks")}
+						value={sliderAnimationDelay}
+						onChange={(value) =>
+							setAttributes({ sliderAnimationDelay: value ?? 0 })
+						}
+						min={0}
+						max={2000}
+							step={50}
+						/>
+					</>
+				)}
+				{frameType === "rounded" && (
+						<>
+							<div className="itmar_link_type">
+								<RadioControl
+									label={__("Window Layout", "slide-blocks")}
+									selected={frameWindowLayout}
+									options={[
+										{ label: __("Single", "slide-blocks"), value: "single" },
+										{ label: __("3 Windows", "slide-blocks"), value: "triple" },
+										{
+											label: __("5 Windows", "slide-blocks"),
+											value: "quintuple",
+										},
+									]}
+									onChange={(value) =>
+										setAttributes({
+											frameWindowLayout: value as RoundedWindowLayout,
+										})
+									}
+								/>
+								<RadioControl
+									label={__("Frame Animation", "slide-blocks")}
+									selected={frameAnimationMode}
+									options={[
+										{
+											label: __("Continuous", "slide-blocks"),
+											value: "continuous",
+										},
+										{
+											label: __("On Image Change", "slide-blocks"),
+											value: "onChange",
+										},
+									]}
+									onChange={(value) =>
+										setAttributes({
+											frameAnimationMode: value as FrameAnimationMode,
+										})
+									}
+								/>
+							</div>
+							{frameAnimationMode === "onChange" && (
+								<>
+									<div className="itmar_link_type">
+										<RangeControl
+											label={__("Animation Delay", "slide-blocks")}
+											value={frameAnimationDelay}
+											min={0}
+											max={2000}
+											step={100}
+											onChange={(value) =>
+												setAttributes({ frameAnimationDelay: value })
+											}
+											withInputField={true}
+										/>
+									</div>
+									<div className="itmar_link_type">
+										<RangeControl
+											label={__("Morph Duration", "slide-blocks")}
+											value={frameMorphDuration}
+											min={500}
+											max={4000}
+											step={100}
+											onChange={(value) =>
+												setAttributes({ frameMorphDuration: value })
+											}
+											withInputField={true}
+										/>
+									</div>
+								</>
+							)}
+						</>
+					)}
 				</PanelBody>
 			</InspectorControls>
 			<InspectorControls group="styles">
@@ -452,8 +707,100 @@ export default function Edit(props) {
 
 			<div {...blockProps}>
 				<style>{editorStyleCss}</style>
-				<div id="mv-slider-area">
-					<div id="mv-slider" ref={slideRef}></div>
+				<svg
+					className="mv-frame-defs"
+					width="0"
+					height="0"
+					aria-hidden="true"
+					focusable="false"
+				>
+					<defs>
+						<mask
+							ref={frameMaskRef}
+							id={frameMaskId}
+							maskUnits="objectBoundingBox"
+							maskContentUnits="objectBoundingBox"
+							style={{ maskType: "luminance" }}
+						>
+							<rect x="0" y="0" width="1" height="1" fill="white" />
+							{roundedWindowTransforms.map((transform, windowIndex) => (
+								<path
+									key={`${frameWindowLayout}-${windowIndex}`}
+									className="mv-frame-clip-path"
+									transform={transform || undefined}
+									fill="black"
+									d={getRoundedFramePath(windowIndex)}
+								>
+									<animate
+										className="mv-frame-morph"
+										attributeName="d"
+										attributeType="XML"
+										begin={
+											frameAnimationMode === "continuous" ? "0s" : "indefinite"
+										}
+										dur={`${
+											frameAnimationMode === "continuous"
+												? ROUNDED_FRAME_MORPH_DURATION
+												: frameMorphDuration
+										}ms`}
+										repeatCount={
+											frameAnimationMode === "continuous" ? "indefinite" : "1"
+										}
+										fill={
+											frameAnimationMode === "continuous" ? "remove" : "freeze"
+										}
+										values={
+											frameAnimationMode === "continuous"
+												? getRoundedFrameMorphValues(windowIndex)
+												: getRoundedFrameStepValues(0, windowIndex)
+										}
+										calcMode="spline"
+										keyTimes={
+											frameAnimationMode === "continuous"
+												? "0;0.25;0.5;0.75;1"
+												: "0;1"
+										}
+										keySplines={
+											frameAnimationMode === "continuous"
+												? "0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"
+												: "0.42 0 0.58 1"
+										}
+									/>
+								</path>
+							))}
+						</mask>
+					</defs>
+				</svg>
+				<div
+					id="mv-slider-area"
+					className="mv-frame"
+					data-frame-type={frameType}
+					style={{
+						transitionDuration: `${slide_settings.transition_duration}ms`,
+					}}
+				>
+					<div id="mv-slider" className="mv-slider" ref={slideRef}></div>
+				{frameType === "slider" && (
+					<>
+						<div
+							ref={sliderBandRef}
+							className="mv-slider-band"
+							data-frame-top-offset={sliderFrameTopOffset}
+							data-frame-bottom-offset={sliderFrameBottomOffset}
+							style={{ animationDelay: `${sliderAnimationDelay}ms` }}
+						/>
+						<div className="mv-slider-triangle" />
+					</>
+				)}
+				{frameType === "rounded" && (
+					<div
+						className="mv-frame-overlay"
+							style={{
+								WebkitMask: `url(#${frameMaskId})`,
+								mask: `url(#${frameMaskId})`,
+							}}
+						/>
+					)}
 				</div>
 			</div>
 		</>

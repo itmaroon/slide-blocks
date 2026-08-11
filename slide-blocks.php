@@ -61,21 +61,6 @@ function itmar_slide_add_enqueue()
 			array('in_footer'  => true)
 		);
 	}
-	//vegasを読み込む
-	if (!wp_script_is('itmar_vegas_js', 'enqueued')) {
-		wp_enqueue_script(
-			'itmar_vegas_js',
-			plugins_url('assets/vegas.min.js', __FILE__),
-			array('jquery'),
-			'1.0.0',
-			array('in_footer'  => true)
-		);
-	}
-
-	if (!wp_style_is('itmar_vegas_css', 'enqueued')) {
-		wp_enqueue_style('itmar_vegas_css', plugins_url('assets/vegas.min.css', __FILE__), array(), "1.0.0");
-	}
-
 	//swiperを読み込む
 	if (!wp_script_is('itmar_swiper_js', 'enqueued')) {
 		wp_enqueue_script(

@@ -19,6 +19,56 @@
     }
   },
   "attributes": {
+    "frameType": {
+      "type": "string",
+      "enum": [
+        "none",
+        "slider",
+        "rounded"
+      ],
+      "default": "none"
+    },
+    "frameBackgroundOpacity": {
+      "type": "number",
+      "default": 1
+    },
+    "frameAnimationMode": {
+      "type": "string",
+      "enum": [
+        "continuous",
+        "onChange"
+      ],
+      "default": "continuous"
+    },
+    "frameAnimationDelay": {
+      "type": "number",
+      "default": 250
+    },
+    "frameMorphDuration": {
+      "type": "number",
+      "default": 1600
+    },
+    "sliderFrameTopOffset": {
+      "type": "number",
+      "default": 0
+    },
+    "sliderFrameBottomOffset": {
+      "type": "number",
+      "default": 0
+    },
+    "sliderAnimationDelay": {
+      "type": "number",
+      "default": 0
+    },
+    "frameWindowLayout": {
+      "type": "string",
+      "enum": [
+        "single",
+        "triple",
+        "quintuple"
+      ],
+      "default": "single"
+    },
     "default_val": {
       "type": "object",
       "default": {
@@ -116,5 +166,6 @@
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
   "style": "file:./style-index.css",
-  "viewScript": "file:./view.js"
+  "viewScript": "file:./view.js",
+  "viewStyle": "file:./view.css"
 }

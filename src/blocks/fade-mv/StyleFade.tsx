@@ -12,7 +12,33 @@ import {
  * エディタ・フロントエンド共通のスコープ付きCSSを生成する。
  */
 export const createFadeStyleCss = (attributes, scope) => {
-	const { default_val, mobile_val, shadow_result, is_shadow } = attributes;
+	const {
+		default_val,
+		mobile_val,
+		shadow_result,
+		is_shadow,
+		frameBackgroundOpacity = 1,
+	} = attributes;
+	const presetSlug = (value) =>
+		String(value ?? "").replace(/[^a-zA-Z0-9_-]/g, "");
+	const customBackground = attributes.style?.color?.background;
+	const customGradient = attributes.style?.color?.gradient;
+	const presetBackground = attributes.backgroundColor
+		? `var(--wp--preset--color--${presetSlug(attributes.backgroundColor)})`
+		: "";
+	const presetGradient = attributes.gradient
+		? `var(--wp--preset--gradient--${presetSlug(attributes.gradient)})`
+		: "";
+	const frameBackground =
+		customGradient ||
+		presetGradient ||
+		customBackground ||
+		presetBackground ||
+		"transparent";
+	const backgroundOpacity = Math.min(
+		1,
+		Math.max(0, Number(frameBackgroundOpacity)),
+	);
 
 	const default_content_padding_prm = space_prm(default_val.padding_content);
 	const mobile_contnt_padding_prm = space_prm(mobile_val.padding_content);
@@ -62,6 +88,12 @@ export const createFadeStyleCss = (attributes, scope) => {
 			position: relative;
 			margin-block-start: 0;
 			overflow: hidden;
+			isolation: isolate;
+			--itmar-fade-frame-background: ${frameBackground};
+			--itmar-fade-frame-background-opacity: ${backgroundOpacity};
+			background: transparent !important;
+			background-color: transparent !important;
+			background-image: none !important;
 			${box_shadow_style}
 			${default_width_style}
 			${default_max_width_style}
