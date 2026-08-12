@@ -1,5 +1,6 @@
 import { useBlockProps } from "@wordpress/block-editor";
 import {
+	getSliderBandStyle,
 	getRoundedFrameMorphValues,
 	getRoundedFramePath,
 	getRoundedFrameStepValues,
@@ -43,6 +44,21 @@ export default function save({ attributes }) {
 		animationDelay: frameAnimationDelay,
 		morphDuration: frameMorphDuration,
 		windowLayout: frameWindowLayout,
+	};
+	const sliderBandStyle = {
+		animationDelay: `${attributes.sliderAnimationDelay ?? 0}ms`,
+		...getSliderBandStyle(
+			attributes.sliderBandVerticalOffset ?? 0,
+			attributes.sliderBandAngle ?? 37.5,
+		),
+	};
+	const sliderTriangleStyle = {
+		"--itmar-slider-triangle-vertical-offset": `${
+			attributes.sliderTriangleVerticalOffset ?? 0
+		}%`,
+		"--itmar-slider-triangle-angle": `${
+			attributes.sliderTriangleAngle ?? 197
+		}deg`,
 	};
 	const className = removeStyledComponentClasses(attributes.className);
 
@@ -137,11 +153,13 @@ export default function save({ attributes }) {
 							className="mv-slider-band"
 							data-frame-top-offset={attributes.sliderFrameTopOffset ?? 0}
 							data-frame-bottom-offset={attributes.sliderFrameBottomOffset ?? 0}
-							style={{
-								animationDelay: `${attributes.sliderAnimationDelay ?? 0}ms`,
-							}}
+							data-frame-angle={attributes.sliderBandAngle ?? 37.5}
+							style={sliderBandStyle}
 						/>
-						<div className="mv-slider-triangle" />
+						<div
+							className="mv-slider-triangle"
+							style={sliderTriangleStyle}
+						/>
 					</>
 				)}
 				{frameType === "rounded" && (

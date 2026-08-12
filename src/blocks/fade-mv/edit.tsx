@@ -17,6 +17,7 @@ import {
 import { createFadeStyleCss } from "./StyleFade";
 import {
 	SLIDER_FRAME_ANIMATION_DURATION,
+	getSliderBandStyle,
 	getSliderFrameStyle,
 	getRoundedFrameMorphValues,
 	getRoundedFramePath,
@@ -89,10 +90,25 @@ export default function Edit(props) {
 	const roundedWindowTransforms = getRoundedWindowTransforms(frameWindowLayout);
 	const sliderFrameTopOffset = attributes.sliderFrameTopOffset ?? 0;
 	const sliderFrameBottomOffset = attributes.sliderFrameBottomOffset ?? 0;
+	const sliderBandAngle = attributes.sliderBandAngle ?? 37.5;
+	const sliderTriangleAngle = attributes.sliderTriangleAngle ?? 197;
 	const sliderFrameStyle = getSliderFrameStyle(
 		sliderFrameTopOffset,
 		sliderFrameBottomOffset,
+		sliderBandAngle,
 	);
+	const sliderBandVerticalOffset =
+		attributes.sliderBandVerticalOffset ?? 0;
+	const sliderTriangleVerticalOffset =
+		attributes.sliderTriangleVerticalOffset ?? 0;
+	const sliderBandStyle = {
+		animationDelay: `${attributes.sliderAnimationDelay ?? 0}ms`,
+		...getSliderBandStyle(sliderBandVerticalOffset, sliderBandAngle),
+	};
+	const sliderTriangleStyle = {
+		"--itmar-slider-triangle-vertical-offset": `${sliderTriangleVerticalOffset}%`,
+		"--itmar-slider-triangle-angle": `${sliderTriangleAngle}deg`,
+	};
 	const sliderAnimationDelay = attributes.sliderAnimationDelay ?? 0;
 	const safeClientId = clientId.replace(/[^a-zA-Z0-9_-]/g, "");
 	const frameMaskId = `itmar-fade-rounded-mask-${safeClientId}`;
@@ -140,7 +156,7 @@ export default function Edit(props) {
 		Object.entries(sliderFrameStyle).forEach(([property, value]) => {
 			sliderElement.style.setProperty(property, value);
 		});
-	}, [sliderFrameTopOffset, sliderFrameBottomOffset]);
+	}, [sliderFrameTopOffset, sliderFrameBottomOffset, sliderBandAngle]);
 
 	const triggerSliderFrame = () => {
 		const sliderBand = sliderBandRef.current;
@@ -154,7 +170,6 @@ export default function Edit(props) {
 		void sliderBand.offsetWidth;
 		sliderBand.classList.add("is-slide-start");
 		sliderAnimationTimerRef.current = window.setTimeout(() => {
-			sliderBand.classList.remove("is-slide-start");
 			sliderAnimationTimerRef.current = null;
 		}, SLIDER_FRAME_ANIMATION_DURATION + animationDelay);
 	};
@@ -473,6 +488,46 @@ export default function Edit(props) {
 							step={1}
 						/>
 						<RangeControl
+							label={__("Slider Bar Vertical Offset (%)", "slide-blocks")}
+							value={sliderBandVerticalOffset}
+							onChange={(value) =>
+								setAttributes({ sliderBandVerticalOffset: value ?? 0 })
+							}
+							min={-20}
+							max={20}
+							step={1}
+						/>
+						<RangeControl
+							label={__("Bottom-left Triangle Offset (%)", "slide-blocks")}
+							value={sliderTriangleVerticalOffset}
+							onChange={(value) =>
+								setAttributes({ sliderTriangleVerticalOffset: value ?? 0 })
+							}
+							min={-20}
+							max={20}
+							step={1}
+						/>
+						<RangeControl
+							label={__("Slider / Clip Angle", "slide-blocks")}
+							value={sliderBandAngle}
+							onChange={(value) =>
+								setAttributes({ sliderBandAngle: value ?? 37.5 })
+							}
+							min={20}
+							max={55}
+							step={0.5}
+						/>
+						<RangeControl
+							label={__("Bottom-left Triangle Angle (deg)", "slide-blocks")}
+							value={sliderTriangleAngle}
+							onChange={(value) =>
+								setAttributes({ sliderTriangleAngle: value ?? 197 })
+							}
+							min={150}
+							max={240}
+							step={1}
+						/>
+						<RangeControl
 						label={__("Slider Delay (ms)", "slide-blocks")}
 						value={sliderAnimationDelay}
 						onChange={(value) =>
@@ -787,9 +842,13 @@ export default function Edit(props) {
 							className="mv-slider-band"
 							data-frame-top-offset={sliderFrameTopOffset}
 							data-frame-bottom-offset={sliderFrameBottomOffset}
-							style={{ animationDelay: `${sliderAnimationDelay}ms` }}
+							data-frame-angle={sliderBandAngle}
+							style={sliderBandStyle}
 						/>
-						<div className="mv-slider-triangle" />
+						<div
+							className="mv-slider-triangle"
+							style={sliderTriangleStyle}
+						/>
 					</>
 				)}
 				{frameType === "rounded" && (

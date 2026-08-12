@@ -32,22 +32,31 @@
 		top: 0;
 		left: 0;
 		z-index: 10;
-		width: 200%;
+		width: var(--itmar-slider-band-width, 200%);
 		height: 100%;
 		background-color: var(--itmar-fade-frame-background, transparent);
 		opacity: var(--itmar-fade-frame-background-opacity, 1);
 		clip-path: polygon(
-			30% 83%,
-			30% 98%,
-			50% 83%,
-			50% 68%,
-			80% 45.5%,
-			80% 60.5%,
-			100% 45.5%,
-			100% 30.5%
+			var(--itmar-slider-band-left-start-x, 30%)
+				var(--itmar-slider-band-left-start-top, 83%),
+			var(--itmar-slider-band-left-start-x, 30%)
+				var(--itmar-slider-band-left-start-bottom, 98%),
+			var(--itmar-slider-band-left-end-x, 50%)
+				var(--itmar-slider-band-left-end-bottom, 83%),
+			var(--itmar-slider-band-left-end-x, 50%)
+				var(--itmar-slider-band-left-end-top, 68%),
+			var(--itmar-slider-band-middle-x, 80%)
+				var(--itmar-slider-band-middle-top, 45.5%),
+			var(--itmar-slider-band-middle-x, 80%)
+				var(--itmar-slider-band-middle-bottom, 60.5%),
+			100% var(--itmar-slider-band-right-bottom, 45.5%),
+			100% var(--itmar-slider-band-right-top, 30.5%)
 		);
 		pointer-events: none;
-		transform: translate(0, 0);
+		transform: translate(
+			0,
+			var(--itmar-slider-band-vertical-offset, 0%)
+		);
 		will-change: transform;
 
 		&.is-slide-start {
@@ -58,14 +67,16 @@
 	.mv-slider-triangle {
 		display: block;
 		position: absolute;
-		bottom: -25em;
+		bottom: calc(
+			-30em - var(--itmar-slider-triangle-vertical-offset, 0%)
+		);
 		left: -7em;
 		z-index: 1;
 		width: 105em;
 		height: 26em;
 		background-color: var(--itmar-fade-frame-background, transparent);
 		opacity: var(--itmar-fade-frame-background-opacity, 1);
-		transform: rotate(197deg);
+		transform: rotate(var(--itmar-slider-triangle-angle, 197deg));
 		pointer-events: none;
 	}
 
@@ -103,19 +114,31 @@
 
 @keyframes itmar-fade-slider {
 	0% {
-		transform: translate(0, 0);
+		transform: translate(
+			0,
+			var(--itmar-slider-band-vertical-offset, 0%)
+		);
 	}
 	100% {
-		transform: translate(-50%, 37.5%);
+		transform: translate(
+			var(--itmar-slider-band-end-x, -50%),
+			var(--itmar-slider-band-end-y, 37.5%)
+		);
 	}
 }
 
 @keyframes itmar-fade-slider-mobile {
 	0% {
-		transform: translate(0, 0);
+		transform: translate(
+			0,
+			var(--itmar-slider-band-vertical-offset, 0%)
+		);
 	}
 	100% {
-		transform: translate(-50%, 25%);
+		transform: translate(
+			var(--itmar-slider-band-mobile-end-x, -50%),
+			var(--itmar-slider-band-mobile-end-y, 25%)
+		);
 	}
 }
 
@@ -139,15 +162,22 @@
 	}
 
 	.mv-frame .mv-slider-band {
+		width: var(--itmar-slider-band-mobile-width, 200%);
 		clip-path: polygon(
-			20% 85%,
-			20% 95%,
-			50% 80%,
-			50% 70%,
-			70% 60%,
-			70% 70%,
-			100% 55%,
-			100% 45%
+			var(--itmar-slider-band-mobile-left-start-x, 20%)
+				var(--itmar-slider-band-mobile-left-start-top, 85%),
+			var(--itmar-slider-band-mobile-left-start-x, 20%)
+				var(--itmar-slider-band-mobile-left-start-bottom, 95%),
+			var(--itmar-slider-band-mobile-left-end-x, 50%)
+				var(--itmar-slider-band-mobile-left-end-bottom, 80%),
+			var(--itmar-slider-band-mobile-left-end-x, 50%)
+				var(--itmar-slider-band-mobile-left-end-top, 70%),
+			var(--itmar-slider-band-mobile-middle-x, 70%)
+				var(--itmar-slider-band-mobile-middle-top, 60%),
+			var(--itmar-slider-band-mobile-middle-x, 70%)
+				var(--itmar-slider-band-mobile-middle-bottom, 70%),
+			100% var(--itmar-slider-band-mobile-right-bottom, 55%),
+			100% var(--itmar-slider-band-mobile-right-top, 45%)
 		);
 
 		&.is-slide-start {

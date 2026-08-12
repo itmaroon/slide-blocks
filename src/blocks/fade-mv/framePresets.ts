@@ -11,29 +11,125 @@ const clampPercentage = (value: number) => Math.min(100, Math.max(0, value));
 export const getSliderFrameStyle = (
 	topOffset = 0,
 	bottomOffset = 0,
+	frameAngle = 37.5,
 ) => {
+	const desktopAngle = Math.max(10, Number(frameAngle));
+	const mobileAngle = desktopAngle * (2 / 3);
 	const desktopSmallTop = 20 + topOffset;
 	const mobileSmallTop = 16 + topOffset;
 
 	return {
-		"--itmar-slider-top-left": `${37.5 + topOffset}%`,
+		"--itmar-slider-top-left": `${desktopAngle + topOffset}%`,
 		"--itmar-slider-top-right": `${topOffset}%`,
 		"--itmar-slider-bottom-left": `${120 + bottomOffset}%`,
-		"--itmar-slider-bottom-right": `${82.5 + bottomOffset}%`,
+		"--itmar-slider-bottom-right": `${
+			120 - desktopAngle + bottomOffset
+		}%`,
 		"--itmar-slider-small-left-top": `${desktopSmallTop}%`,
 		"--itmar-slider-small-left-bottom": `${desktopSmallTop + 10}%`,
 		"--itmar-slider-small-right-x": `${clampPercentage(
-			(desktopSmallTop / 37.5) * 100,
+			(desktopSmallTop / desktopAngle) * 100,
 		)}%`,
-		"--itmar-slider-mobile-top-left": `${25 + topOffset}%`,
+		"--itmar-slider-mobile-top-left": `${mobileAngle + topOffset}%`,
 		"--itmar-slider-mobile-top-right": `${topOffset}%`,
 		"--itmar-slider-mobile-bottom-left": `${120 + bottomOffset}%`,
-		"--itmar-slider-mobile-bottom-right": `${95 + bottomOffset}%`,
+		"--itmar-slider-mobile-bottom-right": `${
+			120 - mobileAngle + bottomOffset
+		}%`,
 		"--itmar-slider-mobile-small-left-top": `${mobileSmallTop}%`,
 		"--itmar-slider-mobile-small-left-bottom": `${mobileSmallTop + 10}%`,
 		"--itmar-slider-mobile-small-right-x": `${clampPercentage(
-			(mobileSmallTop / 25) * 100,
+			(mobileSmallTop / mobileAngle) * 100,
 		)}%`,
+	};
+};
+
+export const getSliderBandStyle = (
+	verticalOffset = 0,
+	frameAngle = 37.5,
+) => {
+	const desktopSlope = Math.max(10, Number(frameAngle)) / 50;
+	const mobileSlope = desktopSlope * (2 / 3);
+	const desktopLengthAdjustment = verticalOffset / desktopSlope;
+	const mobileLengthAdjustment = verticalOffset / mobileSlope;
+	const desktopTranslation = -100 + desktopLengthAdjustment * 2;
+	const mobileTranslation = -100 + mobileLengthAdjustment * 2;
+	const desktopWidth = Math.max(200, 100 - desktopTranslation);
+	const mobileWidth = Math.max(200, 100 - mobileTranslation);
+	const desktopScale = desktopWidth / 200;
+	const mobileScale = mobileWidth / 200;
+	const desktopRightLogicalX = desktopWidth / 2;
+	const mobileRightLogicalX = mobileWidth / 2;
+	const desktopFirstRightBottom = 98 - desktopSlope * 20;
+	const desktopFirstRightTop = 83 - desktopSlope * 20;
+	const desktopMiddleTop = 83 - desktopSlope * 50;
+	const desktopMiddleBottom = desktopMiddleTop + 15;
+	const desktopRightBottom = 98 - desktopSlope * 70;
+	const desktopRightTop = 83 - desktopSlope * 70;
+	const mobileFirstRightBottom = 95 - mobileSlope * 30;
+	const mobileFirstRightTop = 85 - mobileSlope * 30;
+	const mobileMiddleTop = 85 - mobileSlope * 50;
+	const mobileMiddleBottom = mobileMiddleTop + 10;
+	const mobileRightBottom = 95 - mobileSlope * 80;
+	const mobileRightTop = 85 - mobileSlope * 80;
+
+	return {
+		"--itmar-slider-band-vertical-offset": `${verticalOffset}%`,
+		"--itmar-slider-band-width": `${desktopWidth}%`,
+		"--itmar-slider-band-end-x": `${
+			(desktopTranslation / desktopWidth) * 100
+		}%`,
+		"--itmar-slider-band-left-start-x": `${
+			(30 + desktopLengthAdjustment) / desktopScale
+		}%`,
+		"--itmar-slider-band-left-start-top": `${83 - verticalOffset}%`,
+		"--itmar-slider-band-left-start-bottom": `${98 - verticalOffset}%`,
+		"--itmar-slider-band-left-end-x": `${
+			50 / desktopScale
+		}%`,
+		"--itmar-slider-band-left-end-bottom": `${desktopFirstRightBottom}%`,
+		"--itmar-slider-band-left-end-top": `${desktopFirstRightTop}%`,
+		"--itmar-slider-band-middle-x": `${80 / desktopScale}%`,
+		"--itmar-slider-band-middle-top": `${desktopMiddleTop}%`,
+		"--itmar-slider-band-middle-bottom": `${desktopMiddleBottom}%`,
+		"--itmar-slider-band-right-bottom": `${
+			desktopRightBottom -
+			(desktopRightLogicalX - 100) * desktopSlope
+		}%`,
+		"--itmar-slider-band-right-top": `${
+			desktopRightTop - (desktopRightLogicalX - 100) * desktopSlope
+		}%`,
+		"--itmar-slider-band-end-y": `${desktopSlope * 50}%`,
+		"--itmar-slider-band-mobile-width": `${mobileWidth}%`,
+		"--itmar-slider-band-mobile-end-x": `${
+			(mobileTranslation / mobileWidth) * 100
+		}%`,
+		"--itmar-slider-band-mobile-left-start-x": `${
+			(20 + mobileLengthAdjustment) / mobileScale
+		}%`,
+		"--itmar-slider-band-mobile-left-start-top": `${
+			85 - verticalOffset
+		}%`,
+		"--itmar-slider-band-mobile-left-start-bottom": `${
+			95 - verticalOffset
+		}%`,
+		"--itmar-slider-band-mobile-left-end-x": `${
+			50 / mobileScale
+		}%`,
+		"--itmar-slider-band-mobile-left-end-bottom": `${
+			mobileFirstRightBottom
+		}%`,
+		"--itmar-slider-band-mobile-left-end-top": `${mobileFirstRightTop}%`,
+		"--itmar-slider-band-mobile-middle-x": `${70 / mobileScale}%`,
+		"--itmar-slider-band-mobile-middle-top": `${mobileMiddleTop}%`,
+		"--itmar-slider-band-mobile-middle-bottom": `${mobileMiddleBottom}%`,
+		"--itmar-slider-band-mobile-right-bottom": `${
+			mobileRightBottom - (mobileRightLogicalX - 100) * mobileSlope
+		}%`,
+		"--itmar-slider-band-mobile-right-top": `${
+			mobileRightTop - (mobileRightLogicalX - 100) * mobileSlope
+		}%`,
+		"--itmar-slider-band-mobile-end-y": `${mobileSlope * 50}%`,
 	};
 };
 

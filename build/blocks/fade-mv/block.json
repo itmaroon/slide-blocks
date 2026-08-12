@@ -56,6 +56,22 @@
       "type": "number",
       "default": 0
     },
+    "sliderBandVerticalOffset": {
+      "type": "number",
+      "default": 0
+    },
+    "sliderTriangleVerticalOffset": {
+      "type": "number",
+      "default": 0
+    },
+    "sliderBandAngle": {
+      "type": "number",
+      "default": 37.5
+    },
+    "sliderTriangleAngle": {
+      "type": "number",
+      "default": 197
+    },
     "sliderAnimationDelay": {
       "type": "number",
       "default": 0

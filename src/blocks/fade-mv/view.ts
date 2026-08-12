@@ -202,6 +202,7 @@ jQuery(function ($) {
 			const sliderFrameStyle = getSliderFrameStyle(
 				Number(sliderBandElement.dataset.frameTopOffset ?? 0),
 				Number(sliderBandElement.dataset.frameBottomOffset ?? 0),
+				Number(sliderBandElement.dataset.frameAngle ?? 37.5),
 			);
 			Object.entries(sliderFrameStyle).forEach(([property, value]) => {
 				sliderElement.style.setProperty(property, value);
@@ -220,7 +221,6 @@ jQuery(function ($) {
 			void sliderBandElement.offsetWidth;
 			sliderBandElement.classList.add("is-slide-start");
 			sliderAnimationTimer = window.setTimeout(() => {
-				sliderBandElement.classList.remove("is-slide-start");
 				sliderAnimationTimer = null;
 			}, SLIDER_FRAME_ANIMATION_DURATION + sliderAnimationDelay);
 		};
