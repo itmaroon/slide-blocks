@@ -7,7 +7,7 @@ namespace Composer\Autoload;
 class ComposerStaticInitfa181551d5dbdb6d810bcdd6e40ac28d
 {
     public static $prefixLengthsPsr4 = array (
-        'I' => 
+        'I' =>
         array (
             'Itmar\\BlockClassPackage\\' => 24,
             'Itmar\\Autoloader\\' => 17,
@@ -15,11 +15,11 @@ class ComposerStaticInitfa181551d5dbdb6d810bcdd6e40ac28d
     );
 
     public static $prefixDirsPsr4 = array (
-        'Itmar\\BlockClassPackage\\' => 
+        'Itmar\\BlockClassPackage\\' =>
         array (
             0 => __DIR__ . '/..' . '/itmar/block-class-package/src',
         ),
-        'Itmar\\Autoloader\\' => 
+        'Itmar\\Autoloader\\' =>
         array (
             0 => __DIR__ . '/..' . '/itmar/loader-package/src',
         ),
