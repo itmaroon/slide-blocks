@@ -2,8 +2,8 @@
 Contributors:      Web Creator ITmaroon
 Tags:              block, swiper, vegas, slider ,carousel
 Requires at least: 6.4
-Tested up to:      6.8
-Stable tag:        1.3.0
+Tested up to:      7.0
+Stable tag:        2.0.1
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 8.1.22
@@ -57,6 +57,10 @@ OR…
 7. Enlarged image of Masonry View
 
 == Changelog ==
+= 2.0.1 =
+- Converted JavaScript to TypeScript.
+- I moved away from styled-components and switched to `useElementStyleObject` from my own custom npm component.
+
 = 1.3.0 =
 -  A new block has been added, the Masonry block, which has the function of placing images in a Masonry block.
 
