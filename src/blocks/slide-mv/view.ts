@@ -1,4 +1,4 @@
-import { slideBlockSwiperInit, styleDataApply } from "itmar-block-packages";
+import { slideBlockSwiperInit, styleDataApply } from "itmar-block-packages/front";
 import { createSlideStyleCss } from "./StyleSlide";
 import "swiper/swiper-bundle.css";
 import {

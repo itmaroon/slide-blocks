@@ -669,7 +669,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	useEffect(() => {
 		const base_color = !(navigationBgColor === undefined)
 			? navigationBgColor
-			: "var(--wp--preset--color--content-back)";
+			: "var(--itmar-content-back)";
 
 		setAttributes({
 			slideInfo: {

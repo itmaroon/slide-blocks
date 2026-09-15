@@ -1,4 +1,4 @@
-import { MasonryControl, styleDataApply } from "itmar-block-packages";
+import { MasonryControl, styleDataApply } from "itmar-block-packages/front";
 import { createMasonryStyleCss } from "./StyleMasonry";
 
 const removeStyledComponentClasses = (element: Element) => {

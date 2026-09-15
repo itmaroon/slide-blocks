@@ -10,7 +10,7 @@ import {
 	radius_prm,
 	ShadowElm,
 	Arrow,
-} from "itmar-block-packages";
+} from "itmar-block-packages/front";
 
 export const createSlideStyleCss = (attributes, scope) => {
 	const {
@@ -119,7 +119,7 @@ export const createSlideStyleCss = (attributes, scope) => {
 			top: ${slideInfo.navigation.defaultVertPos}%;
 			width: ${slideInfo.navigation.defaultSize};
 			height: ${slideInfo.navigation.defaultSize};
-			color: var(--wp--preset--color--accent-1);
+			color: var(--itmar-accent-1);
 		}
 		${scope} > div .swiper-button-prev::after,
 		${scope} > div .swiper-button-next::after,
@@ -259,19 +259,19 @@ export const createSlideStyleCss = (attributes, scope) => {
 					border-radius: 0;
 					opacity: 1;
 					transition: all 0.8s ease 0s;
-					background-color: var(--wp--preset--color--accent-2);
+					background-color: var(--itmar-accent-2);
 				}
 				${scope} > div .swiper-pagination-bullet.swiper-pagination-bullet-active {
 					width: 4rem;
-					background-color: var(--wp--preset--color--accent-1);
+					background-color: var(--itmar-accent-1);
 				}
 			`
 			: `
 				${scope} > div .swiper-pagination-bullet {
-					background-color: var(--wp--preset--color--accent-2);
+					background-color: var(--itmar-accent-2);
 				}
 				${scope} > div .swiper-pagination-bullet.swiper-pagination-bullet-active {
-					background-color: var(--wp--preset--color--accent-1);
+					background-color: var(--itmar-accent-1);
 				}
 			`;
 
@@ -298,7 +298,7 @@ export const createSlideStyleCss = (attributes, scope) => {
 					width: 100%;
 					height: 100%;
 					overflow: hidden;
-					background-color: var(--wp--preset--color--content-back, #fff);
+					background-color: var(--itmar-content-back);
 				}
 				${scope} > div .swiper.swiper-cube .swiper-slide:not(.swiper-slide-active):not(.swiper-slide-prev):not(.swiper-slide-next) {
 					opacity: 0 !important;

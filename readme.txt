@@ -3,7 +3,7 @@ Contributors:      itmaroon
 Tags:              block, swiper, vegas, slider ,carousel
 Requires at least: 6.4
 Tested up to:      7.1
-Stable tag:        2.0.2
+Stable tag:        2.0.3
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 8.1.22
@@ -57,6 +57,11 @@ OR…
 7. Enlarged image of Masonry View
 
 == Changelog ==
+= 2.0.3 =
+- Colors now read the `--itmar-*` slots provided by Block Collections, with theme-independent fallbacks.
+- View scripts import from `itmar-block-packages/front`, so the block editor bundle is no longer served to visitors.
+- Reduced the size of the bundled placeholder images used by Masonry MV.
+
 = 2.0.2 =
 - Composer component fixed.
 

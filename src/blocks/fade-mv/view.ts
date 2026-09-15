@@ -1,6 +1,6 @@
 import "vegas/jquery";
 import "vegas/dist/vegas.css";
-import { styleDataApply } from "itmar-block-packages";
+import { styleDataApply } from "itmar-block-packages/front";
 import { createFadeStyleCss } from "./StyleFade";
 import {
 	SLIDER_FRAME_ANIMATION_DURATION,
