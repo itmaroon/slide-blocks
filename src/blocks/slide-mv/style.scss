@@ -16,10 +16,7 @@
 	.swiper-slide {
 		height: 100%;
 		overflow: hidden;
-		background-color: var(
-			--wp--preset--color--content-back,
-			#fff
-		);
+		background-color: var(--itmar-content-back);
 	}
 
 	// Cube専用

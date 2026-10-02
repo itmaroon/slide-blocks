@@ -67,7 +67,7 @@
 					"defaultSize": "3em",
 					"mobileSize": "3em",
 					"design": "default",
-					"bgColor": "var(--wp--preset--color--content-back)",
+					"bgColor": "var(--itmar-content-back)",
 					"bgGradient": "",
 					"hoverAppear": false,
 					"is_shadow": false,
@@ -91,7 +91,7 @@
 						"clayDirection": "top",
 						"embos": "swell",
 						"hasOutline": true,
-						"baseColor": "var(--wp--preset--color--content-back)"
+						"baseColor": "var(--itmar-content-back)"
 					},
 					"shadow_result": {}
 				},

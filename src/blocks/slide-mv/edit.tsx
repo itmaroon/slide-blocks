@@ -22,6 +22,7 @@ import {
 import {
 	PanelBody,
 	PanelRow,
+	Notice,
 	ToggleControl,
 	RangeControl,
 	RadioControl,
@@ -333,6 +334,14 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		}
 	}, [editorBlocks]);
 
+	/*
+	 * 送り方向。枚数や間隔と同じく、デスクトップとモバイルで別に持つ。
+	 * モバイル側が未設定のときはデスクトップと同じ向きにする（既存の内容を壊さないため、
+	 * 既定値の slideInfo には mobileDirection を持たせていない）。
+	 */
+	const mobileDirection = slideInfo.mobileDirection ?? slideInfo.singleDirection;
+	const previewDirection = isMobile ? mobileDirection : slideInfo.singleDirection;
+
 	//parallaxオプションのスイッチ
 	const parallax_option = parallax_obj != null ? { parallax: true } : {}; //parallax_optionを定義
 	//Swiperエフェクトのオプションをマッピング
@@ -341,7 +350,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			centeredSlides: isMobile
 				? slideInfo.isActiveCenterMob
 				: slideInfo.isActiveCenterDef,
-			direction: slideInfo.singleDirection,
+			direction: previewDirection,
 			speed: slideInfo.slideSpeed,
 			slidesPerView: isMobile
 				? slideInfo.mobilePerView
@@ -352,7 +361,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		},
 		slide_single_view: {
 			...{
-				direction: slideInfo.singleDirection,
+				direction: previewDirection,
 				loopAdditionalSlides: 1,
 				speed: slideInfo.slideSpeed,
 				allowTouchMove: false,
@@ -977,8 +986,14 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							<>
 								<div className="itmar_title_type">
 									<RadioControl
-										label={__("Slide Direction", "slide-blocks")}
-										selected={slideInfo.singleDirection}
+										label={
+											!isMobile
+												? __("Slide Direction(desk top)", "slide-blocks")
+												: __("Slide Direction(mobile)", "slide-blocks")
+										}
+										selected={
+											!isMobile ? slideInfo.singleDirection : mobileDirection
+										}
 										options={[
 											{
 												label: __("Horizontal", "slide-blocks"),
@@ -991,10 +1006,41 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										]}
 										onChange={(newVal) => {
 											setAttributes({
-												slideInfo: { ...slideInfo, singleDirection: newVal },
+												slideInfo: !isMobile
+													? { ...slideInfo, singleDirection: newVal }
+													: { ...slideInfo, mobileDirection: newVal },
 											});
 										}}
 									/>
+									{/*
+									 * 縦送りは高さが決まっていないと動かない。
+									 * 高さが「内容に合わせる」「自動」のままだと、スライドが
+									 * 縦に並ぶ余地がなく、送っても何も見えない。
+									 */}
+									{previewDirection === "vertical" &&
+										["fit", "auto"].includes(
+											(isMobile ? mobile_val : default_val).height_val,
+										) && (
+											<Notice status="warning" isDismissible={false}>
+												{__(
+													"Vertical sliding needs a fixed height. Set the height to a value or 100% in the position settings.",
+													"slide-blocks",
+												)}
+											</Notice>
+										)}
+									{/*
+									 * パララックスの向き（data-swiper-parallax-x / -y）は保存時に
+									 * 決まるため、画面幅では切り替わらない。
+									 */}
+									{parallax_obj != null &&
+										mobileDirection !== slideInfo.singleDirection && (
+											<Notice status="warning" isDismissible={false}>
+												{__(
+													"Parallax moves along one axis only. With different directions for desktop and mobile, it follows the desktop direction.",
+													"slide-blocks",
+												)}
+											</Notice>
+										)}
 								</div>
 								<ToggleControl
 									label={__("Parallax Slide", "slide-blocks")}

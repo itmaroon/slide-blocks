@@ -459,3 +459,19 @@ msgstr ""
 
 #~ msgid "Height settings(desk top)"
 #~ msgstr "高さ（デスクトップ）"
+
+#: src/blocks/slide-mv/edit.tsx
+msgid "Slide Direction(desk top)"
+msgstr "送りの向き（デスクトップ）"
+
+#: src/blocks/slide-mv/edit.tsx
+msgid "Slide Direction(mobile)"
+msgstr "送りの向き（モバイル）"
+
+#: src/blocks/slide-mv/edit.tsx
+msgid "Vertical sliding needs a fixed height. Set the height to a value or 100% in the position settings."
+msgstr "縦送りには高さの指定が必要です。配置の設定で、高さを数値または100%にしてください。"
+
+#: src/blocks/slide-mv/edit.tsx
+msgid "Parallax moves along one axis only. With different directions for desktop and mobile, it follows the desktop direction."
+msgstr "パララックスは一方向にしか動きません。デスクトップとモバイルで向きが違う場合は、デスクトップ側の向きに従います。"

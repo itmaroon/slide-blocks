@@ -511,3 +511,19 @@ msgstr ""
 msgctxt "block title"
 msgid "Slide MainView"
 msgstr ""
+
+#: src/blocks/slide-mv/edit.tsx
+msgid "Slide Direction(desk top)"
+msgstr ""
+
+#: src/blocks/slide-mv/edit.tsx
+msgid "Slide Direction(mobile)"
+msgstr ""
+
+#: src/blocks/slide-mv/edit.tsx
+msgid "Vertical sliding needs a fixed height. Set the height to a value or 100% in the position settings."
+msgstr ""
+
+#: src/blocks/slide-mv/edit.tsx
+msgid "Parallax moves along one axis only. With different directions for desktop and mobile, it follows the desktop direction."
+msgstr ""
